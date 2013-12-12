@@ -2,14 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Common">
-      <UniqueIdentifier>06cab6bd-eda4-4bdf-9608-7d6a6b253736</UniqueIdentifier>
+      <UniqueIdentifier>e736db50-aa1f-4057-ac09-f8ce5619edb6</UniqueIdentifier>
     </Filter>
     <Filter Include="Assets">
-      <UniqueIdentifier>f6920548-d8c9-4f9b-af73-fdf6c04149b3</UniqueIdentifier>
-      <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
-    </Filter>
-    <Filter Include="Content">
-      <UniqueIdentifier>a64edd6c-cfe8-4dfe-9f21-cb1d0bbdb8a9</UniqueIdentifier>
+      <UniqueIdentifier>53c50988-9eef-45d6-bbcc-2cfedb35b571</UniqueIdentifier>
     </Filter>
     <Image Include="Assets\Logo.png">
       <Filter>Assets</Filter>
@@ -25,16 +21,12 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="..\src\basicAppDX_wip.cpp" />
+    <None Include="basicApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
+    <ClCompile Include="..\src\basicAppDX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="basicApp_TemporaryKey.pfx" />
   </ItemGroup>
 </Project>
