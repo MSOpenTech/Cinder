@@ -50,4 +50,18 @@ void BasicApp::draw()
 }
 
 // This line tells Cinder to actually create the application
-CINDER_APP_BASIC( BasicApp, RendererDx )
+// no macro for now
+// CINDER_APP_BASIC( BasicApp, RendererDx )
+
+#if 0
+[Platform::MTAThread]																			\
+int main(Platform::Array<Platform::String^>^) {													\
+	cinder::app::AppBasic::prepareLaunch();														\
+	cinder::app::AppBasic *app = new BasicApp;													\
+	cinder::app::RendererRef ren( new RendererDx );												\
+	cinder::app::AppBasic::executeLaunch( app, ren, #APP );										\
+	cinder::app::AppBasic::cleanupLaunch();														\
+	return 0;																					\
+}	
+#endif
+
