@@ -48,7 +48,7 @@ public:
 	void	run();
 	void	runReady(Windows::UI::Core::CoreWindow^ window);
 	// xaml-todo
-	// void	runReady( swapchain... ^ );
+	// void	runReady( SwapChainPanel ^ );  ?
 	void	handlePointerDown(Windows::UI::Core::PointerEventArgs^ args);
 	void	handlePointerMoved(Windows::UI::Core::PointerEventArgs^ args);
 	void	handlePointerUp(Windows::UI::Core::PointerEventArgs^ args);

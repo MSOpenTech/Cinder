@@ -140,7 +140,7 @@ void WinRTApp::Run()
 	mApp = app->getImpl();
 	mApp->runReady(CoreWindow::GetForCurrentThread());
 	// xaml-todo
-	// mApp->runReady( swapchain... ^ );
+	// mApp->runReady( SwapChainPanel ^ ); ?
 
 	// Cinder now controls the app
 #if 0

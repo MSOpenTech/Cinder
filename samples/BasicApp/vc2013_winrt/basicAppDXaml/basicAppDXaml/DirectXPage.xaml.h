@@ -51,6 +51,7 @@ namespace basicAppDXaml
 		void OnPointerReleased(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e);
 
 		// Resources used to render the DirectX content in the XAML page background.
+		// xaml-todo: of interest
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 		std::unique_ptr<basicAppDXamlMain> m_main; 
 		bool m_windowVisible;
