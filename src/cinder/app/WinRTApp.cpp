@@ -139,6 +139,8 @@ void WinRTApp::Run()
 	cinder::app::AppBasic* app = cinder::app::AppBasic::get();
 	mApp = app->getImpl();
 	mApp->runReady(CoreWindow::GetForCurrentThread());
+	// xaml-todo
+	// mApp->runReady( swapchain... ^ );
 
 	// Cinder now controls the app
 #if 0

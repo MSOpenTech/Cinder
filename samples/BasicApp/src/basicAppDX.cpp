@@ -59,7 +59,7 @@ int main(Platform::Array<Platform::String^>^) {													\
 	cinder::app::AppBasic::prepareLaunch();														\
 	cinder::app::AppBasic *app = new BasicApp;													\
 	cinder::app::RendererRef ren( new RendererDx );												\
-	cinder::app::AppBasic::executeLaunch( app, ren, #APP );										\
+	cinder::app::AppBasic::executeLaunch( app, ren, "BasicApp" );								\
 	cinder::app::AppBasic::cleanupLaunch();														\
 	return 0;																					\
 }	

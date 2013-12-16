@@ -47,6 +47,8 @@ public:
 	AppImplWinRTBasic( class AppBasic *aApp  );
 	void	run();
 	void	runReady(Windows::UI::Core::CoreWindow^ window);
+	// xaml-todo
+	// void	runReady( swapchain... ^ );
 	void	handlePointerDown(Windows::UI::Core::PointerEventArgs^ args);
 	void	handlePointerMoved(Windows::UI::Core::PointerEventArgs^ args);
 	void	handlePointerUp(Windows::UI::Core::PointerEventArgs^ args);
