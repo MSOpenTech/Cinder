@@ -65,6 +65,13 @@ void AppImplWinRTBasic::run()
 	// Note: runReady() will be called once the WinRT app has created its window and is running
 }
 
+void AppImplWinRTBasic::runReady(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel)
+{
+	// xaml-todo
+	OutputDebugStringA("XAML init");
+}
+
+
 void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 
 	float width, height;

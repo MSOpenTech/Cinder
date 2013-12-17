@@ -6,6 +6,10 @@
 #include "pch.h"
 #include "DirectXPage.xaml.h"
 
+// xaml-todo
+// global to save the swapChainPanel for cinder initialization
+::Windows::UI::Xaml::Controls::SwapChainPanel^ gSwapChainPanel;
+
 using namespace basicAppDXaml;
 
 using namespace Platform;
@@ -24,10 +28,18 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
 
+
+
 DirectXPage::DirectXPage():
 	m_windowVisible(true),
 	m_coreInput(nullptr)
 {
+
+	// xaml-todo linkage test
+	gSwapChainPanel = swapChainPanel;
+	//
+	// this following will be done in Cinder (maybe)
+#if 1
 	InitializeComponent();
 
 	// Register event handlers for page lifecycle.
@@ -87,6 +99,7 @@ DirectXPage::DirectXPage():
 
 	m_main = std::unique_ptr<basicAppDXamlMain>(new basicAppDXamlMain(m_deviceResources));
 	m_main->StartRenderLoop();
+#endif
 }
 
 DirectXPage::~DirectXPage()

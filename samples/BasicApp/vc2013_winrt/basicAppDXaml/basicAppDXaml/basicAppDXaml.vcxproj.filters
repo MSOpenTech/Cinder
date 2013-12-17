@@ -65,6 +65,7 @@
     <ClCompile Include="basicAppDXamlMain.cpp" />
     <ClCompile Include="DirectXPage.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\..\..\src\basicAppDX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />

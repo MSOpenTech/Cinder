@@ -14,6 +14,7 @@ namespace DX
 	{
 	public:
 		DeviceResources();
+		// xaml-todo
 		void SetSwapChainPanel(Windows::UI::Xaml::Controls::SwapChainPanel^ panel);
 		void SetLogicalSize(Windows::Foundation::Size logicalSize);
 		void SetCurrentOrientation(Windows::Graphics::Display::DisplayOrientations currentOrientation);

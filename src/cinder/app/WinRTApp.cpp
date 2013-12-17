@@ -138,9 +138,9 @@ void WinRTApp::Run()
 	// call Cinder runReady and pass our CoreWindow to it.
 	cinder::app::AppBasic* app = cinder::app::AppBasic::get();
 	mApp = app->getImpl();
-	mApp->runReady(CoreWindow::GetForCurrentThread());
+
 	// xaml-todo
-	// mApp->runReady( SwapChainPanel ^ ); ?
+	mApp->runReady(CoreWindow::GetForCurrentThread());
 
 	// Cinder now controls the app
 #if 0
