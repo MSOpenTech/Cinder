@@ -33,6 +33,8 @@
 #elif defined( CINDER_WINRT )
 	#include <agile.h>
 	typedef Platform::Agile<Windows::UI::Core::CoreWindow>	DX_WINDOW_TYPE;
+	// zv
+	//	typedef Platform::Agile<Windows::UI::Xaml::Controls::SwapChainPanel>	DX_SWAPCHAINPANEL_TYPE;
 	#undef min
 	#undef max
 #endif

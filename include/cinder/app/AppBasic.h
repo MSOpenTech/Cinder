@@ -79,7 +79,6 @@ class AppBasic : public App {
 		//! Returns whether MSW apps will display a secondary window which captures all cout, cerr, cin and App::console() output. Default is \c false.
 		bool	isConsoleWindowEnabled() const { return mEnableMswConsole; }
 #endif
-
 		//! Registers the app to receive multiTouch events from the operating system. Disabled by default. Only supported on WinRT, Windows 7/8 and Mac OS X trackpad.
 		void		enableMultiTouch( bool enable = true ) { mEnableMultiTouch = enable; }
 		//! Returns whether the app is registered to receive multiTouch events from the operating system. Disabled by default. Only supported on Windows 7 and Mac OS X trackpad.
@@ -180,6 +179,11 @@ class AppBasic : public App {
 	static void		cleanupLaunch() { App::cleanupLaunch(); }
 	
 	virtual void	launch( const char *title, int argc, char * const argv[] );
+
+#if defined( CINDER_WINRT_XAML )
+	// static	
+	static void		initXAML();
+#endif
 	//! \endcond
 
   protected:
@@ -207,34 +211,49 @@ class AppBasic : public App {
 // App-instantiation macros
 
 #if defined( CINDER_MAC )
-	#define CINDER_APP_BASIC( APP, RENDERER )								\
+#define CINDER_APP_BASIC( APP, RENDERER )								\
 	int main( int argc, char * const argv[] ) {								\
-		cinder::app::AppBasic::prepareLaunch();								\
-		cinder::app::AppBasic *app = new APP;								\
-		cinder::app::RendererRef ren( new RENDERER );						\
-		cinder::app::AppBasic::executeLaunch( app, ren, #APP, argc, argv );	\
-		cinder::app::AppBasic::cleanupLaunch();								\
-		return 0;															\
+	cinder::app::AppBasic::prepareLaunch();								\
+	cinder::app::AppBasic *app = new APP;								\
+	cinder::app::RendererRef ren( new RENDERER );						\
+	cinder::app::AppBasic::executeLaunch( app, ren, #APP, argc, argv );	\
+	cinder::app::AppBasic::cleanupLaunch();								\
+	return 0;															\
 	}
 #elif defined( CINDER_MSW )
-	#define CINDER_APP_BASIC( APP, RENDERER )														\
+#define CINDER_APP_BASIC( APP, RENDERER )														\
 	int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow) {	\
-		cinder::app::AppBasic::prepareLaunch();														\
-		cinder::app::AppBasic *app = new APP;														\
-		cinder::app::RendererRef ren( new RENDERER );												\
-		cinder::app::AppBasic::executeLaunch( app, ren, #APP );										\
-		cinder::app::AppBasic::cleanupLaunch();														\
-		return 0;																					\
+	cinder::app::AppBasic::prepareLaunch();														\
+	cinder::app::AppBasic *app = new APP;														\
+	cinder::app::RendererRef ren( new RENDERER );												\
+	cinder::app::AppBasic::executeLaunch( app, ren, #APP );										\
+	cinder::app::AppBasic::cleanupLaunch();														\
+	return 0;																					\
 	}
-#elif defined( CINDER_WINRT )
-	#define CINDER_APP_BASIC( APP, RENDERER )														\
-	[Platform::MTAThread]																			\
-	int main(Platform::Array<Platform::String^>^) {													\
-		cinder::app::AppBasic::prepareLaunch();														\
-		cinder::app::AppBasic *app = new APP;														\
-		cinder::app::RendererRef ren( new RENDERER );												\
-		cinder::app::AppBasic::executeLaunch( app, ren, #APP );										\
-		cinder::app::AppBasic::cleanupLaunch();														\
-		return 0;																					\
+#elif defined( CINDER_WINRT ) && !defined( CINDER_WINRT_XAML )
+#define CINDER_APP_BASIC( APP, RENDERER )														\
+	[Platform::MTAThread]																		\
+	int main(Platform::Array<Platform::String^>^) {												\
+	cinder::app::AppBasic::prepareLaunch();														\
+	cinder::app::AppBasic *app = new APP;														\
+	cinder::app::RendererRef ren(new RENDERER);													\
+	cinder::app::AppBasic::executeLaunch(app, ren, #APP);										\
+	cinder::app::AppBasic::cleanupLaunch();														\
+	return 0;																					\
 	}
+#elif defined( CINDER_WINRT ) && defined( CINDER_WINRT_XAML )
+#define CINDER_APP_BASIC( APP, RENDERER )														\
+	int main_XAML() {																			\
+	cinder::app::AppBasic::prepareLaunch();														\
+	cinder::app::AppBasic *app = new APP;														\
+	cinder::app::RendererRef ren(new RENDERER);													\
+	cinder::app::AppBasic::executeLaunch(app, ren, #APP);										\
+	cinder::app::AppBasic::cleanupLaunch();														\
+	return 0;																					\
+	}
+
+	// cinder::app::AppBasic::initXAML();
+	// args: APP, #APP, ?RENDERER?
+
+
 #endif

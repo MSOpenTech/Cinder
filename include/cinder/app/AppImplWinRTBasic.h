@@ -48,7 +48,7 @@ public:
 	void	run();
 
 	void	runReady(Windows::UI::Core::CoreWindow^ window);
-	void	runReady(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel);
+//	void	runReady(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel);
 
 	void	handlePointerDown(Windows::UI::Core::PointerEventArgs^ args);
 	void	handlePointerMoved(Windows::UI::Core::PointerEventArgs^ args);
@@ -82,6 +82,9 @@ private:
 	class AppBasic	*mApp;
 	DX_WINDOW_TYPE	mWnd;
 
+//	DX_SWAPCHAINPANEL_TYPE	mPanel;
+// zv
+
 	HINSTANCE	mInstance;
 	double		mNextFrameTime;
 	bool		mFrameRateEnabled;
@@ -100,8 +103,12 @@ class WindowImplWinRTBasic : public WindowImplWinRT {
 	WindowImplWinRTBasic( const Window::Format &format, AppImplWinRTBasic *appImpl )
 		: WindowImplWinRT( format, appImpl ) {};
 
-	WindowImplWinRTBasic( DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRTBasic *appImpl )
-		: WindowImplWinRT( hwnd, renderer, appImpl ) {};
+	WindowImplWinRTBasic(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRTBasic *appImpl)
+		: WindowImplWinRT(hwnd, renderer, appImpl) {};
+
+// zv
+//	WindowImplWinRTBasic(DX_SWAPCHAINPANEL_TYPE panel, RendererRef renderer, AppImplWinRTBasic *appImpl)
+//		: WindowImplWinRT(panel, renderer, appImpl) {};
 
   protected:
 	friend AppImplWinRTBasic;

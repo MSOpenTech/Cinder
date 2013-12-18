@@ -452,8 +452,7 @@ bool AppImplMswRendererDx::initialize( DX_WINDOW_TYPE wnd)
 
 bool AppImplMswRendererDx::initializeInternal( DX_WINDOW_TYPE wnd )
 {
-	// xaml-todo
-	// of interest
+	// zv of interest
 	mWnd = wnd;
 	
 	if( ! createDeviceResources() )

@@ -28,22 +28,26 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
 
-
+int main_XAML();
 
 DirectXPage::DirectXPage():
 	m_windowVisible(true),
 	m_coreInput(nullptr)
 {
 
-	// xaml-todo linkage test
+	// zv
+	// needed?
 	gSwapChainPanel = swapChainPanel;
 	//
 	// this following will be done in Cinder (maybe)
-#if 1
+
 	InitializeComponent();
 
 	// Register event handlers for page lifecycle.
 	CoreWindow^ window = Window::Current->CoreWindow;
+
+	// zv
+	// nb. can't call main_XAML() here - wrong thread
 
 	window->VisibilityChanged +=
 		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &DirectXPage::OnVisibilityChanged);
@@ -99,7 +103,6 @@ DirectXPage::DirectXPage():
 
 	m_main = std::unique_ptr<basicAppDXamlMain>(new basicAppDXamlMain(m_deviceResources));
 	m_main->StartRenderLoop();
-#endif
 }
 
 DirectXPage::~DirectXPage()
@@ -137,11 +140,11 @@ void DirectXPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEvent
 	m_windowVisible = args->Visible;
 	if (m_windowVisible)
 	{
-		m_main->StartRenderLoop();
+		// m_main->StartRenderLoop();
 	}
 	else
 	{
-		m_main->StopRenderLoop();
+		// m_main->StopRenderLoop();
 	}
 }
 

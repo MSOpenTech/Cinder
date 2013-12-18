@@ -56,6 +56,13 @@ AppBasic::~AppBasic()
 #endif
 }
 
+#if defined( CINDER_WINRT_XAML )
+void AppBasic::initXAML()
+{
+	OutputDebugStringA("initXAML");
+}
+#endif
+
 #if defined( CINDER_MSW )
 void AppBasic::executeLaunch( AppBasic *app, RendererRef renderer, const char *title )
 {

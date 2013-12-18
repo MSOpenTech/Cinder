@@ -93,6 +93,15 @@ void GetPlatformWindowDimensions(Windows::UI::Core::CoreWindow^ wnd, float* widt
 	*height = swapDimensions ? windowWidth : windowHeight;
 }
 
+/*
+zv
+void GetPlatformPanelDimensions(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel, float* width, float* height) {
+	// nb. these are already in pixels
+	*width = scPanel->Width;
+	*height = scPanel->Height;
+}
+*/
+
 std::string PlatformStringToString(Platform::String^ s) {
 	std::wstring t = std::wstring(s->Data());
 	return std::string(t.begin(),t.end());
