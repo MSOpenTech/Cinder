@@ -180,10 +180,6 @@ class AppBasic : public App {
 	
 	virtual void	launch( const char *title, int argc, char * const argv[] );
 
-#if defined( CINDER_WINRT_XAML )
-	// static	
-	static void		initXAML();
-#endif
 	//! \endcond
 
   protected:
@@ -251,9 +247,6 @@ class AppBasic : public App {
 	cinder::app::AppBasic::cleanupLaunch();														\
 	return 0;																					\
 	}
-
-	// cinder::app::AppBasic::initXAML();
-	// args: APP, #APP, ?RENDERER?
 
 
 #endif
