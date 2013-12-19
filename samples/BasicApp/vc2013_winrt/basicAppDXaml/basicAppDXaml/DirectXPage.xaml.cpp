@@ -37,9 +37,7 @@ DirectXPage::DirectXPage():
 
 	// zv
 	// needed?
-	gSwapChainPanel = swapChainPanel;
-	//
-	// this following will be done in Cinder (maybe)
+	// gSwapChainPanel = swapChainPanel;
 
 	InitializeComponent();
 
@@ -47,7 +45,10 @@ DirectXPage::DirectXPage():
 	CoreWindow^ window = Window::Current->CoreWindow;
 
 	// zv
-	// nb. can't call main_XAML() here - wrong thread
+	main_XAML();
+
+	// zv
+	// return;
 
 	window->VisibilityChanged +=
 		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &DirectXPage::OnVisibilityChanged);
@@ -140,11 +141,11 @@ void DirectXPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEvent
 	m_windowVisible = args->Visible;
 	if (m_windowVisible)
 	{
-		// m_main->StartRenderLoop();
+		m_main->StartRenderLoop();
 	}
 	else
 	{
-		// m_main->StopRenderLoop();
+		m_main->StopRenderLoop();
 	}
 }
 

@@ -42,6 +42,19 @@ void basicAppDXamlMain::CreateWindowSizeDependentResources()
 
 void basicAppDXamlMain::StartRenderLoop()
 {
+// zv
+// test: do in main thread - FAILS
+#if 0
+	while (1)
+	{
+		// critical_section::scoped_lock lock(m_criticalSection);
+		Update();
+		if (Render())
+		{
+			m_deviceResources->Present();
+		}
+	}
+#else
 	// If the animation render loop is already running then do not start another thread.
 	if (m_renderLoopWorker != nullptr && m_renderLoopWorker->Status == AsyncStatus::Started)
 	{
@@ -65,6 +78,7 @@ void basicAppDXamlMain::StartRenderLoop()
 
 	// Run task on a dedicated high priority background thread.
 	m_renderLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
+#endif
 }
 
 void basicAppDXamlMain::StopRenderLoop()

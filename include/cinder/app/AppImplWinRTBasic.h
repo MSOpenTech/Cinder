@@ -48,7 +48,8 @@ public:
 	void	run();
 
 	void	runReady(Windows::UI::Core::CoreWindow^ window);
-//	void	runReady(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel);
+	// zv
+	//	void	runReady(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel);
 
 	void	handlePointerDown(Windows::UI::Core::PointerEventArgs^ args);
 	void	handlePointerMoved(Windows::UI::Core::PointerEventArgs^ args);

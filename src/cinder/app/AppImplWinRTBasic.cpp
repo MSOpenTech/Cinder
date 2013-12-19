@@ -59,8 +59,11 @@ AppImplWinRTBasic::AppImplWinRTBasic( AppBasic *aApp )
 
 void AppImplWinRTBasic::run()
 {
+// zv
+#if !defined( CINDER_WINRT_XAML )
 	auto direct3DApplicationSource = ref new Direct3DApplicationSource(); 
 	CoreApplication::Run(direct3DApplicationSource); 
+#endif
 
 	// Note: runReady() will be called once the WinRT app has created its window and is running
 }
@@ -143,65 +146,6 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 	mApp->emitShutdown();
 	delete mApp;
 }
-
-// zv
-#if 0
-void AppImplWinRTBasic::runReady(Windows::UI::Xaml::Controls::SwapChainPanel^ panel)
-{
-	OutputDebugStringA("runReady");
-
-	float width, height;
-	GetPlatformPanelDimensions(panel, &width, &height);
-	// mWnd = window;
-	mPanel = panel;
-	
-	mFrameRate = mApp->getSettings().getFrameRate();
-	mFrameRateEnabled = mApp->getSettings().isFrameRateEnabled();
-
-	mIsVisible = TRUE;
-
-	Window::Format f;
-	f.setAlwaysOnTop(TRUE);
-	f.setBorderless(TRUE);
-	f.setFullScreen(TRUE);
-	f.setResizable(FALSE);
-	f.setSize(static_cast<int32_t>(width), static_cast<int32_t>(height));
-	f.setPos(0, 0);
-
-	if (!f.getRenderer())
-		f.setRenderer(mApp->getDefaultRenderer()->clone());
-
-	mWindow = new WindowImplWinRTBasic(mPanel, mApp->getDefaultRenderer()->clone(), this);
-	setWindow(mWindow->getWindow());
-	mApp->privateSetup__();
-	mSetupHasBeenCalled = true;
-
-	mWindow->getWindow()->emitResize();
-
-	if (mApp->getSettings().isMultiTouchEnabled()) {
-		mWindow->enableMultiTouch();
-	}
-
-	// initialize our next frame time
-	mNextFrameTime = getElapsedSeconds();
-
-	// inner loop
-	while (!mShouldQuit) {
-
-		if (mIsVisible) {
-			// update and draw
-			mApp->privateUpdate__();
-			CoreWindow::GetForCurrentThread()->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
-			mWindow->draw();
-		}
-		else {
-			CoreWindow::GetForCurrentThread()->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessOneAndAllPending);
-		}
-	}
-	mApp->emitShutdown();
-	delete mApp;
-}
-#endif
 
 
 void AppImplWinRTBasic::sleep( double seconds )

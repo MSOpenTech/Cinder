@@ -26,11 +26,78 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// zv new file
+
 #pragma once
 
-#include "cinder/app/AppImplWinRTBasic.h"
+#include <windows.h>
+#undef min
+#undef max
 
-// zv 
+// #include "cinder/app/AppImplWinRTBasic.h"
+
+
+// adapted from Windows 8.1 Phone Store DirectX XAML template file "DirectXPage.xaml.h"
+// nb. some methods are currently no-ops, and will be implemented as needed
+
+// zv was DirectXPage, adjust app.xaml
+
+namespace cinder {	namespace app {
+
+public ref class WinRTXamlApp sealed
+		{
+		public:
+			WinRTXamlApp();
+			virtual ~WinRTXamlApp();
+
+			void SaveInternalState(Windows::Foundation::Collections::IPropertySet^ state) {}
+			void LoadInternalState(Windows::Foundation::Collections::IPropertySet^ state) {}
+
+			// for cinder:
+			void EnableMultiTouch(BOOL bEnable) {}
+
+		private:
+			// XAML low-level rendering event handler.
+			void OnRendering(Platform::Object^ sender, Platform::Object^ args) {}
+
+			// Window event handlers.
+			void OnVisibilityChanged(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::VisibilityChangedEventArgs^ args) {}
+
+			// DisplayInformation event handlers.
+			void OnDpiChanged(Windows::Graphics::Display::DisplayInformation^ sender, Platform::Object^ args) {}
+			void OnOrientationChanged(Windows::Graphics::Display::DisplayInformation^ sender, Platform::Object^ args) {}
+			void OnDisplayContentsInvalidated(Windows::Graphics::Display::DisplayInformation^ sender, Platform::Object^ args) {}
+
+			// Other event handlers.
+			void AppBarButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e) {}
+			void OnCompositionScaleChanged(Windows::UI::Xaml::Controls::SwapChainPanel^ sender, Object^ args) {}
+			void OnSwapChainPanelSizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e) {}
+
+			// Track our independent input on a background worker thread.
+			Windows::Foundation::IAsyncAction^ m_inputLoopWorker;
+			Windows::UI::Core::CoreIndependentInputSource^ m_coreInput;
+
+			// Independent input handling functions.
+			void OnPointerPressed(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e) {}
+			void OnPointerMoved(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e) {}
+			void OnPointerReleased(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e) {}
+
+			// Resources used to render the DirectX content in the XAML page background.
+			// zv: of interest
+			// std::shared_ptr<DX::DeviceResources> m_deviceResources;
+			// std::unique_ptr<basicAppDXamlMain> m_main;
+			bool m_windowVisible;
+
+			// for cinder:
+			cinder::app::AppImplWinRTBasic *mApp;
+			bool m_windowClosed;
+		};
+
+}	}	// end cinder::app:
+
+
+#if 0
+// zv may need to inherit from a XAML thang here
 ref class WinRTApp sealed : public Windows::ApplicationModel::Core::IFrameworkView
 {
 public:
@@ -75,3 +142,5 @@ public:
 
 	virtual Windows::ApplicationModel::Core::IFrameworkView^ CreateView();
 };
+
+#endif

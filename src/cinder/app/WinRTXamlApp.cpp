@@ -29,6 +29,31 @@
 #include "cinder/app/WinRTApp.h"
 #include "cinder/app/AppBasic.h"
 #include "cinder/app/AppImplWinRTBasic.h"
+#include "cinder/app/WinRTXamlApp.h"
+
+// zv new file
+
+namespace cinder {	namespace app {
+
+WinRTXamlApp::WinRTXamlApp() :
+	m_windowClosed(false),
+	m_windowVisible(true)
+{
+
+}
+
+WinRTXamlApp::~WinRTXamlApp()
+{
+	// Stop rendering and processing events on destruction.
+	// m_main->StopRenderLoop();
+	// m_coreInput->Dispatcher->StopProcessEvents();
+}
+
+}	}
+
+
+#if 0
+
 #include <wrl/client.h>
 #include <agile.h>
 
@@ -141,8 +166,12 @@ void WinRTApp::Run()
 	cinder::app::AppBasic* app = cinder::app::AppBasic::get();
 	mApp = app->getImpl();
 
+#if defined( CINDER_WINRT_XAML )
 	// CoreWindow^ window = Window::Current->CoreWindow;
 	mApp->runReady(CoreWindow::GetForCurrentThread());
+#elif
+	mApp->runReady(CoreWindow::GetForCurrentThread());
+#endif
 
 	// Cinder now controls the app
 #if 0
@@ -228,3 +257,5 @@ IFrameworkView^ Direct3DApplicationSource::CreateView()
 {
     return ref new WinRTApp();
 }
+
+#endif
