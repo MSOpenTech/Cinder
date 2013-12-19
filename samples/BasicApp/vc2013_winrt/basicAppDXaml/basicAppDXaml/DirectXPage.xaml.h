@@ -52,7 +52,7 @@ namespace basicAppDXaml
 
 		// Resources used to render the DirectX content in the XAML page background.
 		// zv: of interest
-		std::shared_ptr<DX::DeviceResources> m_deviceResources;
+		// std::shared_ptr<DX::DeviceResources> m_deviceResources;
 		std::unique_ptr<basicAppDXamlMain> m_main; 
 		bool m_windowVisible;
 	};

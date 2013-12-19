@@ -24,19 +24,10 @@ void ::basicAppDXaml::DirectXPage::InitializeComponent()
 
     // Get the SwapChainPanel named 'swapChainPanel'
     swapChainPanel = safe_cast<::Windows::UI::Xaml::Controls::SwapChainPanel^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"swapChainPanel"));
-    // Get the AppBar named 'bottomAppBar'
-    bottomAppBar = safe_cast<::Windows::UI::Xaml::Controls::AppBar^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"bottomAppBar"));
 }
 
 void ::basicAppDXaml::DirectXPage::Connect(int connectionId, Platform::Object^ target)
 {
-    switch (connectionId)
-    {
-    case 1:
-        (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
-            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::basicAppDXaml::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::AppBarButton_Click);
-        break;
-    }
     (void)connectionId; // Unused parameter
     (void)target; // Unused parameter
     _contentLoaded = true;

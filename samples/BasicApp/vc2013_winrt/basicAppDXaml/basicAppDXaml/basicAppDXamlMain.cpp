@@ -1,12 +1,25 @@
 ﻿#include "pch.h"
 #include "basicAppDXamlMain.h"
-#include "Common\DirectXHelper.h"
+
+// zv
+// #include "Common\DirectXHelper.h"
 
 using namespace basicAppDXaml;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
 using namespace Concurrency;
 
+// zv
+basicAppDXamlMain::basicAppDXamlMain()
+{
+}
+
+basicAppDXamlMain::~basicAppDXamlMain()
+{
+}
+
+// zv
+#if 0
 // Loads and initializes application assets when the application is loaded.
 basicAppDXamlMain::basicAppDXamlMain(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
 	m_deviceResources(deviceResources), m_pointerLocationX(0.0f)
@@ -32,12 +45,14 @@ basicAppDXamlMain::~basicAppDXamlMain()
 	// Deregister device notification
 	m_deviceResources->RegisterDeviceNotify(nullptr);
 }
+#endif
 
 // Updates application state when the window size changes (e.g. device orientation change)
 void basicAppDXamlMain::CreateWindowSizeDependentResources() 
 {
 	// TODO: Replace this with the size-dependent initialization of your app's content.
-	m_sceneRenderer->CreateWindowSizeDependentResources();
+	// zv
+	//m_sceneRenderer->CreateWindowSizeDependentResources();
 }
 
 void basicAppDXamlMain::StartRenderLoop()
@@ -71,7 +86,8 @@ void basicAppDXamlMain::StartRenderLoop()
 			Update();
 			if (Render())
 			{
-				m_deviceResources->Present();
+				// zv
+				//m_deviceResources->Present();
 			}
 		}
 	});
@@ -91,6 +107,8 @@ void basicAppDXamlMain::Update()
 {
 	ProcessInput();
 
+// zv
+#if 0
 	// Update scene objects.
 	m_timer.Tick([&]()
 	{
@@ -98,19 +116,24 @@ void basicAppDXamlMain::Update()
 		m_sceneRenderer->Update(m_timer);
 		m_fpsTextRenderer->Update(m_timer);
 	});
+#endif
 }
 
 // Process all input from the user before updating game state
 void basicAppDXamlMain::ProcessInput()
 {
 	// TODO: Add per frame input handling here.
-	m_sceneRenderer->TrackingUpdate(m_pointerLocationX);
+	// zv
+	//m_sceneRenderer->TrackingUpdate(m_pointerLocationX);
 }
 
 // Renders the current frame according to the current application state.
 // Returns true if the frame was rendered and is ready to be displayed.
 bool basicAppDXamlMain::Render() 
 {
+	// zv
+	// nb. Don't try to render anything before the first Update.
+#if 0
 	// Don't try to render anything before the first Update.
 	if (m_timer.GetFrameCount() == 0)
 	{
@@ -135,6 +158,7 @@ bool basicAppDXamlMain::Render()
 	// TODO: Replace this with your app's content rendering functions.
 	m_sceneRenderer->Render();
 	m_fpsTextRenderer->Render();
+#endif
 
 	return true;
 }
@@ -142,32 +166,17 @@ bool basicAppDXamlMain::Render()
 // Notifies renderers that device resources need to be released.
 void basicAppDXamlMain::OnDeviceLost()
 {
-	m_sceneRenderer->ReleaseDeviceDependentResources();
-	m_fpsTextRenderer->ReleaseDeviceDependentResources();
+	// zv
+	//m_sceneRenderer->ReleaseDeviceDependentResources();
+	//m_fpsTextRenderer->ReleaseDeviceDependentResources();
 }
 
 // Notifies renderers that device resources may now be recreated.
 void basicAppDXamlMain::OnDeviceRestored()
 {
-	m_sceneRenderer->CreateDeviceDependentResources();
-	m_fpsTextRenderer->CreateDeviceDependentResources();
+	// zv
+	//m_sceneRenderer->CreateDeviceDependentResources();
+	//m_fpsTextRenderer->CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
 }
 
-
-// This line tells Cinder to actually create the application
-// no macro for now
-// CINDER_APP_BASIC( BasicApp, RendererDx )
-
-#if 0
-[Platform::MTAThread]																			\
-int main(Platform::Array<Platform::String^>^) {
-	\
-		cinder::app::AppBasic::prepareLaunch();														\
-		cinder::app::AppBasic *app = new BasicApp;													\
-		cinder::app::RendererRef ren(new RendererDx);												\
-		cinder::app::AppBasic::executeLaunch(app, ren, #APP);										\
-		cinder::app::AppBasic::cleanupLaunch();														\
-		return 0;																					\
-}
-#endif
