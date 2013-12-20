@@ -17,7 +17,7 @@
 //   may be used to endorse or promote products derived from this software 
 //   without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES, 
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
 // FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
 // INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
@@ -49,6 +49,15 @@ using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
 using namespace cinder::winrt;
 
+// zv
+#if defined( CINDER_WINRT_XAML )
+// globals for cinder initialization with XAML
+extern ::Windows::UI::Xaml::Controls::SwapChainPanel^ gSwapChainPanel;
+extern Platform::Agile<::Windows::UI::Core::CoreWindow^> gWindow;
+::cinder::app::AppImplWinRTBasic* gAppImplWinRTBasic;
+#endif
+
+
 namespace cinder { namespace app {
 
 AppImplWinRTBasic::AppImplWinRTBasic( AppBasic *aApp )
@@ -59,13 +68,27 @@ AppImplWinRTBasic::AppImplWinRTBasic( AppBasic *aApp )
 
 void AppImplWinRTBasic::run()
 {
-// zv
+// zv2
 #if !defined( CINDER_WINRT_XAML )
 	auto direct3DApplicationSource = ref new Direct3DApplicationSource(); 
 	CoreApplication::Run(direct3DApplicationSource); 
 #endif
 
 	// Note: runReady() will be called once the WinRT app has created its window and is running
+
+	// zv2
+
+	//	Windows::UI::Core::CoreWindow^ window = gSwapChainPanel
+
+	//swapChainPanel = safe_cast<::Windows::UI::Xaml::Controls::SwapChainPanel^>
+	//(static_cast<Windows::UI::Xaml::IFrameworkElement^>
+	//(this)->FindName(L"swapChainPanel"));
+
+//	runReady( gWindow.Get() );
+
+	// zv
+	// ugly and unsafe - testing code only
+	gAppImplWinRTBasic = this;
 }
 
 

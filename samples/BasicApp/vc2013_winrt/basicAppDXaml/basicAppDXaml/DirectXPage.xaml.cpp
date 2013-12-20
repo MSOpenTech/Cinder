@@ -6,9 +6,15 @@
 #include "pch.h"
 #include "DirectXPage.xaml.h"
 
-// xaml-todo
-// global to save the swapChainPanel for cinder initialization
+// zv
+// for event connection
+#include "cinder/app/AppImplWinRTBasic.h"
+
+// zv
+// globals for cinder initialization with XAML
 ::Windows::UI::Xaml::Controls::SwapChainPanel^ gSwapChainPanel;
+Platform::Agile<::Windows::UI::Core::CoreWindow^> gWindow;
+extern ::cinder::app::AppImplWinRTBasic * gAppImplWinRTBasic;
 
 using namespace basicAppDXaml;
 
@@ -28,7 +34,12 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
 
+
+// zv
+// for init "macro" call
 int main_XAML();
+
+
 
 DirectXPage::DirectXPage():
 	m_windowVisible(true),
@@ -36,8 +47,7 @@ DirectXPage::DirectXPage():
 {
 
 	// zv
-	// needed?
-	// gSwapChainPanel = swapChainPanel;
+	gSwapChainPanel = swapChainPanel;
 
 	InitializeComponent();
 
@@ -45,8 +55,7 @@ DirectXPage::DirectXPage():
 	CoreWindow^ window = Window::Current->CoreWindow;
 
 	// zv
-	// maybe wrong thread here
-	// main_XAML();
+	gWindow = window;
 
 	window->VisibilityChanged +=
 		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &DirectXPage::OnVisibilityChanged);
@@ -79,6 +88,8 @@ DirectXPage::DirectXPage():
 	//m_deviceResources = std::make_shared<DX::DeviceResources>();
 	//m_deviceResources->SetSwapChainPanel(swapChainPanel);
 
+	// zv
+#if 0
 	// Register our SwapChainPanel to get independent input pointer events
 	auto workItemHandler = ref new WorkItemHandler([this] (IAsyncAction ^)
 	{
@@ -100,10 +111,16 @@ DirectXPage::DirectXPage():
 
 	// Run task on a dedicated high priority background thread.
 	m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
+#endif
+
 
 //zv
 //	m_main = std::unique_ptr<basicAppDXamlMain>(new basicAppDXamlMain(m_deviceResources));
 //	m_main->StartRenderLoop();
+
+	// zv
+	main_XAML();
+	gAppImplWinRTBasic->runReady( window );
 }
 
 DirectXPage::~DirectXPage()

@@ -47,6 +47,9 @@ void BasicApp::draw()
 	dx::draw(tex, Rectf(100, 100, 600, 600));  
 #endif // 0
 
+	// zv
+	// need DX present
+
 }
 
 // This line tells Cinder to actually create the application

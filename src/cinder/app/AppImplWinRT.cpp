@@ -298,27 +298,6 @@ WindowImplWinRT::WindowImplWinRT( DX_WINDOW_TYPE hwnd, RendererRef renderer, App
 	mWindowRef = Window::privateCreate__( this, mAppImpl->getApp() );
 }
 
-#if 0
-// zv
-WindowImplWinRT::WindowImplWinRT(DX_SWAPCHAINPANEL_TYPE panel, RendererRef renderer, AppImplWinRT *appImpl)
-	: mPanel(panel), mRenderer(renderer), mAppImpl(appImpl), mIsDragging(false), mTouchId(0), mIsMultiTouchEnabled(false)
-{
-	mTitle = "";
-
-	float width, height;
-	GetPlatformPanelDimensions(panel.Get(), &width, &height);
-	mWindowOffset = Vec2i(0, 0);
-	mWindowWidth = static_cast<int>(width);
-	mWindowHeight = static_cast<int>(height);
-
-	mDisplay = Display::getMainDisplay();
-
-	mRenderer->setup(mAppImpl->getApp(), mWnd);
-
-	mWindowRef = Window::privateCreate__(this, mAppImpl->getApp());
-}
-#endif
-
 void WindowImplWinRT::createWindow( const Vec2i &windowSize, const std::string &title )
 {
 
