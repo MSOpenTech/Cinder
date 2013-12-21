@@ -49,19 +49,20 @@ using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
 using namespace cinder::winrt;
 
-// zv
+// zv2
 #if defined( CINDER_WINRT_XAML )
 // globals for cinder initialization with XAML
-extern ::Windows::UI::Xaml::Controls::SwapChainPanel^ gSwapChainPanel;
-extern Platform::Agile<::Windows::UI::Core::CoreWindow^> gWindow;
-::cinder::app::AppImplWinRTBasic* gAppImplWinRTBasic;
+//extern ::Windows::UI::Xaml::Controls::SwapChainPanel^ gSwapChainPanel;
+//extern Platform::Agile<::Windows::UI::Core::CoreWindow^> gWindow;
+// ::cinder::app::AppImplWinRTBasic* gAppImplWinRTBasic;
 #endif
 
 
 namespace cinder { namespace app {
 
+// zv2 added mWnd, mPanel init
 AppImplWinRTBasic::AppImplWinRTBasic( AppBasic *aApp )
-	: AppImplWinRT( aApp ), mApp( aApp )
+	: AppImplWinRT(aApp), mApp(aApp), mWnd( nullptr ), mPanel( nullptr )
 {
 	mShouldQuit = false;
 }
@@ -77,21 +78,16 @@ void AppImplWinRTBasic::run()
 	// Note: runReady() will be called once the WinRT app has created its window and is running
 
 	// zv2
-
 	//	Windows::UI::Core::CoreWindow^ window = gSwapChainPanel
 
 	//swapChainPanel = safe_cast<::Windows::UI::Xaml::Controls::SwapChainPanel^>
 	//(static_cast<Windows::UI::Xaml::IFrameworkElement^>
 	//(this)->FindName(L"swapChainPanel"));
 
-//	runReady( gWindow.Get() );
-
-	// zv
-	// ugly and unsafe - testing code only
-	gAppImplWinRTBasic = this;
+	//	runReady( gWindow.Get() );
 }
 
-
+// zv2 add swapchainpanel arg?
 void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 
 	float width, height;

@@ -763,8 +763,14 @@ bool AppImplMswRendererDx::createFramebufferResources()
 		swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
   #if defined( CINDER_WINRT )
-		hr = dxgiFactory->CreateSwapChainForCoreWindow( md3dDevice, reinterpret_cast<IUnknown*>(mWnd.Get()), &swapChainDesc, nullptr, &mSwapChain );
-  #else 
+// zv2
+		if ( !mUsingPanel )
+			hr = dxgiFactory->CreateSwapChainForCoreWindow(md3dDevice, reinterpret_cast<IUnknown*>(mWnd.Get()), &swapChainDesc, nullptr, &mSwapChain);
+// zv2
+		else
+			hr = dxgiFactory->CreateSwapChainForComposition( md3dDevice, &swapChainDesc, nullptr, &mSwapChain );
+
+#else 
 		hr = dxgiFactory->CreateSwapChainForHwnd( md3dDevice, mWnd, &swapChainDesc, NULL, NULL, &mSwapChain );
   #endif
 #else

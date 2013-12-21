@@ -62,9 +62,10 @@ void RendererDx::setup( App *aApp, DX_WINDOW_TYPE wnd)
 {
 	mWnd = wnd;
 	mApp = aApp;
+	// zv2
 	if( ! mImpl )
 		mImpl = new AppImplMswRendererDx( mApp, this );
-	mImpl->initialize( wnd);
+	mImpl->initialize( wnd );
 
 	// enable Vertical Sync drawing on WinRT
 	mImpl->enableVsync(TRUE);

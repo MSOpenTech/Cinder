@@ -36,12 +36,17 @@ class AppImplMswBasic;
 
 class AppImplMswRenderer {
  public:
-	AppImplMswRenderer( App *aApp ) : mApp( aApp ) {}
+	// zv2
+	AppImplMswRenderer(App *aApp) : mApp(aApp), mUsingPanel(false) {}
 	
 #if defined( CINDER_MSW )
 	virtual bool	initialize( HWND wnd, HDC dc, RendererRef sharedRenderer ) = 0;
-#elif defined( CINDERT_WINRT)
+#elif defined( CINDER_WINRT )
 	virtual bool	initialize( DX_WINDOW_TYPE wnd ) = 0;
+	// zv2
+	// void			setUsingPanel(DX_SWAPCHAINPANEL_TYPE scPanel) { mPanel = scPanel; }
+	// nb. if using a XAML panel, then CreateSwapChainForComposition must be called during DX init
+	void			setUsingPanel() { mUsingPanel = true; }
 #endif
 	virtual void	prepareToggleFullScreen() {}
 	virtual void	finishToggleFullScreen() {}
@@ -51,8 +56,11 @@ class AppImplMswRenderer {
 	virtual void	makeCurrentContext() = 0;
 
  protected:
-	DX_WINDOW_TYPE		mWnd;
-	App					*mApp;
+	DX_WINDOW_TYPE	mWnd;
+	App				*mApp;
+	// zv2 
+	// DX_SWAPCHAINPANEL_TYPE	mPanel;
+	bool			mUsingPanel;
 };
 
 } } // namespace cinder::app

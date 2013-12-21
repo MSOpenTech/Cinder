@@ -6,15 +6,15 @@
 #include "pch.h"
 #include "DirectXPage.xaml.h"
 
-// zv
+// zv2
 // for event connection
 #include "cinder/app/AppImplWinRTBasic.h"
 
 // zv
 // globals for cinder initialization with XAML
-::Windows::UI::Xaml::Controls::SwapChainPanel^ gSwapChainPanel;
-Platform::Agile<::Windows::UI::Core::CoreWindow^> gWindow;
-extern ::cinder::app::AppImplWinRTBasic * gAppImplWinRTBasic;
+//::Windows::UI::Xaml::Controls::SwapChainPanel^ gSwapChainPanel;
+//Platform::Agile<::Windows::UI::Core::CoreWindow^> gWindow;
+// extern ::cinder::app::AppImplWinRTBasic * gAppImplWinRTBasic;
 
 using namespace basicAppDXaml;
 
@@ -36,8 +36,8 @@ using namespace concurrency;
 
 
 // zv
-// for init "macro" call
-int main_XAML();
+// for init "macro" call in AppBasic.h
+int main_XAML( Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel );
 
 
 
@@ -46,16 +46,16 @@ DirectXPage::DirectXPage():
 	m_coreInput(nullptr)
 {
 
-	// zv
-	gSwapChainPanel = swapChainPanel;
+	// zv2
+	// gSwapChainPanel = swapChainPanel;
 
 	InitializeComponent();
 
 	// Register event handlers for page lifecycle.
 	CoreWindow^ window = Window::Current->CoreWindow;
 
-	// zv
-	gWindow = window;
+	// zv2
+	// gWindow = window;
 
 	window->VisibilityChanged +=
 		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &DirectXPage::OnVisibilityChanged);
@@ -118,9 +118,11 @@ DirectXPage::DirectXPage():
 //	m_main = std::unique_ptr<basicAppDXamlMain>(new basicAppDXamlMain(m_deviceResources));
 //	m_main->StartRenderLoop();
 
-	// zv
-	main_XAML();
-	gAppImplWinRTBasic->runReady( window );
+	// zv2
+	main_XAML( swapChainPanel );
+	// zv2 executeLaunch should call this:
+	// gAppImplWinRTBasic->runReady( window );
+	// zv2 provide panel?
 }
 
 DirectXPage::~DirectXPage()

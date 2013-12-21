@@ -173,6 +173,10 @@ class AppBasic : public App {
 	static void		executeLaunch( AppBasic *app, RendererRef renderer, const char *title );
 #elif defined( CINDER_WINRT )
 	static void		executeLaunch( AppBasic *app, RendererRef renderer, const char *title );
+	// zv2
+	// variant for XAML
+	static void AppBasic::executeLaunch(AppBasic *app, RendererRef renderer, const char *title,
+		Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel );
 #elif defined( CINDER_MAC )
 	static void		executeLaunch( AppBasic *app, RendererRef renderer, const char *title, int argc, char * const argv[] ) { App::sInstance = sInstance = app; App::executeLaunch( app, renderer, title, argc, argv ); }
 #endif
@@ -238,8 +242,15 @@ class AppBasic : public App {
 	return 0;																					\
 	}
 #elif defined( CINDER_WINRT ) && defined( CINDER_WINRT_XAML )
+// zv2
+// notes: 
+//		a XAML app is invoked in a generated main function that builds the XAML UI
+//		we must have CINDER_WINRT_XAML so that the CINDER_APP_BASIC macro can be redefined
+//		main_XAML() below will be called after the UI is built, and then runs the Cinder app as usual
+//		the swapChainPanel, which must be called "swapChainPanel1" in XAML, is set below
+//
 #define CINDER_APP_BASIC( APP, RENDERER )														\
-	int main_XAML() {																			\
+	int main_XAML(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel) {						\
 	cinder::app::AppBasic::prepareLaunch();														\
 	cinder::app::AppBasic *app = new APP;														\
 	cinder::app::RendererRef ren(new RENDERER);													\

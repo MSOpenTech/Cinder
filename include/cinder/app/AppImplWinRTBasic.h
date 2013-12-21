@@ -73,8 +73,6 @@ public:
 private:
 	void		sleep( double seconds );
 
-
-
 	virtual void	closeWindow( class WindowImplWinRT *windowImpl ) override;
 	virtual void	setForegroundWindow( WindowRef window ) override;
 	
@@ -82,8 +80,9 @@ private:
 	class AppBasic	*mApp;
 	DX_WINDOW_TYPE	mWnd;
 
-//	DX_SWAPCHAINPANEL_TYPE	mPanel;
-// zv
+	// zv2
+	// nb. this will be needed when CreateSwapChainForComposition will be called
+	// DX_SWAPCHAINPANEL_TYPE	mPanel;
 
 	HINSTANCE	mInstance;
 	double		mNextFrameTime;

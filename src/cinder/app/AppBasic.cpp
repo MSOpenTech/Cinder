@@ -84,10 +84,19 @@ void AppBasic::executeLaunch( AppBasic *app, RendererRef renderer, const char *t
 	::LocalFree( szArglist );
 }
 #elif defined( CINDER_WINRT )
-void AppBasic::executeLaunch( AppBasic *app, RendererRef renderer, const char *title )
+void AppBasic::executeLaunch(AppBasic *app, RendererRef renderer, const char *title)
 {
 	sInstance = app;
-	App::executeLaunch( app, renderer, title, 0, NULL );
+	App::executeLaunch(app, renderer, title, 0, NULL);
+}
+
+// zv2
+// variant for XAML
+void AppBasic::executeLaunch(AppBasic *app, RendererRef renderer, const char *title,
+	Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel )
+{
+	sInstance = app;
+	App::executeLaunch(app, renderer, title, 0, NULL);
 }
 #endif
 
@@ -132,6 +141,10 @@ void AppBasic::launch( const char *title, int argc, char * const argv[] )
 #elif defined( CINDER_WINRT )
 	mImpl = new AppImplWinRTBasic( this );	
 	mImpl->run();
+
+	// zv2 call runReady also here
+	mImpl->runReady( nullptr );
+
 #else
 	mImpl = new AppImplMswBasic( this );	
 	mImpl->run();
