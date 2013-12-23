@@ -17,7 +17,7 @@
 //   may be used to endorse or promote products derived from this software 
 //   without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES, 
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
 // FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
 // INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
@@ -763,14 +763,14 @@ bool AppImplMswRendererDx::createFramebufferResources()
 		swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
   #if defined( CINDER_WINRT )
-// zv2
+  // zv2
+		// for XAML's SwapChainPanel call CreateSwapChainForComposition
 		if ( !mUsingPanel )
 			hr = dxgiFactory->CreateSwapChainForCoreWindow(md3dDevice, reinterpret_cast<IUnknown*>(mWnd.Get()), &swapChainDesc, nullptr, &mSwapChain);
-// zv2
 		else
 			hr = dxgiFactory->CreateSwapChainForComposition( md3dDevice, &swapChainDesc, nullptr, &mSwapChain );
 
-#else 
+  #else 
 		hr = dxgiFactory->CreateSwapChainForHwnd( md3dDevice, mWnd, &swapChainDesc, NULL, NULL, &mSwapChain );
   #endif
 #else

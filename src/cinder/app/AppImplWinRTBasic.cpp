@@ -62,7 +62,7 @@ namespace cinder { namespace app {
 
 // zv2 added mWnd, mPanel init
 AppImplWinRTBasic::AppImplWinRTBasic( AppBasic *aApp )
-	: AppImplWinRT(aApp), mApp(aApp), mWnd( nullptr ), mPanel( nullptr )
+	: AppImplWinRT(aApp), mApp(aApp), mWnd( nullptr )
 {
 	mShouldQuit = false;
 }
@@ -90,6 +90,9 @@ void AppImplWinRTBasic::run()
 // zv2 add swapchainpanel arg?
 void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 
+	// zv2
+	if ( window == nullptr ) window = CoreWindow::GetForCurrentThread();
+	
 	float width, height;
 	GetPlatformWindowDimensions(window, &width, &height);
 	mWnd = window;
