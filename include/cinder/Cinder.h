@@ -53,9 +53,6 @@ using std::uint64_t;
 
 #define CINDER_CINDER
 
-// xaml
-// for now WINRT_XAML must be defined in the XAML project
-// it would be cool to detect at compile time that we are a XAML project
 // zv
 #if defined(WINRT_XAML)
 #define CINDER_WINRT_XAML
