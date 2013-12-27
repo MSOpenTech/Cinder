@@ -175,7 +175,7 @@ class AppBasic : public App {
 	static void		executeLaunch( AppBasic *app, RendererRef renderer, const char *title );
 	// zv2
 	// variant for XAML
-	static void AppBasic::executeLaunch(AppBasic *app, RendererRef renderer, const char *title,
+	static void		executeLaunch(AppBasic *app, RendererRef renderer, const char *title,
 		Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel );
 #elif defined( CINDER_MAC )
 	static void		executeLaunch( AppBasic *app, RendererRef renderer, const char *title, int argc, char * const argv[] ) { App::sInstance = sInstance = app; App::executeLaunch( app, renderer, title, argc, argv ); }
@@ -198,6 +198,10 @@ class AppBasic : public App {
 	friend class AppImplMswBasic;
 #elif defined ( CINDER_WINRT )
 	class AppImplWinRTBasic	*mImpl;
+
+	// zv3
+	DX_SWAPCHAINPANEL_TYPE mPanel;
+
 	friend class AppImplWinRTBasic;
 #endif
 	
@@ -254,7 +258,7 @@ class AppBasic : public App {
 	cinder::app::AppBasic::prepareLaunch();														\
 	cinder::app::AppBasic *app = new APP;														\
 	cinder::app::RendererRef ren(new RENDERER);													\
-	cinder::app::AppBasic::executeLaunch(app, ren, #APP);										\
+	cinder::app::AppBasic::executeLaunch(app, ren, #APP, scPanel );								\
 	cinder::app::AppBasic::cleanupLaunch();														\
 	return 0;																					\
 	}

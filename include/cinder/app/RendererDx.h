@@ -42,7 +42,10 @@ class RendererDx : public Renderer {
 	virtual void setup( App *aApp, HWND wnd, HDC dc, RendererRef sharedRenderer );
 	virtual HWND	getHwnd() { return mWnd; }
 #elif defined( CINDER_WINRT )
-	virtual void	setup( App *aApp, DX_WINDOW_TYPE wnd);
+// zv3
+//	virtual void	setup(App *aApp, DX_WINDOW_TYPE wnd);
+	virtual void	setup(App *aApp, DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel = nullptr);
+//	void	foo(DX_SWAPCHAINPANEL_TYPE scPanel);
 #endif
 
 	virtual void	kill();
@@ -70,6 +73,12 @@ class RendererDx : public Renderer {
 
 	int				mAntiAliasing;
 	DX_WINDOW_TYPE	mWnd;
+
+#if defined( CINDER_WINRT )
+	// zv3
+//	DX_SWAPCHAINPANEL_TYPE mPanel;
+#endif
+
 	MatrixStack		mModelView;
 	MatrixStack		mProjection;
 };

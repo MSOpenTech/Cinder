@@ -58,6 +58,7 @@ void basicAppDXamlMain::CreateWindowSizeDependentResources()
 void basicAppDXamlMain::StartRenderLoop()
 {
 // zv
+#if 0
 // test: do in main thread - FAILS
 #if 0
 	while (1)
@@ -94,6 +95,7 @@ void basicAppDXamlMain::StartRenderLoop()
 
 	// Run task on a dedicated high priority background thread.
 	m_renderLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
+#endif
 #endif
 }
 

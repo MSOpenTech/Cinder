@@ -69,6 +69,9 @@ public:
 	WindowRef	getForegroundWindow() const;
 	fs::path	getAppPath() const;
 
+	// zv2
+	// nb. this will be needed when CreateSwapChainForComposition will be called
+	DX_SWAPCHAINPANEL_TYPE	mPanel;
 
 private:
 	void		sleep( double seconds );
@@ -80,9 +83,6 @@ private:
 	class AppBasic	*mApp;
 	DX_WINDOW_TYPE	mWnd;
 
-	// zv2
-	// nb. this will be needed when CreateSwapChainForComposition will be called
-	// DX_SWAPCHAINPANEL_TYPE	mPanel;
 
 	HINSTANCE	mInstance;
 	double		mNextFrameTime;
@@ -99,15 +99,17 @@ private:
 
 class WindowImplWinRTBasic : public WindowImplWinRT {
   public:
-	WindowImplWinRTBasic( const Window::Format &format, AppImplWinRTBasic *appImpl )
-		: WindowImplWinRT( format, appImpl ) {};
+	// zv3
+	//	  WindowImplWinRTBasic(const Window::Format &format, AppImplWinRTBasic *appImpl)
+	//		  : WindowImplWinRT(format, appImpl) {};
+	WindowImplWinRTBasic(const Window::Format &format, AppImplWinRTBasic *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel)
+	  : WindowImplWinRT(format, appImpl, scPanel ) {};
 
-	WindowImplWinRTBasic(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRTBasic *appImpl)
-		: WindowImplWinRT(hwnd, renderer, appImpl) {};
-
-// zv
-//	WindowImplWinRTBasic(DX_SWAPCHAINPANEL_TYPE panel, RendererRef renderer, AppImplWinRTBasic *appImpl)
-//		: WindowImplWinRT(panel, renderer, appImpl) {};
+	// zv3
+//	WindowImplWinRTBasic(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRTBasic *appImpl)
+//	: WindowImplWinRT(hwnd, renderer, appImpl) {};
+	WindowImplWinRTBasic(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRTBasic *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel)
+		:  WindowImplWinRT(hwnd, renderer, appImpl, scPanel) {};
 
   protected:
 	friend AppImplWinRTBasic;

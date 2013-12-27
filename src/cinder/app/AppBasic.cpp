@@ -96,6 +96,13 @@ void AppBasic::executeLaunch(AppBasic *app, RendererRef renderer, const char *ti
 	Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel )
 {
 	sInstance = app;
+
+	// zv3
+	// AppImplWinRTBasic	*mImpl;
+	// save the panel for the renderer
+	// app->mImpl->mPanel = scPanel;
+	app->mPanel = scPanel;
+
 	App::executeLaunch(app, renderer, title, 0, NULL);
 }
 #endif
@@ -143,7 +150,7 @@ void AppBasic::launch( const char *title, int argc, char * const argv[] )
 	mImpl->run();
 
 	// zv2 call runReady also here
-	mImpl->runReady( nullptr );
+	// mImpl->runReady( nullptr );
 
 #else
 	mImpl = new AppImplMswBasic( this );	

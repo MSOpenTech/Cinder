@@ -252,8 +252,11 @@ void AppImplWinRT::getSaveFilePath( const fs::path &initialPath,std::vector<std:
 
 ///////////////////////////////////////////////////////////////////////////////
 // WindowImplWinRT
-WindowImplWinRT::WindowImplWinRT( const Window::Format &format, AppImplWinRT *appImpl )
-	: mWindowOffset( 0, 0 ), mAppImpl( appImpl ), mIsDragging( false ), mHidden( false ), mTouchId(0), mIsMultiTouchEnabled(false)
+// zv3
+//WindowImplWinRT::WindowImplWinRT(const Window::Format &format, AppImplWinRT *appImpl )
+//: mWindowOffset(0, 0), mAppImpl(appImpl), mIsDragging(false), mHidden(false), mTouchId(0), mIsMultiTouchEnabled(false)
+WindowImplWinRT::WindowImplWinRT(const Window::Format &format, AppImplWinRT *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel)
+: mWindowOffset(0, 0), mAppImpl(appImpl), mIsDragging(false), mHidden(false), mTouchId(0), mIsMultiTouchEnabled(false), mPanel(scPanel)
 {	
 	mTitle = "";
 	mFullScreen = format.isFullScreen();
@@ -273,15 +276,21 @@ WindowImplWinRT::WindowImplWinRT( const Window::Format &format, AppImplWinRT *ap
 		mWindowOffset = mWindowedPos = ( displaySize - mWindowedSize ) / 2;
 	}
 
-	mRenderer->setup( mAppImpl->getApp(), mWnd);
+	// zv3
+	// mRenderer->setup(mAppImpl->getApp(), mWnd );
+	mRenderer->setup(mAppImpl->getApp(), mWnd, mPanel);
+
 	// set WindowRef and its impl pointer to this
 	mWindowRef = Window::privateCreate__( this, mAppImpl->getApp() );
 	
 	completeCreation();
 }
 
-WindowImplWinRT::WindowImplWinRT( DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRT *appImpl )
-	: mWnd( hwnd ), mRenderer( renderer ), mAppImpl( appImpl ), mIsDragging( false ), mTouchId(0), mIsMultiTouchEnabled(false)
+// zv3
+//WindowImplWinRT::WindowImplWinRT(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRT *appImpl)
+//: mWnd(hwnd), mRenderer(renderer), mAppImpl(appImpl), mIsDragging(false), mTouchId(0), mIsMultiTouchEnabled(false)
+WindowImplWinRT::WindowImplWinRT(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRT *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel)
+	: mWnd(hwnd), mRenderer(renderer), mAppImpl(appImpl), mIsDragging(false), mTouchId(0), mIsMultiTouchEnabled(false), mPanel( scPanel )
 {
 	mTitle = "";
 
@@ -293,7 +302,9 @@ WindowImplWinRT::WindowImplWinRT( DX_WINDOW_TYPE hwnd, RendererRef renderer, App
 
 	mDisplay = Display::getMainDisplay();
 
-	mRenderer->setup( mAppImpl->getApp(), mWnd);
+	// zv3
+	// mRenderer->setup(mAppImpl->getApp(), mWnd );
+	mRenderer->setup(mAppImpl->getApp(), mWnd, mPanel);
 
 	mWindowRef = Window::privateCreate__( this, mAppImpl->getApp() );
 }

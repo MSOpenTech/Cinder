@@ -94,11 +94,11 @@ class AppImplWinRT {
 
 class WindowImplWinRT {
   public:
-	WindowImplWinRT( const Window::Format &format, AppImplWinRT *appImpl );
-	WindowImplWinRT(DX_WINDOW_TYPE DX_WINDOW_TYPE, RendererRef renderer, AppImplWinRT *appImpl);
-
-// zv
-//	WindowImplWinRT(DX_SWAPCHAINPANEL_TYPE DX_WINDOW_TYPE, RendererRef renderer, AppImplWinRT *appImpl);
+// zv3
+//	  WindowImplWinRT(const Window::Format &format, AppImplWinRT *appImpl);
+//	  WindowImplWinRT(DX_WINDOW_TYPE DX_WINDOW_TYPE, RendererRef renderer, AppImplWinRT *appImpl);
+	  WindowImplWinRT(const Window::Format &format, AppImplWinRT *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel );
+	  WindowImplWinRT(DX_WINDOW_TYPE DX_WINDOW_TYPE, RendererRef renderer, AppImplWinRT *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel );
 
 	virtual bool		isFullScreen() { return mFullScreen; }
 	virtual void		setFullScreen( bool fullScreen, const FullScreenOptions &options );
@@ -119,6 +119,9 @@ class WindowImplWinRT {
 
 
 	DX_WINDOW_TYPE getNativeCoreWindow() { return mWnd; }
+
+	// zv3
+//	DX_SWAPCHAINPANEL_TYPE	getSwapChainPanel()	{ return mPanel;  }
 
 	void			enableMultiTouch();
 	bool			isBorderless() const { return mBorderless; }
@@ -157,8 +160,8 @@ class WindowImplWinRT {
 	WindowRef				mWindowRef;
   	DX_WINDOW_TYPE			mWnd;
 
-// zv
-//	DX_SWAPCHAINPANEL_TYPE	mPanel;
+	// zv3
+	DX_SWAPCHAINPANEL_TYPE	mPanel;
 
 	Vec2i					mWindowOffset;
 	bool					mHidden;

@@ -33,7 +33,8 @@ void BasicApp::keyDown( KeyEvent event )
 
 void BasicApp::draw()
 {
-	dx::clear( Color( 0.1f, 0.1f, 0.15f ) );
+//	dx::clear(Color(0.1f, 0.1f, 0.15f));
+	dx::clear(Color(0.1f, 1.0f, 0.15f));
 
 	dx::color( 1.0f, 0.5f, 0.25f );	
 	dx::begin( GL_LINE_STRIP );

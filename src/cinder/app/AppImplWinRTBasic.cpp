@@ -50,40 +50,43 @@ using namespace Windows::Graphics::Display;
 using namespace cinder::winrt;
 
 // zv2
-#if defined( CINDER_WINRT_XAML )
+//#if defined( CINDER_WINRT_XAML )
 // globals for cinder initialization with XAML
 //extern ::Windows::UI::Xaml::Controls::SwapChainPanel^ gSwapChainPanel;
 //extern Platform::Agile<::Windows::UI::Core::CoreWindow^> gWindow;
 // ::cinder::app::AppImplWinRTBasic* gAppImplWinRTBasic;
-#endif
+//#endif
 
 
 namespace cinder { namespace app {
 
-// zv2 added mWnd, mPanel init
 AppImplWinRTBasic::AppImplWinRTBasic( AppBasic *aApp )
-	: AppImplWinRT(aApp), mApp(aApp), mWnd( nullptr )
+: AppImplWinRT(aApp), mApp(aApp), mWnd(nullptr)
 {
 	mShouldQuit = false;
+	// zv2
+	mPanel = mApp->mPanel;
 }
 
 void AppImplWinRTBasic::run()
 {
 // zv2
-#if !defined( CINDER_WINRT_XAML )
-	auto direct3DApplicationSource = ref new Direct3DApplicationSource(); 
-	CoreApplication::Run(direct3DApplicationSource); 
-#endif
-
+#if defined( CINDER_WINRT_XAML )
+	//runReady(mWnd);
+	runReady(CoreWindow::GetForCurrentThread());
+#else
 	// Note: runReady() will be called once the WinRT app has created its window and is running
+
+	auto direct3DApplicationSource = ref new Direct3DApplicationSource(); 
+	CoreApplication::Run(direct3DApplicationSource);
+#endif
 
 	// zv2
 	//	Windows::UI::Core::CoreWindow^ window = gSwapChainPanel
-
 	//swapChainPanel = safe_cast<::Windows::UI::Xaml::Controls::SwapChainPanel^>
 	//(static_cast<Windows::UI::Xaml::IFrameworkElement^>
 	//(this)->FindName(L"swapChainPanel"));
-
+	// 
 	//	runReady( gWindow.Get() );
 }
 
@@ -91,7 +94,7 @@ void AppImplWinRTBasic::run()
 void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 
 	// zv2
-	if ( window == nullptr ) window = CoreWindow::GetForCurrentThread();
+//	if ( window == nullptr ) window = CoreWindow::GetForCurrentThread();
 	
 	float width, height;
 	GetPlatformWindowDimensions(window, &width, &height);
@@ -112,7 +115,9 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 	if( ! f.getRenderer() )
 		f.setRenderer( mApp->getDefaultRenderer()->clone() );
 
-	mWindow = new WindowImplWinRTBasic( mWnd, mApp->getDefaultRenderer()->clone(), this );
+// zv4
+//	mWindow = new WindowImplWinRTBasic(mWnd, mApp->getDefaultRenderer()->clone(), this);
+	mWindow = new WindowImplWinRTBasic(mWnd, mApp->getDefaultRenderer()->clone(), this, mPanel);
 	setWindow(mWindow->getWindow());
 	mApp->privateSetup__();
 	mSetupHasBeenCalled = true;

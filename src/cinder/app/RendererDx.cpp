@@ -33,12 +33,17 @@
 
 namespace cinder { namespace app {
 
-RendererDx::RendererDx( int aAntiAliasing )
+// zv3
+	RendererDx::RendererDx( int aAntiAliasing )
 	: Renderer(), mImpl( 0 ), mAntiAliasing( aAntiAliasing )
+//RendererDx::RendererDx( int aAntiAliasing )
+//: Renderer(), mImpl(0), mAntiAliasing(aAntiAliasing), mPanel( nullptr )
 {
 }
 
-RendererDx::RendererDx( const RendererDx &renderer ) : mImpl(0), mWnd(renderer.mWnd)
+// zv3
+RendererDx::RendererDx(const RendererDx &renderer) : mImpl(0), mWnd(renderer.mWnd)
+// RendererDx::RendererDx(const RendererDx &renderer) : mImpl(0), mWnd(renderer.mWnd), mPanel(nullptr)
 {
 }
 
@@ -58,14 +63,18 @@ void RendererDx::setup( App *aApp, HWND wnd, HDC dc,  RendererRef sharedRenderer
 	mImpl->initialize( wnd, dc, sharedRenderer );
 }
 #elif defined( CINDER_WINRT )
-void RendererDx::setup( App *aApp, DX_WINDOW_TYPE wnd)
+// zv3
+// void RendererDx::setup(App *aApp, DX_WINDOW_TYPE wnd)
+void RendererDx::setup(App *aApp, DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel )
 {
 	mWnd = wnd;
 	mApp = aApp;
 	// zv2
 	if( ! mImpl )
 		mImpl = new AppImplMswRendererDx( mApp, this );
-	mImpl->initialize( wnd );
+	// zv3
+	// mImpl->initialize(wnd);
+	mImpl->initialize(wnd, scPanel);
 
 	// enable Vertical Sync drawing on WinRT
 	mImpl->enableVsync(TRUE);

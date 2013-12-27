@@ -86,7 +86,9 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 #if defined( CINDER_MSW )
 	virtual bool	initialize( HWND wnd, HDC dc,  RendererRef sharedRenderer );
 #elif defined( CINDER_WINRT)
-	virtual bool	initialize( DX_WINDOW_TYPE wnd );
+// zv3
+//	virtual bool	initialize(DX_WINDOW_TYPE wnd);
+	virtual bool	initialize(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel);
 #endif
 
 	virtual void	prepareToggleFullScreen();
@@ -184,8 +186,10 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	D3D11_DEPTH_STENCIL_DESC mDepthStencilDesc;
 
  protected:
-	bool	initializeInternal( DX_WINDOW_TYPE wnd );
-	int		initMultisample( int requestedLevelIdx );
+	 // zv3
+	// bool	initializeInternal(DX_WINDOW_TYPE wnd);
+	 bool	initializeInternal(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel);
+	 int		initMultisample(int requestedLevelIdx);
 	bool	createDevice(UINT createDeviceFlags);
 	bool	createDeviceResources();
 	bool	createFramebufferResources();

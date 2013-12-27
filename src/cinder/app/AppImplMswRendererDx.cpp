@@ -39,10 +39,18 @@
 
 #if defined( CINDER_WINRT )
 #include "cinder/WinRTUtils.h"
+
+// zv3
+#include <windows.ui.xaml.media.dxinterop.h>
+
 using namespace Windows::UI::Core;
 using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
 using namespace cinder::winrt;
+
+// zv3
+using namespace Microsoft::WRL;
+
 #endif
 
 namespace Shaders {
@@ -437,11 +445,15 @@ bool AppImplMswRendererDx::initialize( HWND wnd, HDC,  RendererRef sharedRendere
 	return success;
 }
 #elif defined( CINDER_WINRT )
-bool AppImplMswRendererDx::initialize( DX_WINDOW_TYPE wnd)
+// zv3
+// bool AppImplMswRendererDx::initialize(DX_WINDOW_TYPE wnd)
+bool AppImplMswRendererDx::initialize(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel)
 {
 	// TODO: see if DX can do antialiasing automatically
-	bool success = initializeInternal( wnd );
-	if(!success)
+	// zv3
+	// bool success = initializeInternal(wnd);
+	bool success = initializeInternal(wnd, scPanel);
+	if (!success)
 	{
 		::WinRTMessageBox("Couldn't initialize DirectX.", "OK");
 		return FALSE;
@@ -450,10 +462,14 @@ bool AppImplMswRendererDx::initialize( DX_WINDOW_TYPE wnd)
 }
 #endif
 
-bool AppImplMswRendererDx::initializeInternal( DX_WINDOW_TYPE wnd )
+// zv3
+//bool AppImplMswRendererDx::initializeInternal(DX_WINDOW_TYPE wnd)
+bool AppImplMswRendererDx::initializeInternal(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel )
 {
-	// zv of interest
 	mWnd = wnd;
+
+	// zv3
+	mPanel = scPanel;
 	
 	if( ! createDeviceResources() )
 		return false;
@@ -763,13 +779,22 @@ bool AppImplMswRendererDx::createFramebufferResources()
 		swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
   #if defined( CINDER_WINRT )
-  // zv2
-		// for XAML's SwapChainPanel call CreateSwapChainForComposition
-		if ( !mUsingPanel )
+  // zv3
+		if ( mPanel == nullptr )
 			hr = dxgiFactory->CreateSwapChainForCoreWindow(md3dDevice, reinterpret_cast<IUnknown*>(mWnd.Get()), &swapChainDesc, nullptr, &mSwapChain);
-		else
-			hr = dxgiFactory->CreateSwapChainForComposition( md3dDevice, &swapChainDesc, nullptr, &mSwapChain );
+		else {
+			// for XAML's SwapChainPanel call CreateSwapChainForComposition
+			hr = dxgiFactory->CreateSwapChainForComposition(md3dDevice, &swapChainDesc, nullptr, &mSwapChain);
+			if (hr != S_OK)	return false;
 
+			// Associate the new swap chain with the SwapChainBackgroundPanel element.
+			ComPtr<ISwapChainBackgroundPanelNative> panelNative;
+			// panelNative = reinterpret_cast<IUnknown*>(mPanel.Get())->QueryInterface(IID_PPV_ARGS(&panelNative));
+			hr = reinterpret_cast<IUnknown*>(mPanel.Get())->QueryInterface(IID_PPV_ARGS(&panelNative));
+			if (hr != S_OK)	return false;
+			hr = panelNative->SetSwapChain(mSwapChain);
+			if (hr != S_OK)	return false;
+		}
   #else 
 		hr = dxgiFactory->CreateSwapChainForHwnd( md3dDevice, mWnd, &swapChainDesc, NULL, NULL, &mSwapChain );
   #endif

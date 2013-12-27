@@ -269,7 +269,6 @@
     <ClInclude Include="..\include\cinder\app\Renderer.h" />
     <ClInclude Include="..\include\cinder\app\Window.h" />
     <ClInclude Include="..\include\cinder\app\WinRTApp.h" />
-    <ClInclude Include="..\include\cinder\app\WinRTXamlApp.h" />
     <ClInclude Include="..\include\cinder\Arcball.h" />
     <ClInclude Include="..\include\cinder\Area.h" />
     <ClInclude Include="..\include\cinder\AxisAlignedBox.h" />
@@ -365,7 +364,6 @@
     <ClCompile Include="..\src\cinder\app\RendererDx.cpp" />
     <ClCompile Include="..\src\cinder\app\Window.cpp" />
     <ClCompile Include="..\src\cinder\app\WinRTApp.cpp" />
-    <ClCompile Include="..\src\cinder\app\WinRTXamlApp.cpp" />
     <ClCompile Include="..\src\cinder\Area.cpp" />
     <ClCompile Include="..\src\cinder\audio\Io.cpp" />
     <ClCompile Include="..\src\cinder\audio\Output.cpp" />

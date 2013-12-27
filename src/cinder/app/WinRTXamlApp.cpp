@@ -29,7 +29,8 @@
 #include "cinder/app/WinRTApp.h"
 #include "cinder/app/AppBasic.h"
 #include "cinder/app/AppImplWinRTBasic.h"
-#include "cinder/app/WinRTXamlApp.h"
+// zv3
+// #include "cinder/app/WinRTXamlApp.h"
 
 // zv new file
 
