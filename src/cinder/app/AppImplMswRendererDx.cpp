@@ -312,11 +312,23 @@ void AppImplMswRendererDx::defaultResize() const
 	float width, height;
 	getPlatformWindowDimensions(mWnd, &width, &height);
 
+// zv4
+// below appears to be an invalid call, but it was in the existing code base
+// see docs for D3D11DeviceContext::OMSetRenderTargets
+// on WINRT with XAML an exception is generated; in other situations no exceptions, but nothing useful is done
+#if !defined(CINDER_WINRT_XAML)
 	ID3D11RenderTargetView *view = NULL;
 	mDeviceContext->OMSetRenderTargets(1, &view, NULL);
-	mMainFramebuffer->Release();
-	mDepthStencilView->Release();
-	mDeviceContext->Flush();
+#endif
+
+	// zv4
+	// protect
+	if (mMainFramebuffer) mMainFramebuffer->Release();
+	if (mDepthStencilView) {
+		mDepthStencilView->Release();
+		mDeviceContext->Flush();
+	}
+
 	const_cast<AppImplMswRendererDx*>(this)->createFramebufferResources();
 
 	cinder::CameraPersp cam( static_cast<int>(width), static_cast<int>(height), 60.0f );
@@ -787,8 +799,10 @@ bool AppImplMswRendererDx::createFramebufferResources()
 			hr = dxgiFactory->CreateSwapChainForComposition(md3dDevice, &swapChainDesc, nullptr, &mSwapChain);
 			if (hr != S_OK)	return false;
 
+			// zv4 from box2d-pr
 			// Associate the new swap chain with the SwapChainBackgroundPanel element.
-			ComPtr<ISwapChainBackgroundPanelNative> panelNative;
+			// ComPtr<ISwapChainBackgroundPanelNative> panelNative;
+			ComPtr<ISwapChainPanelNative> panelNative;
 			// panelNative = reinterpret_cast<IUnknown*>(mPanel.Get())->QueryInterface(IID_PPV_ARGS(&panelNative));
 			hr = reinterpret_cast<IUnknown*>(mPanel.Get())->QueryInterface(IID_PPV_ARGS(&panelNative));
 			if (hr != S_OK)	return false;
