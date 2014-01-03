@@ -74,11 +74,6 @@ class RendererDx : public Renderer {
 	int				mAntiAliasing;
 	DX_WINDOW_TYPE	mWnd;
 
-#if defined( CINDER_WINRT )
-	// zv3
-//	DX_SWAPCHAINPANEL_TYPE mPanel;
-#endif
-
 	MatrixStack		mModelView;
 	MatrixStack		mProjection;
 };
