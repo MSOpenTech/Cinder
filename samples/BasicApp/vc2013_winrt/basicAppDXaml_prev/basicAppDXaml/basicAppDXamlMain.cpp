@@ -2,35 +2,27 @@
 #include "basicAppDXamlMain.h"
 
 // zv
-// #include "Common\DirectXHelper.h"
+#include "Common\DirectXHelper.h"
 
 using namespace basicAppDXaml;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
 using namespace Concurrency;
 
-// zv
-basicAppDXamlMain::basicAppDXamlMain()
-{
-}
 
-basicAppDXamlMain::~basicAppDXamlMain()
-{
-}
-
-// zv
-#if 0
 // Loads and initializes application assets when the application is loaded.
 basicAppDXamlMain::basicAppDXamlMain(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
-	m_deviceResources(deviceResources), m_pointerLocationX(0.0f)
+	m_deviceResources(deviceResources)
+    // zv5
+    //, m_pointerLocationX(0.0f)
 {
 	// Register to be notified if the Device is lost or recreated
 	m_deviceResources->RegisterDeviceNotify(this);
 
 	// TODO: Replace this with your app's content initialization.
-	m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
-
-	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
+	// zv5
+    // m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
+    // m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
 	// TODO: Change the timer settings if you want something other than the default variable timestep mode.
 	// e.g. for 60 FPS fixed timestep update logic, call:
@@ -45,7 +37,6 @@ basicAppDXamlMain::~basicAppDXamlMain()
 	// Deregister device notification
 	m_deviceResources->RegisterDeviceNotify(nullptr);
 }
-#endif
 
 // Updates application state when the window size changes (e.g. device orientation change)
 void basicAppDXamlMain::CreateWindowSizeDependentResources() 
@@ -101,7 +92,8 @@ void basicAppDXamlMain::StartRenderLoop()
 
 void basicAppDXamlMain::StopRenderLoop()
 {
-	m_renderLoopWorker->Cancel();
+	// zv
+	// m_renderLoopWorker->Cancel();
 }
 
 // Updates the application state once per frame.
@@ -177,6 +169,7 @@ void basicAppDXamlMain::OnDeviceLost()
 void basicAppDXamlMain::OnDeviceRestored()
 {
 	// zv
+	OutputDebugStringA("OnDeviceRestored");
 	//m_sceneRenderer->CreateDeviceDependentResources();
 	//m_fpsTextRenderer->CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();

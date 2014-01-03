@@ -43,7 +43,8 @@ int main_XAML( Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel );
 
 DirectXPage::DirectXPage():
 	m_windowVisible(true),
-	m_coreInput(nullptr)
+	// zv5
+    // m_coreInput(nullptr)
 {
 
 	// zv2
@@ -84,9 +85,9 @@ DirectXPage::DirectXPage():
 
 	// At this point we have access to the device. 
 	// We can create the device-dependent resources.
-	// zv
-	//m_deviceResources = std::make_shared<DX::DeviceResources>();
-	//m_deviceResources->SetSwapChainPanel(swapChainPanel);
+	// zv5
+	m_deviceResources = std::make_shared<DX::DeviceResources>();
+	m_deviceResources->SetSwapChainPanel(swapChainPanel);
 
 	// zv
 #if 0
@@ -114,9 +115,9 @@ DirectXPage::DirectXPage():
 #endif
 
 
-//zv
-//	m_main = std::unique_ptr<basicAppDXamlMain>(new basicAppDXamlMain(m_deviceResources));
-//	m_main->StartRenderLoop();
+    // zv
+	m_main = std::unique_ptr<basicAppDXamlMain>(new basicAppDXamlMain(m_deviceResources));
+	m_main->StartRenderLoop();
 
 	// zv2
 	main_XAML( swapChainPanel );
@@ -129,8 +130,9 @@ DirectXPage::~DirectXPage()
 {
 	// Stop rendering and processing events on destruction.
 	// zv
-	// m_main->StopRenderLoop();
-	m_coreInput->Dispatcher->StopProcessEvents();
+	m_main->StopRenderLoop();
+	// zv5
+    // m_coreInput->Dispatcher->StopProcessEvents();
 }
 
 // Saves the current state of the app for suspend and terminate events.
@@ -138,7 +140,7 @@ void DirectXPage::SaveInternalState(IPropertySet^ state)
 {
 	// zv
 	// critical_section::scoped_lock lock(m_main->GetCriticalSection());
-	// m_deviceResources->Trim();
+	m_deviceResources->Trim();
 
 	// Stop rendering when the app is suspended.
 	m_main->StopRenderLoop();
@@ -151,9 +153,10 @@ void DirectXPage::LoadInternalState(IPropertySet^ state)
 {
 	// Put code to load app state here.
 
+    // zv5 hook up Cinder here?
+
 	// Start rendering when the app is resumed.
-	// zv
-	// m_main->StartRenderLoop();
+	m_main->StartRenderLoop();
 }
 
 // Window event handlers.
@@ -163,13 +166,11 @@ void DirectXPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEvent
 	m_windowVisible = args->Visible;
 	if (m_windowVisible)
 	{
-		// zv
-		// m_main->StartRenderLoop();
+		m_main->StartRenderLoop();
 	}
 	else
 	{
-		// zv
-		// m_main->StopRenderLoop();
+		m_main->StopRenderLoop();
 	}
 }
 
@@ -179,16 +180,16 @@ void DirectXPage::OnDpiChanged(DisplayInformation^ sender, Object^ args)
 {
 	// zv
 	//critical_section::scoped_lock lock(m_main->GetCriticalSection());
-	//m_deviceResources->SetDpi(sender->LogicalDpi);
-	//m_main->CreateWindowSizeDependentResources();
+	m_deviceResources->SetDpi(sender->LogicalDpi);
+	m_main->CreateWindowSizeDependentResources();
 }
 
 void DirectXPage::OnOrientationChanged(DisplayInformation^ sender, Object^ args)
 {
 	// zv
 	//critical_section::scoped_lock lock(m_main->GetCriticalSection());
-	//m_deviceResources->SetCurrentOrientation(sender->CurrentOrientation);
-	//m_main->CreateWindowSizeDependentResources();
+	m_deviceResources->SetCurrentOrientation(sender->CurrentOrientation);
+	m_main->CreateWindowSizeDependentResources();
 }
 
 
@@ -196,7 +197,7 @@ void DirectXPage::OnDisplayContentsInvalidated(DisplayInformation^ sender, Objec
 {
 	// zv
 	//critical_section::scoped_lock lock(m_main->GetCriticalSection());
-	//m_deviceResources->ValidateDevice();
+	m_deviceResources->ValidateDevice();
 }
 
 // Called when the app bar button is clicked.
@@ -234,14 +235,15 @@ void DirectXPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args
 {
 // zv
 	//critical_section::scoped_lock lock(m_main->GetCriticalSection());
-	//m_deviceResources->SetCompositionScale(sender->CompositionScaleX, sender->CompositionScaleY);
-	//m_main->CreateWindowSizeDependentResources();
+	m_deviceResources->SetCompositionScale(sender->CompositionScaleX, sender->CompositionScaleY);
+	m_main->CreateWindowSizeDependentResources();
 }
 
 void DirectXPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventArgs^ e)
 {
 	// zv
 	//critical_section::scoped_lock lock(m_main->GetCriticalSection());
-	//m_deviceResources->SetLogicalSize(e->NewSize);
-	//m_main->CreateWindowSizeDependentResources();
+	m_deviceResources->SetLogicalSize(e->NewSize);
+
+	m_main->CreateWindowSizeDependentResources();
 }

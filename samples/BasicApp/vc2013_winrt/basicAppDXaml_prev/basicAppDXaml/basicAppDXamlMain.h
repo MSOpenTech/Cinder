@@ -12,9 +12,7 @@ namespace basicAppDXaml
 	class basicAppDXamlMain : public DX::IDeviceNotify
 	{
 	public:
-		// zv
-		//basicAppDXamlMain(const std::shared_ptr<DX::DeviceResources>& deviceResources);
-		basicAppDXamlMain();
+		basicAppDXamlMain(const std::shared_ptr<DX::DeviceResources>& deviceResources);
 		~basicAppDXamlMain();
 
 		void CreateWindowSizeDependentResources();
@@ -40,14 +38,15 @@ namespace basicAppDXaml
 
 		// Cached pointer to device resources.
 		// zv
-		//std::shared_ptr<DX::DeviceResources> m_deviceResources;
+		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 
 		// TODO: Replace with your own content renderers.
 		// zv
 		//std::unique_ptr<Sample3DSceneRenderer> m_sceneRenderer;
 		//std::unique_ptr<SampleFpsTextRenderer> m_fpsTextRenderer;
 
-		Windows::Foundation::IAsyncAction^ m_renderLoopWorker;
+		// zv
+		// Windows::Foundation::IAsyncAction^ m_renderLoopWorker;
 		Concurrency::critical_section m_criticalSection;
 
 		// Rendering loop timer.
