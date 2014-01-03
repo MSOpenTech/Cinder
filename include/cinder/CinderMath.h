@@ -29,7 +29,19 @@
 #include <climits>
 #include <cfloat>
 #include <functional>
-#if defined( CINDER_MSW )
+
+// zv
+// #if defined( CINDER_MSW )
+#if defined( CINDER_MSW ) || defined( CINDER_WINRT )
+/*
+#if defined( min )
+#undef min
+#endif
+#if defined( max )
+#undef max
+#endif
+*/
+// zv
 	#undef min
 	#undef max
 #endif
@@ -279,3 +291,4 @@ namespace std {
 	inline bool isfinite( double arg ) { return _finite( arg ) != 0; }
 }
 #endif
+
