@@ -77,6 +77,7 @@ typedef app::AppImplMswRendererDx::LightData LightData;
 //static bool getDxRenderer()->mLightingEnabled = false;
 //static LightData getDxRenderer()->mLights[8];
 
+// zv6
 app::AppImplMswRendererDx *getDxRenderer()
 {
 	return ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;

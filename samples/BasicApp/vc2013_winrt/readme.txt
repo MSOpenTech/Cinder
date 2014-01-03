@@ -1,6 +1,6 @@
 Steps to upgrade project for Windows Store App in VC2013:
 
-apply patch to:
+1. apply patch to:
 /Cinder/boost/boost/config/compiler/visualc.hpp
 
 --- HEAD
@@ -16,6 +16,12 @@ apply patch to:
  #  if defined(BOOST_ASSERT_CONFIG)
  #     error "Unknown compiler version - please run the configure tests and report the results"
  #  else
+
+
+2. In the Cinder project, add the define: WINRT_XAML
+
+3. TBD
+
 
 
 solution settings:
