@@ -52,6 +52,7 @@ using namespace cinder::winrt;
 using namespace Microsoft::WRL;
 
 #endif
+// CINDER_WINRT
 
 namespace Shaders {
 
@@ -189,12 +190,15 @@ AppImplMswRendererDx::AppImplMswRendererDx( App *aApp, RendererDx *aRenderer )
   mCurrentUV(0, 0),
   mLightingEnabled(false),
   mRenderer( aRenderer ),
+
+  // zv5 DirectX interfaces
   md3dDevice( NULL ),
   mDeviceContext( NULL ),
   mSwapChain( NULL ),
   mMainFramebuffer( NULL ),
   mDepthStencilTexture( NULL ),
   mDepthStencilView( NULL ),
+
   mFixedColorVertexShader( NULL ),
   mFixedColorPixelShader( NULL ),
   mFixedColorLightVertexShader( NULL ),
@@ -323,7 +327,10 @@ void AppImplMswRendererDx::defaultResize() const
 
 	// zv4
 	// protect
-	if (mMainFramebuffer) mMainFramebuffer->Release();
+	if (mMainFramebuffer) {
+        mMainFramebuffer->Release();
+        // mMainFramebuffer = NULL;
+    }
 	if (mDepthStencilView) {
 		mDepthStencilView->Release();
 		mDeviceContext->Flush();
@@ -361,12 +368,13 @@ void AppImplMswRendererDx::swapBuffers() const
 	else
 		hr = mSwapChain->Present( 0, 0 );
 #endif
-	//handle device lost
+	// zv5 possible bug fix?
+	// handle device lost
 	if(hr == DXGI_ERROR_DEVICE_REMOVED)
 		const_cast<AppImplMswRendererDx*>(this)->handleLostDevice();
 #if defined( CINDER_WINRT ) || ( _WIN32_WINNT >= 0x0602 )
-	mDeviceContext->DiscardView( mMainFramebuffer );
-	mDeviceContext->DiscardView( mDepthStencilView );
+//	mDeviceContext->DiscardView( mMainFramebuffer );
+//	mDeviceContext->DiscardView( mDepthStencilView );
 #endif
 }
 
@@ -465,7 +473,7 @@ bool AppImplMswRendererDx::initialize(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE
 	// zv3
 	// bool success = initializeInternal(wnd);
 	bool success = initializeInternal(wnd, scPanel);
-	if (!success)
+    if (!success)
 	{
 		::WinRTMessageBox("Couldn't initialize DirectX.", "OK");
 		return FALSE;
@@ -483,11 +491,21 @@ bool AppImplMswRendererDx::initializeInternal(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPA
 	// zv3
 	mPanel = scPanel;
 	
-	if( ! createDeviceResources() )
-		return false;
+    // zv5
+    if ( mPanel == nullptr )
+    {
+        // if XAML, initialization has already been done by DeviceResources, just get the ComPtrs
+    } else  {
+        // initialize here
+        if( ! createDeviceResources() )
+		    return false;
 
-	if( ! createFramebufferResources() )
-		return false;
+	    if( ! createFramebufferResources() )
+		    return false;
+    }
+
+    // zv5 - move this down as items are tested
+    return true;
 
 	// create fixed function vertex shader
 	HRESULT hr = E_FAIL;

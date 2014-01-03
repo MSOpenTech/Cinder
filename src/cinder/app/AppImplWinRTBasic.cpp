@@ -72,8 +72,8 @@ void AppImplWinRTBasic::run()
 {
 // zv2
 #if defined( CINDER_WINRT_XAML )
-	//runReady(mWnd);
-	runReady(CoreWindow::GetForCurrentThread());
+	// runReady(mWnd);
+	// runReady(CoreWindow::GetForCurrentThread());
 #else
 	// Note: runReady() will be called once the WinRT app has created its window and is running
 
@@ -90,11 +90,8 @@ void AppImplWinRTBasic::run()
 	//	runReady( gWindow.Get() );
 }
 
-// zv2 add swapchainpanel arg?
-void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 
-	// zv2
-//	if ( window == nullptr ) window = CoreWindow::GetForCurrentThread();
+void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 	
 	float width, height;
 	GetPlatformWindowDimensions(window, &width, &height);
