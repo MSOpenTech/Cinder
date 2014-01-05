@@ -17,8 +17,12 @@
 #include "cinder/app/MouseEvent.h"
 #include "cinder/app/KeyEvent.h"
 
-// fwd decl
-class BasicApp;
+// fwd decls for the WinRT XAML framework
+//
+namespace DX {
+    class DeviceResources;
+}
+
 
 namespace cinder { namespace app {
 
@@ -31,6 +35,7 @@ public:
     ~AppBasicXAML();
 
     // Cinder side:
+    // these fns are overloaded by the Cinder BasicApp
     virtual void mouseDrag( MouseEvent event ) {}
     virtual void keyDown( KeyEvent event ) {}
     virtual void update() {}
@@ -53,8 +58,11 @@ public:
     void CreateDeviceDependentResources();
     void CreateWindowSizeDependentResources();
     void ReleaseDeviceDependentResources();
-    void Update(DX::StepTimer const& timer);
+    // void Update(DX::StepTimer const& timer);
     void Render();
+
+    /// share the DX/D3D/D2D objects with Cinder
+    void shareWithCinder();
 
     // pointer interface
     void StartTracking() {}
@@ -66,6 +74,8 @@ public:
 
   	// Cached pointer to device resources from XAML framework
 	std::shared_ptr<DX::DeviceResources> m_deviceResources;
+
+    // zv todo make this a smart ptr
     // std::shared_ptr<cinder::app::AppImplMswRendererDx> ren;
     cinder::app::AppImplMswRendererDx *ren;
 };
@@ -73,7 +83,8 @@ public:
 }}
 
 
+// nb. a global base class ptr is declared and set, but the derived class is instantiated
 #undef CINDER_APP_BASIC
 #define CINDER_APP_BASIC( APP, RENDERER ) \
-	BasicApp *app = new APP;													
+	AppBasicXAML *app = new APP;													
 

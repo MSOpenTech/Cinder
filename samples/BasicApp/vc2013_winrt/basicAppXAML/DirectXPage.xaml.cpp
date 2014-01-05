@@ -106,12 +106,14 @@ void DirectXPage::SaveInternalState(IPropertySet^ state)
 	m_main->StopRenderLoop();
 
 	// Put code to save app state here.
+    // zv6
 }
 
 // Loads the current state of the app for resume events.
 void DirectXPage::LoadInternalState(IPropertySet^ state)
 {
 	// Put code to load app state here.
+    // zv6
 
 	// Start rendering when the app is resumed.
 	m_main->StartRenderLoop();

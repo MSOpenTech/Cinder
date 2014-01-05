@@ -5,7 +5,10 @@
 // zv
 #include "CinderBridge.h"
 
-extern BasicApp *app;												
+// zv
+// extern BasicApp *app;	
+extern cinder::app::AppBasicXAML *app;
+
 
 using namespace basicAppXAML;
 using namespace Windows::Foundation;
@@ -23,7 +26,8 @@ basicAppXAMLMain::basicAppXAMLMain(const std::shared_ptr<DX::DeviceResources>& d
 	// m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
 	// zv deferred
     // m_sceneRenderer = std::unique_ptr<cinder::app::AppBasicXAML>(new cinder::app::AppBasicXAML(m_deviceResources));
-    m_sceneRenderer = reinterpret_cast<cinder::app::AppBasicXAML *>(app);
+    // m_sceneRenderer = reinterpret_cast<cinder::app::AppBasicXAML *>(app);
+    m_sceneRenderer = app;
     m_sceneRenderer->m_deviceResources = deviceResources;
 
 	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
@@ -93,7 +97,8 @@ void basicAppXAMLMain::Update()
 	m_timer.Tick([&]()
 	{
 		// TODO: Replace this with your app's content update functions.
-		m_sceneRenderer->Update(m_timer);
+        // zv
+		// m_sceneRenderer->Update(m_timer);
 		m_fpsTextRenderer->Update(m_timer);
 	});
 }

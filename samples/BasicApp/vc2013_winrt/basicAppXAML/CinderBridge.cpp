@@ -20,8 +20,7 @@ using namespace ci;
 using namespace ci::app;
 
 // cinder::app::AppBasicXAML *app;
-
-extern cinder::app::AppImplMswRendererDx *gAIMRDx;
+// extern cinder::app::AppImplMswRendererDx *gAIMRDx;
 
 //AppBasicXAML::AppBasicXAML(const std::shared_ptr<DX::DeviceResources>& deviceResources) : 
 //        m_deviceResources(deviceResources)
@@ -34,7 +33,7 @@ AppBasicXAML::AppBasicXAML()
 
     // ren = std::shared_ptr<cinder::app::AppImplMswRendererDx>( new cinder::app::AppImplMswRendererDx( nullptr, nullptr ) );
     ren = new cinder::app::AppImplMswRendererDx( nullptr, nullptr );
-    gAIMRDx = ren;
+    // gAIMRDx = ren;
 
 #if 0
 	cinder::app::AppBasic::prepareLaunch();														
@@ -55,17 +54,28 @@ void AppBasicXAML::CreateDeviceDependentResources()
 {}
 
 void AppBasicXAML::CreateWindowSizeDependentResources()
-{}
+{
+    shareWithCinder();
+    ren->setupPipeline();
+}
 
 void AppBasicXAML::ReleaseDeviceDependentResources()
 {}
 
-void AppBasicXAML::Update(DX::StepTimer const& timer)
-{}
+// void AppBasicXAML::Update(DX::StepTimer const& timer)
+// {}
 
 void AppBasicXAML::Render()
 {
-    // setup for Cinder::dx
+    shareWithCinder();
+
+     // calls to overloaded Cinder method
+    draw();
+}
+
+void AppBasicXAML::shareWithCinder()
+{
+   // setup for Cinder::dx
     auto context = m_deviceResources->GetD3DDeviceContext();
 	auto viewport = m_deviceResources->GetScreenViewport();
     auto target = m_deviceResources->GetBackBufferRenderTargetView();
@@ -75,8 +85,5 @@ void AppBasicXAML::Render()
     ren->mDeviceContext = context;
     ren->mMainFramebuffer = target;
     ren->mDepthStencilView = stencil;
-
-    draw();
 }
-
 

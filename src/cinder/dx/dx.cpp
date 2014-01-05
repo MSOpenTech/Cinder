@@ -53,10 +53,16 @@
 #define TEXTURE_PIXEL (getDxRenderer()->mLightingEnabled) ? getDxRenderer()->mFixedTextureLightPixelShader : getDxRenderer()->mFixedTexturePixelShader
 
 // zv6
-// set by CinderBridge
-//cinder::app::AppImplMswRendererDx *
-cinder::app::AppImplMswRendererDx *gAIMRDx = nullptr;
+// previous approach used a global set by CinderBridge
+// cinder::app::AppImplMswRendererDx *gAIMRDx = nullptr;
 
+#if defined ( CINDER_WINRT_XAML )
+// zv move file to proper location & rename
+#include "..\..\samples\BasicApp\vc2013_winrt\basicAppXAML\CinderBridge.h"
+
+// extern BasicApp *app;
+extern cinder::app::AppBasicXAML *app;
+#endif
 
 
 namespace cinder { namespace dx {
@@ -88,7 +94,9 @@ typedef app::AppImplMswRendererDx::LightData LightData;
 app::AppImplMswRendererDx *getDxRenderer()
 {
 #if defined ( CINDER_WINRT_XAML )
-    return gAIMRDx;
+    // return gAIMRDx;
+    // return reinterpret_cast<cinder::app::AppBasicXAML *>(::app)->ren;
+    return ::app->ren;
 #else
 	return ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;
 #endif

@@ -41,6 +41,7 @@
 
 #if defined( CINDER_WINRT_XAML )
 #include <D3D11_2.h>
+// class cinder::app::AppBasicXAML;
 #endif
 
 namespace cinder { namespace dx {
@@ -50,6 +51,11 @@ class Texture;
 namespace cinder { namespace app {
 
 class AppImplMswRendererDx : public AppImplMswRenderer {
+// zv6
+#if defined( CINDER_WINRT_XAML )
+//    friend class cinder::app::AppBasicXAML;
+#endif
+
  public:
  	struct LightData
 	{
@@ -194,11 +200,18 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	ID3D11DepthStencilState *mDepthStencilState;
 	D3D11_DEPTH_STENCIL_DESC mDepthStencilDesc;
 
+    // zv6
+    // breakouts to expose functionality for CinderBridge
+    // ideally s/b friends
+    void    setupCamera( float width, float height ) const;
+    bool    setupPipeline();
+	void	releaseNonDeviceResources();
+
  protected:
 	 // zv3
 	// bool	initializeInternal(DX_WINDOW_TYPE wnd);
-	 bool	initializeInternal(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel);
-	 int		initMultisample(int requestedLevelIdx);
+	bool	initializeInternal(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel);
+	int		initMultisample(int requestedLevelIdx);
 	bool	createDevice(UINT createDeviceFlags);
 	bool	createDeviceResources();
 	bool	createFramebufferResources();
@@ -211,8 +224,10 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 
 	void	handleLostDevice();
 	void	getPlatformWindowDimensions(DX_WINDOW_TYPE wnd, float* width, float* height) const;
-	void	releaseNonDeviceResources();
 	
+    // zv made public, s/b friend 
+   	// void	releaseNonDeviceResources();
+
 	int mStateFlags;
 	bool mFullScreen;
 	bool mVsyncEnable;

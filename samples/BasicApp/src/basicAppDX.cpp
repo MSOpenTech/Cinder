@@ -70,6 +70,6 @@ void BasicApp::draw()
 // This line tells Cinder to actually create the application
 CINDER_APP_BASIC( BasicApp, RendererDx )
 
-// zv
+// zv for testing
 // BasicApp *app = new BasicApp;													
-
+// AppBasicXAML *app = new BasicApp;													

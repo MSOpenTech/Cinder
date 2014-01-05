@@ -317,13 +317,8 @@ void AppImplMswRendererDx::defaultResize() const
 	getPlatformWindowDimensions(mWnd, &width, &height);
 
 // zv4
-// below appears to be an invalid call, but it was in the existing code base
-// see docs for D3D11DeviceContext::OMSetRenderTargets
-// on WINRT with XAML an exception is generated; in other situations no exceptions, but nothing useful is done
-#if !defined(CINDER_WINRT_XAML)
 	ID3D11RenderTargetView *view = NULL;
 	mDeviceContext->OMSetRenderTargets(1, &view, NULL);
-#endif
 
 	// zv4
 	// protect
@@ -338,10 +333,20 @@ void AppImplMswRendererDx::defaultResize() const
 
 	const_cast<AppImplMswRendererDx*>(this)->createFramebufferResources();
 
+    setupCamera( width, height );
+}
+
+// zv
+void AppImplMswRendererDx::setupCamera( float width, float height ) const
+{
 	cinder::CameraPersp cam( static_cast<int>(width), static_cast<int>(height), 60.0f );
 
 	dx::setProjection(cam);
 	dx::setModelView(cam);
+
+    // zv
+    // for dealing with tablet/phone rotation, see
+    // Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 
 	//these two lines flip the y-axis and move the origin up
 	dx::multModelView(Matrix44f::createScale(Vec3f(1, -1, 1)));
@@ -483,6 +488,7 @@ bool AppImplMswRendererDx::initialize(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE
 #endif
 
 // zv3
+// nb. this is not currently called for the XAML version
 //bool AppImplMswRendererDx::initializeInternal(DX_WINDOW_TYPE wnd)
 bool AppImplMswRendererDx::initializeInternal(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel )
 {
@@ -491,22 +497,21 @@ bool AppImplMswRendererDx::initializeInternal(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPA
 	// zv3
 	mPanel = scPanel;
 	
-    // zv5
-    if ( mPanel == nullptr )
-    {
-        // if XAML, initialization has already been done by DeviceResources, just get the ComPtrs
-    } else  {
-        // initialize here
-        if( ! createDeviceResources() )
-		    return false;
+    // initialize here
+    if( ! createDeviceResources() )
+		return false;
 
-	    if( ! createFramebufferResources() )
-		    return false;
-    }
+	if( ! createFramebufferResources() )
+		return false;
 
-    // zv5 - move this down as items are tested
+    if ( ! setupPipeline() )
+        return false;
+
     return true;
+}
 
+bool AppImplMswRendererDx::setupPipeline()
+{
 	// create fixed function vertex shader
 	HRESULT hr = E_FAIL;
 	// hr = md3dDevice->CreateVertexShader(Shaders::FixedFunctionVS, sizeof(Shaders::FixedFunctionVS), NULL, &mFixedColorVertexShader);
