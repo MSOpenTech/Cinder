@@ -52,6 +52,13 @@
 #define TEXTURE_VERTEX (getDxRenderer()->mLightingEnabled) ? getDxRenderer()->mFixedTextureLightVertexShader : getDxRenderer()->mFixedTextureVertexShader
 #define TEXTURE_PIXEL (getDxRenderer()->mLightingEnabled) ? getDxRenderer()->mFixedTextureLightPixelShader : getDxRenderer()->mFixedTexturePixelShader
 
+// zv6
+// set by CinderBridge
+//cinder::app::AppImplMswRendererDx *
+cinder::app::AppImplMswRendererDx *gAIMRDx = nullptr;
+
+
+
 namespace cinder { namespace dx {
 
 // need to have our own model view matrix stack not managed by OpenGL
@@ -80,7 +87,11 @@ typedef app::AppImplMswRendererDx::LightData LightData;
 // zv6
 app::AppImplMswRendererDx *getDxRenderer()
 {
+#if defined ( CINDER_WINRT_XAML )
+    return gAIMRDx;
+#else
 	return ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;
+#endif
 }
 
 static bool anyShadersActive()

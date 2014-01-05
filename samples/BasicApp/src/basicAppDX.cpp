@@ -1,35 +1,30 @@
-
-// zv
-#if 1
 #include "cinder/app/AppBasic.h"
 #include "cinder/app/RendererDx.h"
 #include "cinder/dx/dx.h"
 #include "cinder/Surface.h"
 #include "cinder/dx/DxTexture.h"
-#endif
 
 // zv
 // nb.  This MUST be after the Cinder includes, due to a conflict with min/max fns
 #include "pch.h"
 
 // zv
-///#include "CinderBridge.h"
+#include "CinderBridge.h"
 
 #include <list>
 
-// zv
 using namespace ci;
 using namespace ci::app;
 
 using namespace std;
 
 // We'll create a new Cinder Application by deriving from the AppBasicXAML class
-// class BasicApp : public AppBasicXAML {
 class BasicApp : public AppBasicXAML {
   public:
-	void mouseDrag( MouseEvent event );
-	void keyDown( KeyEvent event );
-	void draw();
+
+    void mouseDrag( MouseEvent event );
+    void keyDown( KeyEvent event );
+    void draw();
 
 	// This will maintain a list of points which we will draw line segments between
 	list<Vec2f>		mPoints;
@@ -52,7 +47,7 @@ void BasicApp::draw()
 {
 //	dx::clear(Color(0.1f, 0.1f, 0.15f));
     // zv
-//    dx::clear(Color(0.1f, 1.0f, 0.15f));
+    dx::clear(Color(0.1f, 1.0f, 0.15f));
 
     // zv
 #if 0
@@ -73,5 +68,8 @@ void BasicApp::draw()
 }
 
 // This line tells Cinder to actually create the application
-// zv2
 CINDER_APP_BASIC( BasicApp, RendererDx )
+
+// zv
+// BasicApp *app = new BasicApp;													
+

@@ -64,8 +64,10 @@ namespace cinder {
 	}
 	namespace app {
 		class AppImplMswRendererDx;
-	}
+    }
 } // namespace cinder
+
+
 
 namespace cinder { namespace dx {
 

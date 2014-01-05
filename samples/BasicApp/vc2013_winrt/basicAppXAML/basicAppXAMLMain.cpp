@@ -2,6 +2,11 @@
 #include "basicAppXAMLMain.h"
 #include "Common\DirectXHelper.h"
 
+// zv
+#include "CinderBridge.h"
+
+extern BasicApp *app;												
+
 using namespace basicAppXAML;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
@@ -16,7 +21,10 @@ basicAppXAMLMain::basicAppXAMLMain(const std::shared_ptr<DX::DeviceResources>& d
 
 	// TODO: Replace this with your app's content initialization.
 	// m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
-	m_sceneRenderer = std::unique_ptr<cinder::app::AppBasicXAML>(new cinder::app::AppBasicXAML(m_deviceResources));
+	// zv deferred
+    // m_sceneRenderer = std::unique_ptr<cinder::app::AppBasicXAML>(new cinder::app::AppBasicXAML(m_deviceResources));
+    m_sceneRenderer = reinterpret_cast<cinder::app::AppBasicXAML *>(app);
+    m_sceneRenderer->m_deviceResources = deviceResources;
 
 	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
@@ -32,6 +40,9 @@ basicAppXAMLMain::~basicAppXAMLMain()
 {
 	// Deregister device notification
 	m_deviceResources->RegisterDeviceNotify(nullptr);
+
+    // zv
+    delete m_sceneRenderer;
 }
 
 // Updates application state when the window size changes (e.g. device orientation change)

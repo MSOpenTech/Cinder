@@ -39,6 +39,10 @@
 #include <dxgi.h>
 #include <dxgi1_2.h>
 
+#if defined( CINDER_WINRT_XAML )
+#include <D3D11_2.h>
+#endif
+
 namespace cinder { namespace dx {
 class Texture;
 }}
@@ -129,15 +133,20 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 
 	RendererDx	*mRenderer;
 	D3D_FEATURE_LEVEL mFeatureLevel;
-  #if defined( CINDER_WINRT ) || ( _WIN32_WINNT >= 0x0602 )
+// zv
+#if defined( CINDER_WINRT_XAML )
+	ID3D11DeviceContext2 *mDeviceContext;
+	IDXGISwapChain1 *mSwapChain;
+	ID3D11Device2 *md3dDevice;
+#elif defined( CINDER_WINRT ) || ( _WIN32_WINNT >= 0x0602 )
 	ID3D11DeviceContext1 *mDeviceContext;
 	IDXGISwapChain1 *mSwapChain;
 	ID3D11Device1 *md3dDevice;
-  #else
-  	ID3D11DeviceContext *mDeviceContext;
-	IDXGISwapChain *mSwapChain;
-	ID3D11Device *md3dDevice;
-  #endif
+#else
+    ID3D11DeviceContext *mDeviceContext;
+    IDXGISwapChain *mSwapChain;
+    ID3D11Device *md3dDevice;
+#endif
 	ID3D11RenderTargetView *mMainFramebuffer;
 	ID3D11Texture2D *mDepthStencilTexture;
 	ID3D11DepthStencilView *mDepthStencilView;

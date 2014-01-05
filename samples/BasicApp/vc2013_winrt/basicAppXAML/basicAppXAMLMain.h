@@ -40,7 +40,10 @@ namespace basicAppXAML
 		// TODO: Replace with your own content renderers.
         // zv
         // std::unique_ptr<Sample3DSceneRenderer> m_sceneRenderer;
-        std::unique_ptr<cinder::app::AppBasicXAML> m_sceneRenderer;
+        // std::unique_ptr<cinder::app::AppBasicXAML> m_sceneRenderer;
+
+        // ptr to base type
+        cinder::app::AppBasicXAML *m_sceneRenderer;
 		std::unique_ptr<SampleFpsTextRenderer> m_fpsTextRenderer;
 
 		Windows::Foundation::IAsyncAction^ m_renderLoopWorker;

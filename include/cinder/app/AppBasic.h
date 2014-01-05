@@ -234,7 +234,9 @@ class AppBasic : public App {
 	cinder::app::AppBasic::cleanupLaunch();														\
 	return 0;																					\
 	}
+// zv
 #elif defined( CINDER_WINRT ) && !defined( CINDER_WINRT_XAML )
+// #elif defined( CINDER_WINRT )
 #define CINDER_APP_BASIC( APP, RENDERER )														\
 	[Platform::MTAThread]																		\
 	int main(Platform::Array<Platform::String^>^) {												\
@@ -248,10 +250,10 @@ class AppBasic : public App {
 #elif defined( CINDER_WINRT ) && defined( CINDER_WINRT_XAML )
 // zv2
 // notes: 
-//		a XAML app is invoked in a generated main function that builds the XAML UI
-//		we must have CINDER_WINRT_XAML so that the CINDER_APP_BASIC macro can be redefined
+//		a XAML app is invoked in a generated main function that builds the XAML UI.
+//		we must have CINDER_WINRT_XAML so that the CINDER_APP_BASIC macro can be redefined.
 //		main_XAML() below will be called after the UI is built, and then runs the Cinder app as usual
-//		the swapChainPanel, which must be called "swapChainPanel1" in XAML, is set below
+//		the swapChainPanel, which must be called "swapChainPanel1" in XAML, is set below.
 //
 #define CINDER_APP_BASIC( APP, RENDERER )														\
 	int main_XAML(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel) {						\
@@ -263,5 +265,5 @@ class AppBasic : public App {
 	return 0;																					\
 	}
 
-
 #endif
+
