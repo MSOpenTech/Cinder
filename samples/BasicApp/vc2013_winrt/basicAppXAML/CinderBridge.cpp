@@ -74,6 +74,10 @@ void AppBasicXAML::Render()
         m_pipeline_ready = true;
     }
 
+    float w = m_deviceResources->GetOutputSize().Width;
+    float h = m_deviceResources->GetOutputSize().Height;
+    ren->setupCamera( w, h );
+
      // calls to overloaded Cinder method
     draw();
 }
