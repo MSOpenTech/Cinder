@@ -17,7 +17,7 @@ using namespace Concurrency;
 
 // Loads and initializes application assets when the application is loaded.
 basicAppXAMLMain::basicAppXAMLMain(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
-	m_deviceResources(deviceResources), m_pointerLocationX(0.0f)
+	m_deviceResources(deviceResources)
 {
 	// Register to be notified if the Device is lost or recreated
 	m_deviceResources->RegisterDeviceNotify(this);
@@ -46,6 +46,7 @@ basicAppXAMLMain::~basicAppXAMLMain()
 	m_deviceResources->RegisterDeviceNotify(nullptr);
 
     // zv
+    // nb not currently a smart ptr
     delete m_sceneRenderer;
 }
 
@@ -107,7 +108,8 @@ void basicAppXAMLMain::Update()
 void basicAppXAMLMain::ProcessInput()
 {
 	// TODO: Add per frame input handling here.
-	m_sceneRenderer->TrackingUpdate(m_pointerLocationX);
+    // zv
+    // m_sceneRenderer->TrackingUpdate( mPtrX, mPtrY );
 }
 
 // Renders the current frame according to the current application state.

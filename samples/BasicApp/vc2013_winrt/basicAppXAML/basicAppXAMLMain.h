@@ -8,6 +8,9 @@
 #include "CinderBridge.h"
 #include "Content\SampleFpsTextRenderer.h"
 
+// zv
+using namespace Windows::UI::Core;
+
 // Renders Direct2D and 3D content on the screen.
 namespace basicAppXAML
 {
@@ -18,8 +21,10 @@ namespace basicAppXAML
 		~basicAppXAMLMain();
 		void CreateWindowSizeDependentResources();
 		void StartTracking() { m_sceneRenderer->StartTracking(); }
-		void TrackingUpdate(float positionX) { m_pointerLocationX = positionX; }
-		void StopTracking() { m_sceneRenderer->StopTracking(); }
+        // zv
+		// void TrackingUpdate(float x, float y) { m_sceneRenderer->TrackingUpdate(x, y); }
+		void TrackingUpdate(PointerEventArgs^ e) { m_sceneRenderer->TrackingUpdate(e); }
+        void StopTracking() { m_sceneRenderer->StopTracking(); }
 		bool IsTracking() { return m_sceneRenderer->IsTracking(); }
 		void StartRenderLoop();
 		void StopRenderLoop();
@@ -51,8 +56,5 @@ namespace basicAppXAML
 
 		// Rendering loop timer.
 		DX::StepTimer m_timer;
-
-		// Track current input pointer position.
-		float m_pointerLocationX;
 	};
 }

@@ -175,7 +175,9 @@ void DirectXPage::OnPointerMoved(Object^ sender, PointerEventArgs^ e)
 	// Update the pointer tracking code.
 	if (m_main->IsTracking())
 	{
-		m_main->TrackingUpdate(e->CurrentPoint->Position.X);
+        // zv
+		// m_main->TrackingUpdate(e->CurrentPoint->Position.X, e->CurrentPoint->Position.Y);
+		m_main->TrackingUpdate(e);
 	}
 }
 
@@ -185,6 +187,7 @@ void DirectXPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
 	m_main->StopTracking();
 }
 
+// nb this event fires (2) at initialization
 void DirectXPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)
 {
 	critical_section::scoped_lock lock(m_main->GetCriticalSection());
@@ -192,6 +195,7 @@ void DirectXPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args
 	m_main->CreateWindowSizeDependentResources();
 }
 
+// nb this event fires (1,3) at initialization
 void DirectXPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventArgs^ e)
 {
 	critical_section::scoped_lock lock(m_main->GetCriticalSection());

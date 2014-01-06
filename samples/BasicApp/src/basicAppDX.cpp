@@ -32,8 +32,9 @@ class BasicApp : public AppBasicXAML {
 
 void BasicApp::mouseDrag( MouseEvent event )
 {
-// zv
-    // mPoints.push_back( event.getPos() );
+    // zv
+    auto p = event.getPos();
+    mPoints.push_back( event.getPos() );
 }
 
 void BasicApp::keyDown( KeyEvent event )
@@ -45,19 +46,17 @@ void BasicApp::keyDown( KeyEvent event )
 
 void BasicApp::draw()
 {
-//	dx::clear(Color(0.1f, 0.1f, 0.15f));
+	// dx::clear(Color(0.1f, 0.1f, 0.15f));
     // zv
     dx::clear(Color(0.1f, 1.0f, 0.15f));
 
     // zv
-#if 0
     dx::color( 1.0f, 0.5f, 0.25f );	
 	dx::begin( GL_LINE_STRIP );
 	for( auto pointIter = mPoints.begin(); pointIter != mPoints.end(); ++pointIter ) {
 		dx::vertex( *pointIter );
 	}
 	dx::end();
-#endif
 
 #if 0
 	Surface s = getRenderer()->copyWindowSurface(Area(Vec2i(0, 0), Vec2i(500, 500)));

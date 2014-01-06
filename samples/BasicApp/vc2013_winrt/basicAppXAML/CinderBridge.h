@@ -17,6 +17,9 @@
 #include "cinder/app/MouseEvent.h"
 #include "cinder/app/KeyEvent.h"
 
+// for PointerEventArgs
+using namespace Windows::UI::Core;
+
 // fwd decls for the WinRT XAML framework
 //
 namespace DX {
@@ -35,7 +38,7 @@ public:
     ~AppBasicXAML();
 
     // Cinder side:
-    // these fns are overloaded by the Cinder BasicApp
+    // these fns can be overloaded by the Cinder BasicApp
     virtual void mouseDrag( MouseEvent event ) {}
     virtual void keyDown( KeyEvent event ) {}
     virtual void update() {}
@@ -65,10 +68,10 @@ public:
     void shareWithCinder();
 
     // pointer interface
-    void StartTracking() {}
-    void TrackingUpdate(float positionX) {}
-    void StopTracking() {}
-    bool IsTracking() { return false; } // return m_tracking
+    void StartTracking() { m_tracking = true; }
+    void TrackingUpdate(PointerEventArgs^ e);
+    void StopTracking() { m_tracking = false; }
+    bool IsTracking() { return m_tracking; }
 
     // key interface TBD
 
@@ -78,6 +81,9 @@ public:
     // zv todo make this a smart ptr
     // std::shared_ptr<cinder::app::AppImplMswRendererDx> ren;
     cinder::app::AppImplMswRendererDx *ren;
+private:
+    bool    m_tracking;
+    bool    m_pipeline_ready;
 };
 
 }}
