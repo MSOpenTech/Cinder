@@ -30,7 +30,8 @@ basicAppXAMLMain::basicAppXAMLMain(const std::shared_ptr<DX::DeviceResources>& d
     m_sceneRenderer = app;
     m_sceneRenderer->m_deviceResources = deviceResources;
 
-	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
+    // zv
+	// m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
 	// TODO: Change the timer settings if you want something other than the default variable timestep mode.
 	// e.g. for 60 FPS fixed timestep update logic, call:
@@ -100,7 +101,9 @@ void basicAppXAMLMain::Update()
 		// TODO: Replace this with your app's content update functions.
         // zv
 		// m_sceneRenderer->Update(m_timer);
-		m_fpsTextRenderer->Update(m_timer);
+		// m_fpsTextRenderer->Update(m_timer);
+
+        // call Cinder update() ?
 	});
 }
 
@@ -141,7 +144,9 @@ bool basicAppXAMLMain::Render()
 	// Render the scene objects.
 	// TODO: Replace this with your app's content rendering functions.
     m_sceneRenderer->Render();
-	m_fpsTextRenderer->Render();
+
+    // zv
+    // m_fpsTextRenderer->Render();
 
 	return true;
 }
@@ -150,13 +155,18 @@ bool basicAppXAMLMain::Render()
 void basicAppXAMLMain::OnDeviceLost()
 {
 	m_sceneRenderer->ReleaseDeviceDependentResources();
-	m_fpsTextRenderer->ReleaseDeviceDependentResources();
+
+    // zv
+    // m_fpsTextRenderer->ReleaseDeviceDependentResources();
 }
 
 // Notifies renderers that device resources may now be recreated.
 void basicAppXAMLMain::OnDeviceRestored()
 {
 	m_sceneRenderer->CreateDeviceDependentResources();
-	m_fpsTextRenderer->CreateDeviceDependentResources();
-	CreateWindowSizeDependentResources();
+	
+    // zv
+    // m_fpsTextRenderer->CreateDeviceDependentResources();
+
+    CreateWindowSizeDependentResources();
 }

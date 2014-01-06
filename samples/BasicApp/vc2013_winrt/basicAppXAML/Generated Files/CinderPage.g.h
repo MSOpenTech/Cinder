@@ -21,7 +21,7 @@ namespace Windows {
 
 namespace basicAppXAML
 {
-    partial ref class DirectXPage : public ::Windows::UI::Xaml::Controls::Page, 
+    partial ref class CinderPage : public ::Windows::UI::Xaml::Controls::Page, 
         public ::Windows::UI::Xaml::Markup::IComponentConnector
     {
     public:

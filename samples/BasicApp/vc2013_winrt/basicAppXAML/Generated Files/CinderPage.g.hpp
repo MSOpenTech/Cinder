@@ -7,20 +7,20 @@
 //     the code is regenerated.
 //------------------------------------------------------------------------------
 #include "pch.h"
-#include "DirectXPage.xaml.h"
+#include "CinderPage.xaml.h"
 
 
 
 
-void ::basicAppXAML::DirectXPage::InitializeComponent()
+void ::basicAppXAML::CinderPage::InitializeComponent()
 {
     if (_contentLoaded)
         return;
 
     _contentLoaded = true;
 
-    // Call LoadComponent on ms-appx:///DirectXPage.xaml
-    ::Windows::UI::Xaml::Application::LoadComponent(this, ref new ::Windows::Foundation::Uri(L"ms-appx:///DirectXPage.xaml"), ::Windows::UI::Xaml::Controls::Primitives::ComponentResourceLocation::Application);
+    // Call LoadComponent on ms-appx:///CinderPage.xaml
+    ::Windows::UI::Xaml::Application::LoadComponent(this, ref new ::Windows::Foundation::Uri(L"ms-appx:///CinderPage.xaml"), ::Windows::UI::Xaml::Controls::Primitives::ComponentResourceLocation::Application);
 
     // Get the SwapChainPanel named 'swapChainPanel'
     swapChainPanel = safe_cast<::Windows::UI::Xaml::Controls::SwapChainPanel^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"swapChainPanel"));
@@ -28,13 +28,13 @@ void ::basicAppXAML::DirectXPage::InitializeComponent()
     bottomAppBar = safe_cast<::Windows::UI::Xaml::Controls::AppBar^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"bottomAppBar"));
 }
 
-void ::basicAppXAML::DirectXPage::Connect(int connectionId, Platform::Object^ target)
+void ::basicAppXAML::CinderPage::Connect(int connectionId, Platform::Object^ target)
 {
     switch (connectionId)
     {
     case 1:
         (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
-            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::basicAppXAML::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::AppBarButton_Click);
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::basicAppXAML::CinderPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&CinderPage::AppBarButton_Click);
         break;
     }
     (void)connectionId; // Unused parameter

@@ -1,25 +1,25 @@
 ﻿//
-// DirectXPage.xaml.h
-// Declaration of the DirectXPage class.
+// CinderPage.xaml.h
+// Declaration of the CinderPage class.
 //
 
 #pragma once
 
-#include "DirectXPage.g.h"
+#include "CinderPage.g.h"
 
 #include "Common\DeviceResources.h"
-#include "basicAppDXamlMain.h"
+#include "basicAppXAMLMain.h"
 
-namespace basicAppDXaml
+namespace basicAppXAML
 {
 	/// <summary>
-	/// A page that hosts a DirectX SwapChainPanel.
+	/// A page that hosts a Cinder DirectX SwapChainPanel.
 	/// </summary>
-	public ref class DirectXPage sealed
+	public ref class CinderPage sealed
 	{
 	public:
-		DirectXPage();
-		virtual ~DirectXPage();
+		CinderPage();
+		virtual ~CinderPage();
 
 		void SaveInternalState(Windows::Foundation::Collections::IPropertySet^ state);
 		void LoadInternalState(Windows::Foundation::Collections::IPropertySet^ state);
@@ -41,10 +41,9 @@ namespace basicAppDXaml
 		void OnCompositionScaleChanged(Windows::UI::Xaml::Controls::SwapChainPanel^ sender, Object^ args);
 		void OnSwapChainPanelSizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
 
-        // zv OFF
 		// Track our independent input on a background worker thread.
-		// Windows::Foundation::IAsyncAction^ m_inputLoopWorker;
-		// Windows::UI::Core::CoreIndependentInputSource^ m_coreInput;
+		Windows::Foundation::IAsyncAction^ m_inputLoopWorker;
+		Windows::UI::Core::CoreIndependentInputSource^ m_coreInput;
 
 		// Independent input handling functions.
 		void OnPointerPressed(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e);
@@ -52,9 +51,8 @@ namespace basicAppDXaml
 		void OnPointerReleased(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e);
 
 		// Resources used to render the DirectX content in the XAML page background.
-		// zv3 of interest
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
-		std::unique_ptr<basicAppDXamlMain> m_main; 
+		std::unique_ptr<basicAppXAMLMain> m_main; 
 		bool m_windowVisible;
 	};
 }

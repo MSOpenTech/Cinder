@@ -10,10 +10,10 @@
 #include "XamlTypeInfo.g.h"
 
 #include "App.xaml.h"
-#include "DirectXPage.xaml.h"
+#include "CinderPage.xaml.h"
 
 #include "App.g.hpp"
-#include "DirectXPage.g.hpp"
+#include "CinderPage.g.hpp"
 
 ::Platform::Collections::Vector<::Windows::UI::Xaml::Markup::IXamlMetadataProvider^>^ ::XamlTypeInfo::InfoProvider::XamlTypeInfoProvider::OtherProviders::get()
 {
@@ -72,14 +72,14 @@
         return ref new XamlSystemBaseType(typeName);
     }
 
-    if (typeName == L"basicAppXAML.DirectXPage")
+    if (typeName == L"basicAppXAML.CinderPage")
     {
         ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Windows.UI.Xaml.Controls.Page"));
         userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
         userType->Activator =
             []() -> Platform::Object^ 
             {
-                return ref new ::basicAppXAML::DirectXPage(); 
+                return ref new ::basicAppXAML::CinderPage(); 
             };
         return userType;
     }

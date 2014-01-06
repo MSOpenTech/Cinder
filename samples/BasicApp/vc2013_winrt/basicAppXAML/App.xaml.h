@@ -6,7 +6,7 @@
 #pragma once
 
 #include "App.g.h"
-#include "DirectXPage.xaml.h"
+#include "CinderPage.xaml.h"
 
 namespace basicAppXAML
 {
@@ -22,6 +22,6 @@ namespace basicAppXAML
 	private:
 		void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);
 		void OnResuming(Platform::Object ^sender, Platform::Object ^args);
-		DirectXPage^ m_directXPage;
+		CinderPage^ m_cinderPage;
 	};
 }

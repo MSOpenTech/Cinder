@@ -4,7 +4,7 @@
 //
 
 #include "pch.h"
-#include "DirectXPage.xaml.h"
+#include "CinderPage.xaml.h"
 
 using namespace basicAppXAML;
 
@@ -48,15 +48,15 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 	}
 #endif
 
-	m_directXPage = ref new DirectXPage();
+	m_cinderPage = ref new CinderPage();
 
 	if (e->PreviousExecutionState == ApplicationExecutionState::Terminated)
 	{
-		m_directXPage->LoadInternalState(ApplicationData::Current->LocalSettings->Values);
+		m_cinderPage->LoadInternalState(ApplicationData::Current->LocalSettings->Values);
 	}
 
 	// Place the page in the current window and ensure that it is active.
-	Window::Current->Content = m_directXPage;
+	Window::Current->Content = m_cinderPage;
 	Window::Current->Activate();
 }
 
@@ -72,7 +72,7 @@ void App::OnSuspending(Object^ sender, SuspendingEventArgs^ e)
 	(void) sender;	// Unused parameter
 	(void) e;	// Unused parameter
 
-	m_directXPage->SaveInternalState(ApplicationData::Current->LocalSettings->Values);
+	m_cinderPage->SaveInternalState(ApplicationData::Current->LocalSettings->Values);
 }
 
 /// <summary>
@@ -85,5 +85,5 @@ void App::OnResuming(Object ^sender, Object ^args)
 	(void) sender; // Unused parameter
 	(void) args; // Unused parameter
 
-	m_directXPage->LoadInternalState(ApplicationData::Current->LocalSettings->Values);
+	m_cinderPage->LoadInternalState(ApplicationData::Current->LocalSettings->Values);
 }
