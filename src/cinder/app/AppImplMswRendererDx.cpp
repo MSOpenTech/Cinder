@@ -674,7 +674,6 @@ int AppImplMswRendererDx::initMultisample( int requestedLevelIdx )
 	return 0;
 }
 
-// zv see DeviceResources.cpp:115
 bool AppImplMswRendererDx::createDevice( UINT createDeviceFlags )
 {
 	D3D_FEATURE_LEVEL featureLevels[] =
@@ -728,8 +727,6 @@ bool AppImplMswRendererDx::createDevice( UINT createDeviceFlags )
 	if( device )
 		device->Release();
 
-    // zv create D2D device?
-
 	return hr == S_OK;
 }
 
@@ -753,8 +750,6 @@ bool AppImplMswRendererDx::createDeviceResources()
 	return ok;
 }
 
-
-// zv see DeviceResources.cpp:210
 bool AppImplMswRendererDx::createFramebufferResources()
 {
 	float width, height;
@@ -1260,7 +1255,6 @@ bool AppImplMswRendererDx::createShadersFeatureLevel_11_1()
 	return createShadersFeatureLevel_11_0();
 }
 
-// zv see DeviceResources.cpp:578
 void AppImplMswRendererDx::handleLostDevice()
 {
     // zv

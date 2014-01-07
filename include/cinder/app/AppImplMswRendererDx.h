@@ -17,7 +17,7 @@
 //   may be used to endorse or promote products derived from this software 
 //   without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES, 
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
 // FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
 // INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
@@ -156,48 +156,6 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	ID3D11DeviceContext2 *mDeviceContext;
 	IDXGISwapChain1 *mSwapChain;
 	ID3D11Device2 *md3dDevice;
-
-    // zv
-	// Cached reference to the XAML panel.
-	Windows::UI::Xaml::Controls::SwapChainPanel^    m_swapChainPanel;
-    // SwapChainBackgroundPanel (Windows 8.0) ?
-
-	// Cached device properties.
-	D3D_FEATURE_LEVEL								m_d3dFeatureLevel;
-	Windows::Foundation::Size						m_d3dRenderTargetSize;
-	Windows::Foundation::Size						m_outputSize;
-	Windows::Foundation::Size						m_logicalSize;
-	Windows::Graphics::Display::DisplayOrientations	m_nativeOrientation;
-	Windows::Graphics::Display::DisplayOrientations	m_currentOrientation;
-	float											m_dpi;
-	float											m_compositionScaleX;
-	float											m_compositionScaleY;
-
-	// Transforms used for display orientation.
-	D2D1::Matrix3x2F	m_orientationTransform2D;
-	DirectX::XMFLOAT4X4	m_orientationTransform3D;
-
-    // zv
-    // see DeviceResources.cpp:95
-	// The IDeviceNotify can be held directly as it owns the DeviceResources.
-	// IDeviceNotify* m_deviceNotify;
-
-    // zv
-    // not sure if D2D & Dwrite are needed
-    // these are the newer ComPtrs:
-    /*
-		// Direct2D drawing components.
-		Microsoft::WRL::ComPtr<ID2D1Factory2>		m_d2dFactory;
-		Microsoft::WRL::ComPtr<ID2D1Device1>		m_d2dDevice;
-		Microsoft::WRL::ComPtr<ID2D1DeviceContext1>	m_d2dContext;
-		Microsoft::WRL::ComPtr<ID2D1Bitmap1>		m_d2dTargetBitmap;
-
-		// DirectWrite drawing components.
-		Microsoft::WRL::ComPtr<IDWriteFactory2>		m_dwriteFactory;
-		Microsoft::WRL::ComPtr<IWICImagingFactory2>	m_wicFactory;
-    */
-
-
 #elif defined( CINDER_WINRT ) || ( _WIN32_WINNT >= 0x0602 )
 	ID3D11DeviceContext1 *mDeviceContext;
 	IDXGISwapChain1 *mSwapChain;
