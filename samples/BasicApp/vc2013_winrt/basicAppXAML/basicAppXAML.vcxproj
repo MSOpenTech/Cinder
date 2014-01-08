@@ -198,9 +198,8 @@
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="CinderBridge.h" />
     <ClInclude Include="Common\DeviceResources.h" />
-    <ClInclude Include="basicAppXAMLMain.h" />
+    <ClInclude Include="CinderMain.h" />
     <ClInclude Include="CinderPage.xaml.h">
       <DependentUpon>CinderPage.xaml</DependentUpon>
     </ClInclude>
@@ -213,9 +212,8 @@
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="CinderBridge.cpp" />
     <ClCompile Include="Common\DeviceResources.cpp" />
-    <ClCompile Include="basicAppXAMLMain.cpp" />
+    <ClCompile Include="CinderMain.cpp" />
     <ClCompile Include="CinderPage.xaml.cpp">
       <DependentUpon>CinderPage.xaml</DependentUpon>
     </ClCompile>

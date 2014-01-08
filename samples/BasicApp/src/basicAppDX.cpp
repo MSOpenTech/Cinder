@@ -9,7 +9,7 @@
 #include "pch.h"
 
 // zv
-#include "CinderBridge.h"
+#include "CinderMain.h"
 
 #include <list>
 
@@ -19,7 +19,7 @@ using namespace ci::app;
 using namespace std;
 
 // We'll create a new Cinder Application by deriving from the AppBasicXAML class
-class BasicApp : public AppBasicXAML {
+class BasicApp : public CinderMain {
   public:
 
     void mouseDrag( MouseEvent event );
@@ -32,7 +32,6 @@ class BasicApp : public AppBasicXAML {
 
 void BasicApp::mouseDrag( MouseEvent event )
 {
-    // zv
     auto p = event.getPos();
     mPoints.push_back( event.getPos() );
 }
@@ -71,4 +70,6 @@ CINDER_APP_BASIC( BasicApp, RendererDx )
 
 // zv for testing
 // BasicApp *app = new BasicApp;													
-// AppBasicXAML *app = new BasicApp;													
+// AppBasicXAML *app = new BasicApp;
+// CinderMain *app = new BasicApp;
+

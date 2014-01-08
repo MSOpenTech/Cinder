@@ -48,6 +48,7 @@ using namespace D2D1;
 using namespace DirectX;
 
 /*
+zv7
 namespace cinder { namespace dx {
     // Provides an interface for an application that owns DeviceResources to be notified of the device being lost or created.
 	interface IDeviceNotify
@@ -213,7 +214,7 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	D3D11_DEPTH_STENCIL_DESC mDepthStencilDesc;
 
     // zv6
-    // breakouts to expose functionality for CinderBridge
+    // breakouts to expose functionality for CinderMain
     // ideally s/b friends
     void    setupCamera( float width, float height ) const;
     bool    setupPipeline();

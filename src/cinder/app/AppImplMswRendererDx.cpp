@@ -750,6 +750,7 @@ bool AppImplMswRendererDx::createDeviceResources()
 	return ok;
 }
 
+// nb this method is not called for WinRT XAML apps, since they use DeviceResources for DX init
 bool AppImplMswRendererDx::createFramebufferResources()
 {
 	float width, height;

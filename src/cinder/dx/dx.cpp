@@ -57,11 +57,10 @@
 // cinder::app::AppImplMswRendererDx *gAIMRDx = nullptr;
 
 #if defined ( CINDER_WINRT_XAML )
-// zv move file to proper location & rename
-#include "..\..\samples\BasicApp\vc2013_winrt\basicAppXAML\CinderBridge.h"
+// zv7 move file to proper location & rename
+#include "..\..\samples\BasicApp\vc2013_winrt\basicAppXAML\CinderMain.h"
 
-// extern BasicApp *app;
-extern cinder::app::AppBasicXAML *app;
+extern cinder::app::CinderMain *app;
 #endif
 
 
@@ -96,7 +95,11 @@ app::AppImplMswRendererDx *getDxRenderer()
 #if defined ( CINDER_WINRT_XAML )
     // return gAIMRDx;
     // return reinterpret_cast<cinder::app::AppBasicXAML *>(::app)->ren;
+
+// zv7
+    // return the instance of the AppImplMswRendererDx held by CinderMain
     return ::app->ren;
+
 #else
 	return ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;
 #endif

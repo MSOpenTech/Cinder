@@ -41,18 +41,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.xaml.cpp" />
-    <ClCompile Include="basicAppXAMLMain.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="..\..\src\basicAppDX.cpp" />
-    <ClCompile Include="CinderBridge.cpp" />
     <ClCompile Include="CinderPage.xaml.cpp" />
+    <ClCompile Include="CinderMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
-    <ClInclude Include="basicAppXAMLMain.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="CinderBridge.h" />
     <ClInclude Include="CinderPage.xaml.h" />
+    <ClInclude Include="CinderMain.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
