@@ -212,11 +212,16 @@ class AppBasic : public App {
 
 } } // namespace cinder::app
 
+#if defined( CINDER_WINRT_XAML )
+// zv fix file location
+#include "..\..\..\samples\BasicApp\vc2013_winrt\basicAppXAML\CinderMain.h"
+#endif
+
 // App-instantiation macros
 
 #if defined( CINDER_MAC )
 #define CINDER_APP_BASIC( APP, RENDERER )								\
-	int main( int argc, char * const argv[] ) {								\
+	int main( int argc, char * const argv[] ) {							\
 	cinder::app::AppBasic::prepareLaunch();								\
 	cinder::app::AppBasic *app = new APP;								\
 	cinder::app::RendererRef ren( new RENDERER );						\
@@ -247,23 +252,14 @@ class AppBasic : public App {
 	cinder::app::AppBasic::cleanupLaunch();														\
 	return 0;																					\
 	}
-#elif defined( CINDER_WINRT ) && defined( CINDER_WINRT_XAML )
+#elif defined( CINDER_WINRT_XAML )
 // zv2
-// notes: 
-//		a XAML app is invoked in a generated main function that builds the XAML UI.
-//		we must have CINDER_WINRT_XAML so that the CINDER_APP_BASIC macro can be redefined.
-//		main_XAML() below will be called after the UI is built, and then runs the Cinder app as usual
-//		the swapChainPanel, which must be called "swapChainPanel1" in XAML, is set below.
+// a XAML app is invoked in a generated main function that builds the XAML UI;
+// see the 'code-behind' for App.xaml and CinderPage.xaml
+// nb. below, a global base class ptr is declared and set, and the derived class is instantiated
 //
 #define CINDER_APP_BASIC( APP, RENDERER )														\
-	int main_XAML(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel) {						\
-	cinder::app::AppBasic::prepareLaunch();														\
-	cinder::app::AppBasic *app = new APP;														\
-	cinder::app::RendererRef ren(new RENDERER);													\
-	cinder::app::AppBasic::executeLaunch(app, ren, #APP, scPanel );								\
-	cinder::app::AppBasic::cleanupLaunch();														\
-	return 0;																					\
-	}
+    CinderMain *app = new APP;
 
 #endif
 
