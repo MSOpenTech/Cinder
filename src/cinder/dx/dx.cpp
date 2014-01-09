@@ -55,8 +55,6 @@
 #if defined ( CINDER_WINRT_XAML )
 // zv todo: move file to proper location & rename
 #include "..\..\samples\BasicApp\vc2013_winrt\basicAppXAML\CinderMain.h"
-
-extern cinder::app::CinderMain *app;
 #endif
 
 
@@ -89,7 +87,7 @@ app::AppImplMswRendererDx *getDxRenderer()
 {
 #if defined ( CINDER_WINRT_XAML )
     // return the instance of the AppImplMswRendererDx held by CinderMain
-    return ::app->ren;
+    return app::CinderMain::getInstance()->getRenderer();
 #else
 	return ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;
 #endif
