@@ -6,10 +6,7 @@
 
 // zv
 // nb.  This MUST be after the Cinder includes, due to a conflict with min/max fns
-#include "pch.h"
-
-// zv
-#include "CinderMain.h"
+// #include "pch.h"
 
 #include <list>
 
@@ -69,7 +66,5 @@ void BasicApp::draw()
 CINDER_APP_BASIC( BasicApp, RendererDx )
 
 // zv for testing
-// BasicApp *app = new BasicApp;													
-// AppBasicXAML *app = new BasicApp;
 // CinderMain *app = new BasicApp;
 
