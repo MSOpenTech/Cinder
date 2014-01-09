@@ -17,7 +17,7 @@
 //   may be used to endorse or promote products derived from this software 
 //   without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES, 
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
 // FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
 // INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
@@ -94,11 +94,8 @@ class AppImplWinRT {
 
 class WindowImplWinRT {
   public:
-// zv3
-//	  WindowImplWinRT(const Window::Format &format, AppImplWinRT *appImpl);
-//	  WindowImplWinRT(DX_WINDOW_TYPE DX_WINDOW_TYPE, RendererRef renderer, AppImplWinRT *appImpl);
-	  WindowImplWinRT(const Window::Format &format, AppImplWinRT *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel );
-	  WindowImplWinRT(DX_WINDOW_TYPE DX_WINDOW_TYPE, RendererRef renderer, AppImplWinRT *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel );
+	WindowImplWinRT( const Window::Format &format, AppImplWinRT *appImpl );
+	WindowImplWinRT( DX_WINDOW_TYPE DX_WINDOW_TYPE, RendererRef renderer, AppImplWinRT *appImpl );
 
 	virtual bool		isFullScreen() { return mFullScreen; }
 	virtual void		setFullScreen( bool fullScreen, const FullScreenOptions &options );
@@ -119,9 +116,6 @@ class WindowImplWinRT {
 
 
 	DX_WINDOW_TYPE getNativeCoreWindow() { return mWnd; }
-
-	// zv3
-//	DX_SWAPCHAINPANEL_TYPE	getSwapChainPanel()	{ return mPanel;  }
 
 	void			enableMultiTouch();
 	bool			isBorderless() const { return mBorderless; }
@@ -159,10 +153,6 @@ class WindowImplWinRT {
 	AppImplWinRT			*mAppImpl;
 	WindowRef				mWindowRef;
   	DX_WINDOW_TYPE			mWnd;
-
-	// zv3
-	DX_SWAPCHAINPANEL_TYPE	mPanel;
-
 	Vec2i					mWindowOffset;
 	bool					mHidden;
 	int						mWindowWidth, mWindowHeight;

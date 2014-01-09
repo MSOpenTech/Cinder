@@ -33,8 +33,6 @@
 #elif defined( CINDER_WINRT )
 	#include <agile.h>
 	typedef Platform::Agile<Windows::UI::Core::CoreWindow>	DX_WINDOW_TYPE;
-	// zv2
-	typedef Platform::Agile<Windows::UI::Xaml::Controls::SwapChainPanel>	DX_SWAPCHAINPANEL_TYPE;
 	#undef min
 	#undef max
 #endif
@@ -123,9 +121,7 @@ class Renderer {
 	virtual HWND				getHwnd() = 0;
 	virtual HDC					getDc() { return NULL; }
 #elif defined( CINDER_WINRT)
-// zv3
-	//	virtual void setup( App *aApp, DX_WINDOW_TYPE wnd) = 0;
-	virtual void setup( App *aApp, DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel ) = 0;
+	virtual void setup( App *aApp, DX_WINDOW_TYPE wnd) = 0;
 
 	virtual void prepareToggleFullScreen() {}
 	virtual void finishToggleFullScreen() {}

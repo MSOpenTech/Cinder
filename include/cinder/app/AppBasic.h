@@ -79,6 +79,7 @@ class AppBasic : public App {
 		//! Returns whether MSW apps will display a secondary window which captures all cout, cerr, cin and App::console() output. Default is \c false.
 		bool	isConsoleWindowEnabled() const { return mEnableMswConsole; }
 #endif
+
 		//! Registers the app to receive multiTouch events from the operating system. Disabled by default. Only supported on WinRT, Windows 7/8 and Mac OS X trackpad.
 		void		enableMultiTouch( bool enable = true ) { mEnableMultiTouch = enable; }
 		//! Returns whether the app is registered to receive multiTouch events from the operating system. Disabled by default. Only supported on Windows 7 and Mac OS X trackpad.
@@ -173,17 +174,12 @@ class AppBasic : public App {
 	static void		executeLaunch( AppBasic *app, RendererRef renderer, const char *title );
 #elif defined( CINDER_WINRT )
 	static void		executeLaunch( AppBasic *app, RendererRef renderer, const char *title );
-	// zv2
-	// variant for XAML
-	static void		executeLaunch(AppBasic *app, RendererRef renderer, const char *title,
-		Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel );
 #elif defined( CINDER_MAC )
 	static void		executeLaunch( AppBasic *app, RendererRef renderer, const char *title, int argc, char * const argv[] ) { App::sInstance = sInstance = app; App::executeLaunch( app, renderer, title, argc, argv ); }
 #endif
 	static void		cleanupLaunch() { App::cleanupLaunch(); }
 	
 	virtual void	launch( const char *title, int argc, char * const argv[] );
-
 	//! \endcond
 
   protected:
@@ -198,10 +194,6 @@ class AppBasic : public App {
 	friend class AppImplMswBasic;
 #elif defined ( CINDER_WINRT )
 	class AppImplWinRTBasic	*mImpl;
-
-	// zv3
-	DX_SWAPCHAINPANEL_TYPE mPanel;
-
 	friend class AppImplWinRTBasic;
 #endif
 	
@@ -213,7 +205,7 @@ class AppBasic : public App {
 } } // namespace cinder::app
 
 #if defined( CINDER_WINRT_XAML )
-// zv fix file location
+// zv todo: fix file location
 #include "..\..\..\samples\BasicApp\vc2013_winrt\basicAppXAML\CinderMain.h"
 #endif
 
@@ -239,9 +231,7 @@ class AppBasic : public App {
 	cinder::app::AppBasic::cleanupLaunch();														\
 	return 0;																					\
 	}
-// zv
 #elif defined( CINDER_WINRT ) && !defined( CINDER_WINRT_XAML )
-// #elif defined( CINDER_WINRT )
 #define CINDER_APP_BASIC( APP, RENDERER )														\
 	[Platform::MTAThread]																		\
 	int main(Platform::Array<Platform::String^>^) {												\
@@ -253,7 +243,7 @@ class AppBasic : public App {
 	return 0;																					\
 	}
 #elif defined( CINDER_WINRT_XAML )
-// zv2
+// 
 // a XAML app is invoked in a generated main function that builds the XAML UI;
 // see the 'code-behind' for App.xaml and CinderPage.xaml
 // nb. below, a global base class ptr is declared and set, and the derived class is instantiated

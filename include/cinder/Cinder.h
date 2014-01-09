@@ -53,7 +53,6 @@ using std::uint64_t;
 
 #define CINDER_CINDER
 
-// zv
 #if defined(WINRT_XAML)
 #define CINDER_WINRT_XAML
 #endif

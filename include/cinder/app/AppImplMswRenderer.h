@@ -36,16 +36,12 @@ class AppImplMswBasic;
 
 class AppImplMswRenderer {
  public:
-// zv3
-//	 AppImplMswRenderer(App *aApp) : mApp(aApp) {}
-	 AppImplMswRenderer(App *aApp) : mApp(aApp), mWnd(0), mPanel(0) {}
+	AppImplMswRenderer( App *aApp ) : mApp( aApp ) {}
 
 #if defined( CINDER_MSW )
 	virtual bool	initialize( HWND wnd, HDC dc, RendererRef sharedRenderer ) = 0;
-#elif defined( CINDER_WINRT )
-	 // zv3
-	 // virtual bool	initialize(DX_WINDOW_TYPE wnd) = 0;
-	 virtual bool	initialize(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel) = 0;
+#elif defined( CINDERT_WINRT)
+	virtual bool	initialize( DX_WINDOW_TYPE wnd ) = 0;
 #endif
 	virtual void	prepareToggleFullScreen() {}
 	virtual void	finishToggleFullScreen() {}
@@ -55,10 +51,8 @@ class AppImplMswRenderer {
 	virtual void	makeCurrentContext() = 0;
 
  protected:
-	DX_WINDOW_TYPE	mWnd;
-	App				*mApp;
-	// zv2 
-	DX_SWAPCHAINPANEL_TYPE	mPanel;
+	DX_WINDOW_TYPE		mWnd;
+	App					*mApp;
 };
 
 } } // namespace cinder::app

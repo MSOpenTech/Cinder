@@ -42,8 +42,6 @@ using namespace Windows::System;
 using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
 
-// using namespace Windows::UI::Xaml;
-// zv
 
 WinRTApp::WinRTApp() :
 	m_windowClosed(false),
@@ -140,8 +138,6 @@ void WinRTApp::Run()
 	// call Cinder runReady and pass our CoreWindow to it.
 	cinder::app::AppBasic* app = cinder::app::AppBasic::get();
 	mApp = app->getImpl();
-
-	// CoreWindow^ window = Window::Current->CoreWindow;
 	mApp->runReady(CoreWindow::GetForCurrentThread());
 
 	// Cinder now controls the app

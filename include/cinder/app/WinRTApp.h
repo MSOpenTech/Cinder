@@ -30,7 +30,6 @@
 
 #include "cinder/app/AppImplWinRTBasic.h"
 
-// zv 
 ref class WinRTApp sealed : public Windows::ApplicationModel::Core::IFrameworkView
 {
 public:
@@ -46,8 +45,6 @@ public:
 	void EnableMultiTouch(BOOL bEnable);
 
 protected:
-	// zv probable chg for XAML here
-
 	// Event Handlers.
 	void OnWindowSizeChanged(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::WindowSizeChangedEventArgs^ args);
 	void OnLogicalDpiChanged(Platform::Object^ sender);

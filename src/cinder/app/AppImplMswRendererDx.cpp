@@ -39,20 +39,14 @@
 
 #if defined( CINDER_WINRT )
 #include "cinder/WinRTUtils.h"
-
-// zv3
 #include <windows.ui.xaml.media.dxinterop.h>
 
 using namespace Windows::UI::Core;
 using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
 using namespace cinder::winrt;
-
-// zv3
 using namespace Microsoft::WRL;
-
 #endif
-// CINDER_WINRT
 
 namespace Shaders {
 
@@ -191,7 +185,7 @@ AppImplMswRendererDx::AppImplMswRendererDx( App *aApp, RendererDx *aRenderer )
   mLightingEnabled(false),
   mRenderer( aRenderer ),
 
-  // zv5 DirectX interfaces
+  // DirectX interfaces
   md3dDevice( NULL ),
   mDeviceContext( NULL ),
   mSwapChain( NULL ),
@@ -308,6 +302,7 @@ void AppImplMswRendererDx::releaseNonDeviceResources()
 	if(mSwapChain) mSwapChain->Release(); mSwapChain = NULL;
 }
 
+// nb. this is not called for XAML apps
 void AppImplMswRendererDx::defaultResize() const
 {
 	if(!mSwapChain)
@@ -316,12 +311,9 @@ void AppImplMswRendererDx::defaultResize() const
 	float width, height;
 	getPlatformWindowDimensions(mWnd, &width, &height);
 
-// zv4
 	ID3D11RenderTargetView *view = NULL;
 	mDeviceContext->OMSetRenderTargets(1, &view, NULL);
 
-	// zv4
-	// protect
 	if (mMainFramebuffer) mMainFramebuffer->Release();
 
 	if (mDepthStencilView) {
@@ -334,7 +326,6 @@ void AppImplMswRendererDx::defaultResize() const
     setupCamera( width, height );
 }
 
-// zv
 void AppImplMswRendererDx::setupCamera( float width, float height ) const
 {
 	cinder::CameraPersp cam( static_cast<int>(width), static_cast<int>(height), 60.0f );
@@ -342,16 +333,15 @@ void AppImplMswRendererDx::setupCamera( float width, float height ) const
 	dx::setProjection(cam);
 	dx::setModelView(cam);
 
-    // zv
-    // for dealing with tablet/phone rotation, see
+    // zv todo: implement tablet/phone rotation, see
     // Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 
-	//these two lines flip the y-axis and move the origin up
+	// these two lines flip the y-axis and move the origin up
 	dx::multModelView(Matrix44f::createScale(Vec3f(1, -1, 1)));
 	dx::multModelView(Matrix44f::createTranslation(Vec3f(0, -height, 0)));
 }
 
-// zv see DeviceResources.cpp:614
+// nb. not called for XAML apps, see DeviceResources.cpp:614
 void AppImplMswRendererDx::swapBuffers() const
 {
 	DXGI_PRESENT_PARAMETERS parameters = {0};
@@ -372,13 +362,12 @@ void AppImplMswRendererDx::swapBuffers() const
 	else
 		hr = mSwapChain->Present( 0, 0 );
 #endif
-	// zv5 possible bug fix?
 	// handle device lost
 	if(hr == DXGI_ERROR_DEVICE_REMOVED)
 		const_cast<AppImplMswRendererDx*>(this)->handleLostDevice();
 #if defined( CINDER_WINRT ) || ( _WIN32_WINNT >= 0x0602 )
-//	mDeviceContext->DiscardView( mMainFramebuffer );
-//	mDeviceContext->DiscardView( mDepthStencilView );
+	mDeviceContext->DiscardView( mMainFramebuffer );
+	mDeviceContext->DiscardView( mDepthStencilView );
 #endif
 }
 
@@ -387,6 +376,7 @@ void AppImplMswRendererDx::makeCurrentContext()
 	mDeviceContext->OMSetRenderTargets(1, &mMainFramebuffer, mDepthStencilView);
 }
 
+// nb. not called for XAML apps
 void AppImplMswRendererDx::setViewport(int x, int y, int width, int height) const
 {
     D3D11_VIEWPORT vp;
@@ -469,15 +459,11 @@ bool AppImplMswRendererDx::initialize( HWND wnd, HDC,  RendererRef sharedRendere
 	return success;
 }
 #elif defined( CINDER_WINRT )
-// zv3
-// bool AppImplMswRendererDx::initialize(DX_WINDOW_TYPE wnd)
-bool AppImplMswRendererDx::initialize(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel)
+bool AppImplMswRendererDx::initialize( DX_WINDOW_TYPE wnd)
 {
 	// TODO: see if DX can do antialiasing automatically
-	// zv3
-	// bool success = initializeInternal(wnd);
-	bool success = initializeInternal(wnd, scPanel);
-    if (!success)
+	bool success = initializeInternal( wnd );
+	if(!success)
 	{
 		::WinRTMessageBox("Couldn't initialize DirectX.", "OK");
 		return FALSE;
@@ -486,17 +472,11 @@ bool AppImplMswRendererDx::initialize(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE
 }
 #endif
 
-// zv3
-// nb. this is not currently called for the XAML version
-//bool AppImplMswRendererDx::initializeInternal(DX_WINDOW_TYPE wnd)
-bool AppImplMswRendererDx::initializeInternal(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel )
+// nb. this is not currently called for XAML
+bool AppImplMswRendererDx::initializeInternal( DX_WINDOW_TYPE wnd )
 {
 	mWnd = wnd;
 
-	// zv3
-	mPanel = scPanel;
-	
-    // initialize here
     if( ! createDeviceResources() )
 		return false;
 
@@ -748,7 +728,6 @@ bool AppImplMswRendererDx::createDeviceResources()
 	return ok;
 }
 
-// nb this method is not called for WinRT XAML apps, since they use DeviceResources for DX init
 bool AppImplMswRendererDx::createFramebufferResources()
 {
 	float width, height;
@@ -814,15 +793,17 @@ bool AppImplMswRendererDx::createFramebufferResources()
 		swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
   #if defined( CINDER_WINRT )
-  // zv3
-		if ( mPanel == nullptr )
-			hr = dxgiFactory->CreateSwapChainForCoreWindow(md3dDevice, reinterpret_cast<IUnknown*>(mWnd.Get()), &swapChainDesc, nullptr, &mSwapChain);
-		else {
+		hr = dxgiFactory->CreateSwapChainForCoreWindow(md3dDevice, reinterpret_cast<IUnknown*>(mWnd.Get()), &swapChainDesc, nullptr, &mSwapChain);
+
+		/* Note for XAML integration history:
+		 * 
+		 * Currently, DeviceResources, from the Windows Store XAML template, creates/manages the DX & SwapChain
+		 * Earlier, integration was attempted here, but it did not work, reason unknown.
+		 * The code is left here for reference:
+		 * 
 			// for XAML's SwapChainPanel call CreateSwapChainForComposition
 			hr = dxgiFactory->CreateSwapChainForComposition(md3dDevice, &swapChainDesc, nullptr, &mSwapChain);
 			if (hr != S_OK)	return false;
-
-			// zv4 from box2d-pr
 			// Associate the new swap chain with the SwapChainBackgroundPanel element.
 			// ComPtr<ISwapChainBackgroundPanelNative> panelNative;
 			ComPtr<ISwapChainPanelNative> panelNative;
@@ -831,7 +812,9 @@ bool AppImplMswRendererDx::createFramebufferResources()
 			if (hr != S_OK)	return false;
 			hr = panelNative->SetSwapChain(mSwapChain);
 			if (hr != S_OK)	return false;
-		}
+		 * 
+		 */
+		
   #else 
 		hr = dxgiFactory->CreateSwapChainForHwnd( md3dDevice, mWnd, &swapChainDesc, NULL, NULL, &mSwapChain );
   #endif
@@ -1256,7 +1239,6 @@ bool AppImplMswRendererDx::createShadersFeatureLevel_11_1()
 
 void AppImplMswRendererDx::handleLostDevice()
 {
-    // zv
 	mSwapChain->Release();
 	mSwapChain = NULL;
 

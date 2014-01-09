@@ -47,18 +47,6 @@
 using namespace D2D1;
 using namespace DirectX;
 
-/*
-zv7
-namespace cinder { namespace dx {
-    // Provides an interface for an application that owns DeviceResources to be notified of the device being lost or created.
-	interface IDeviceNotify
-	{
-		virtual void OnDeviceLost() = 0;
-		virtual void OnDeviceRestored() = 0;
-	};
-}}
-*/
-
 #endif
 
 namespace cinder { namespace dx {
@@ -68,7 +56,6 @@ class Texture;
 namespace cinder { namespace app {
 
 class AppImplMswRendererDx : public AppImplMswRenderer {
-
  public:
  	struct LightData
 	{
@@ -109,9 +96,7 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 #if defined( CINDER_MSW )
 	virtual bool	initialize( HWND wnd, HDC dc,  RendererRef sharedRenderer );
 #elif defined( CINDER_WINRT)
-// zv3
-//	virtual bool	initialize(DX_WINDOW_TYPE wnd);
-	virtual bool	initialize(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel);
+	virtual bool	initialize( DX_WINDOW_TYPE wnd );
 #endif
 
 	virtual void	prepareToggleFullScreen();
@@ -152,7 +137,7 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 
 	RendererDx	*mRenderer;
 	D3D_FEATURE_LEVEL mFeatureLevel;
-// zv
+	
 #if defined( CINDER_WINRT_XAML )
 	ID3D11DeviceContext2 *mDeviceContext;
 	IDXGISwapChain1 *mSwapChain;
@@ -213,7 +198,6 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	ID3D11DepthStencilState *mDepthStencilState;
 	D3D11_DEPTH_STENCIL_DESC mDepthStencilDesc;
 
-    // zv6
     // breakouts to expose functionality for CinderMain
     // ideally s/b friends
     void    setupCamera( float width, float height ) const;
@@ -221,10 +205,8 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	void	releaseNonDeviceResources();
 
  protected:
-	 // zv3
-	// bool	initializeInternal(DX_WINDOW_TYPE wnd);
-	bool	initializeInternal(DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel);
-	int		initMultisample(int requestedLevelIdx);
+	bool	initializeInternal( DX_WINDOW_TYPE wnd );
+	int		initMultisample( int requestedLevelIdx );
 	bool	createDevice(UINT createDeviceFlags);
 	bool	createDeviceResources();
 	bool	createFramebufferResources();
@@ -238,9 +220,6 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	void	handleLostDevice();
 	void	getPlatformWindowDimensions(DX_WINDOW_TYPE wnd, float* width, float* height) const;
 	
-    // zv made public, s/b friend 
-   	// void	releaseNonDeviceResources();
-
 	int mStateFlags;
 	bool mFullScreen;
 	bool mVsyncEnable;

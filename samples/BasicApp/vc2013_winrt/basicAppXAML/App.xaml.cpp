@@ -3,7 +3,7 @@
 // Implementation of the App class.
 //
 
-// zv pch off
+// pch off
 // #include "pch.h"
 #include <wrl.h>
 #include <wrl/client.h>

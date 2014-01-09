@@ -49,48 +49,21 @@ using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
 using namespace cinder::winrt;
 
-// zv2
-//#if defined( CINDER_WINRT_XAML )
-// globals for cinder initialization with XAML
-//extern ::Windows::UI::Xaml::Controls::SwapChainPanel^ gSwapChainPanel;
-//extern Platform::Agile<::Windows::UI::Core::CoreWindow^> gWindow;
-// ::cinder::app::AppImplWinRTBasic* gAppImplWinRTBasic;
-//#endif
-
-
 namespace cinder { namespace app {
 
-// zv
 AppImplWinRTBasic::AppImplWinRTBasic( AppBasic *aApp )
-: AppImplWinRT(aApp), mApp(aApp), mWnd(nullptr)
+	: AppImplWinRT( aApp ), mApp( aApp )
 {
 	mShouldQuit = false;
-	// zv2
-	mPanel = mApp->mPanel;
 }
 
 void AppImplWinRTBasic::run()
 {
-// zv2
-#if defined( CINDER_WINRT_XAML )
-	// runReady(mWnd);
-	// runReady(CoreWindow::GetForCurrentThread());
-#else
-	// Note: runReady() will be called once the WinRT app has created its window and is running
-
 	auto direct3DApplicationSource = ref new Direct3DApplicationSource(); 
 	CoreApplication::Run(direct3DApplicationSource);
-#endif
 
-	// zv2
-	//	Windows::UI::Core::CoreWindow^ window = gSwapChainPanel
-	//swapChainPanel = safe_cast<::Windows::UI::Xaml::Controls::SwapChainPanel^>
-	//(static_cast<Windows::UI::Xaml::IFrameworkElement^>
-	//(this)->FindName(L"swapChainPanel"));
-	// 
-	//	runReady( gWindow.Get() );
+	// Note: runReady() will be called once the WinRT app has created its window and is running
 }
-
 
 void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 	
@@ -113,9 +86,7 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 	if( ! f.getRenderer() )
 		f.setRenderer( mApp->getDefaultRenderer()->clone() );
 
-// zv4
-//	mWindow = new WindowImplWinRTBasic(mWnd, mApp->getDefaultRenderer()->clone(), this);
-	mWindow = new WindowImplWinRTBasic(mWnd, mApp->getDefaultRenderer()->clone(), this, mPanel);
+	mWindow = new WindowImplWinRTBasic( mWnd, mApp->getDefaultRenderer()->clone(), this );
 	setWindow(mWindow->getWindow());
 	mApp->privateSetup__();
 	mSetupHasBeenCalled = true;
@@ -171,7 +142,6 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 	mApp->emitShutdown();
 	delete mApp;
 }
-
 
 void AppImplWinRTBasic::sleep( double seconds )
 {

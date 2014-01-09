@@ -17,7 +17,7 @@
 //   may be used to endorse or promote products derived from this software 
 //   without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES, 
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
 // FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
 // INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
@@ -33,17 +33,12 @@
 
 namespace cinder { namespace app {
 
-// zv3
 	RendererDx::RendererDx( int aAntiAliasing )
 	: Renderer(), mImpl( 0 ), mAntiAliasing( aAntiAliasing )
-//RendererDx::RendererDx( int aAntiAliasing )
-//: Renderer(), mImpl(0), mAntiAliasing(aAntiAliasing), mPanel( nullptr )
 {
 }
 
-// zv3
-RendererDx::RendererDx(const RendererDx &renderer) : mImpl(0), mWnd(renderer.mWnd)
-// RendererDx::RendererDx(const RendererDx &renderer) : mImpl(0), mWnd(renderer.mWnd), mPanel(nullptr)
+RendererDx::RendererDx( const RendererDx &renderer ) : mImpl(0), mWnd(renderer.mWnd)
 {
 }
 
@@ -63,18 +58,13 @@ void RendererDx::setup( App *aApp, HWND wnd, HDC dc,  RendererRef sharedRenderer
 	mImpl->initialize( wnd, dc, sharedRenderer );
 }
 #elif defined( CINDER_WINRT )
-// zv3
-// void RendererDx::setup(App *aApp, DX_WINDOW_TYPE wnd)
-void RendererDx::setup(App *aApp, DX_WINDOW_TYPE wnd, DX_SWAPCHAINPANEL_TYPE scPanel )
+void RendererDx::setup( App *aApp, DX_WINDOW_TYPE wnd)
 {
 	mWnd = wnd;
 	mApp = aApp;
-	// zv2
 	if( ! mImpl )
 		mImpl = new AppImplMswRendererDx( mApp, this );
-	// zv3
-	// mImpl->initialize(wnd);
-	mImpl->initialize(wnd, scPanel);
+	mImpl->initialize( wnd);
 
 	// enable Vertical Sync drawing on WinRT
 	mImpl->enableVsync(TRUE);

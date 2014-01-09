@@ -1,4 +1,4 @@
-﻿// zv pch off
+﻿// pch off
 // #include "pch.h"
 #include <wrl.h>
 #include <wrl/client.h>
@@ -19,7 +19,7 @@
 #include "DirectXHelper.h"
 #include <windows.ui.xaml.media.dxinterop.h>
 
-// zv
+// added to template code:
 #include <minmax.h>
 
 using namespace D2D1;

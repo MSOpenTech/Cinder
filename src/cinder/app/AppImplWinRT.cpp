@@ -17,7 +17,7 @@
 //   may be used to endorse or promote products derived from this software 
 //   without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES, 
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
 // FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
 // INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
@@ -252,11 +252,8 @@ void AppImplWinRT::getSaveFilePath( const fs::path &initialPath,std::vector<std:
 
 ///////////////////////////////////////////////////////////////////////////////
 // WindowImplWinRT
-// zv3
-//WindowImplWinRT::WindowImplWinRT(const Window::Format &format, AppImplWinRT *appImpl )
-//: mWindowOffset(0, 0), mAppImpl(appImpl), mIsDragging(false), mHidden(false), mTouchId(0), mIsMultiTouchEnabled(false)
-WindowImplWinRT::WindowImplWinRT(const Window::Format &format, AppImplWinRT *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel)
-: mWindowOffset(0, 0), mAppImpl(appImpl), mIsDragging(false), mHidden(false), mTouchId(0), mIsMultiTouchEnabled(false), mPanel(scPanel)
+WindowImplWinRT::WindowImplWinRT( const Window::Format &format, AppImplWinRT *appImpl )
+	: mWindowOffset( 0, 0 ), mAppImpl( appImpl ), mIsDragging( false ), mHidden( false ), mTouchId(0), mIsMultiTouchEnabled(false)
 {	
 	mTitle = "";
 	mFullScreen = format.isFullScreen();
@@ -276,21 +273,15 @@ WindowImplWinRT::WindowImplWinRT(const Window::Format &format, AppImplWinRT *app
 		mWindowOffset = mWindowedPos = ( displaySize - mWindowedSize ) / 2;
 	}
 
-	// zv3
-	// mRenderer->setup(mAppImpl->getApp(), mWnd );
-	mRenderer->setup(mAppImpl->getApp(), mWnd, mPanel);
-
+	mRenderer->setup( mAppImpl->getApp(), mWnd);
 	// set WindowRef and its impl pointer to this
 	mWindowRef = Window::privateCreate__( this, mAppImpl->getApp() );
 	
 	completeCreation();
 }
 
-// zv3
-//WindowImplWinRT::WindowImplWinRT(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRT *appImpl)
-//: mWnd(hwnd), mRenderer(renderer), mAppImpl(appImpl), mIsDragging(false), mTouchId(0), mIsMultiTouchEnabled(false)
-WindowImplWinRT::WindowImplWinRT(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRT *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel)
-	: mWnd(hwnd), mRenderer(renderer), mAppImpl(appImpl), mIsDragging(false), mTouchId(0), mIsMultiTouchEnabled(false), mPanel( scPanel )
+WindowImplWinRT::WindowImplWinRT( DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRT *appImpl )
+	: mWnd( hwnd ), mRenderer( renderer ), mAppImpl( appImpl ), mIsDragging( false ), mTouchId(0), mIsMultiTouchEnabled(false)
 {
 	mTitle = "";
 
@@ -302,9 +293,7 @@ WindowImplWinRT::WindowImplWinRT(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppI
 
 	mDisplay = Display::getMainDisplay();
 
-	// zv3
-	// mRenderer->setup(mAppImpl->getApp(), mWnd );
-	mRenderer->setup(mAppImpl->getApp(), mWnd, mPanel);
+	mRenderer->setup( mAppImpl->getApp(), mWnd);
 
 	mWindowRef = Window::privateCreate__( this, mAppImpl->getApp() );
 }

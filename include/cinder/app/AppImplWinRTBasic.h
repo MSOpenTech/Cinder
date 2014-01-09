@@ -17,7 +17,7 @@
 //   may be used to endorse or promote products derived from this software 
 //   without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES, 
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
 // FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
 // INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
@@ -38,7 +38,6 @@
 #include "cinder/Display.h"
 #include "cinder/app/Window.h"
 
-
 namespace cinder { namespace app {
 
 class WindowImplWinRTBasic;
@@ -47,9 +46,7 @@ class AppImplWinRTBasic : public AppImplWinRT {
 public:
 	AppImplWinRTBasic( class AppBasic *aApp  );
 	void	run();
-
 	void	runReady(Windows::UI::Core::CoreWindow^ window);
-
 	void	handlePointerDown(Windows::UI::Core::PointerEventArgs^ args);
 	void	handlePointerMoved(Windows::UI::Core::PointerEventArgs^ args);
 	void	handlePointerUp(Windows::UI::Core::PointerEventArgs^ args);
@@ -69,9 +66,6 @@ public:
 	WindowRef	getForegroundWindow() const;
 	fs::path	getAppPath() const;
 
-	// zv2
-	// nb. this will be needed when CreateSwapChainForComposition will be called
-	DX_SWAPCHAINPANEL_TYPE	mPanel;
 
 private:
 	void		sleep( double seconds );
@@ -82,7 +76,6 @@ private:
 	bool			mShouldQuit;
 	class AppBasic	*mApp;
 	DX_WINDOW_TYPE	mWnd;
-
 
 	HINSTANCE	mInstance;
 	double		mNextFrameTime;
@@ -99,17 +92,11 @@ private:
 
 class WindowImplWinRTBasic : public WindowImplWinRT {
   public:
-	// zv3
-	//	  WindowImplWinRTBasic(const Window::Format &format, AppImplWinRTBasic *appImpl)
-	//		  : WindowImplWinRT(format, appImpl) {};
-	WindowImplWinRTBasic(const Window::Format &format, AppImplWinRTBasic *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel)
-	  : WindowImplWinRT(format, appImpl, scPanel ) {};
+	WindowImplWinRTBasic( const Window::Format &format, AppImplWinRTBasic *appImpl )
+		: WindowImplWinRT( format, appImpl ) {};
 
-	// zv3
-//	WindowImplWinRTBasic(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRTBasic *appImpl)
-//	: WindowImplWinRT(hwnd, renderer, appImpl) {};
-	WindowImplWinRTBasic(DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRTBasic *appImpl, DX_SWAPCHAINPANEL_TYPE scPanel)
-		:  WindowImplWinRT(hwnd, renderer, appImpl, scPanel) {};
+	WindowImplWinRTBasic( DX_WINDOW_TYPE hwnd, RendererRef renderer, AppImplWinRTBasic *appImpl )
+		: WindowImplWinRT( hwnd, renderer, appImpl ) {};
 
   protected:
 	friend AppImplWinRTBasic;

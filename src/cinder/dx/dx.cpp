@@ -17,7 +17,7 @@
 //   may be used to endorse or promote products derived from this software 
 //   without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES, 
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
 // FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
 // INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
@@ -52,12 +52,8 @@
 #define TEXTURE_VERTEX (getDxRenderer()->mLightingEnabled) ? getDxRenderer()->mFixedTextureLightVertexShader : getDxRenderer()->mFixedTextureVertexShader
 #define TEXTURE_PIXEL (getDxRenderer()->mLightingEnabled) ? getDxRenderer()->mFixedTextureLightPixelShader : getDxRenderer()->mFixedTexturePixelShader
 
-// zv6
-// previous approach used a global set by CinderBridge
-// cinder::app::AppImplMswRendererDx *gAIMRDx = nullptr;
-
 #if defined ( CINDER_WINRT_XAML )
-// zv7 move file to proper location & rename
+// zv todo: move file to proper location & rename
 #include "..\..\samples\BasicApp\vc2013_winrt\basicAppXAML\CinderMain.h"
 
 extern cinder::app::CinderMain *app;
@@ -89,17 +85,11 @@ typedef app::AppImplMswRendererDx::LightData LightData;
 //static bool getDxRenderer()->mLightingEnabled = false;
 //static LightData getDxRenderer()->mLights[8];
 
-// zv6
 app::AppImplMswRendererDx *getDxRenderer()
 {
 #if defined ( CINDER_WINRT_XAML )
-    // return gAIMRDx;
-    // return reinterpret_cast<cinder::app::AppBasicXAML *>(::app)->ren;
-
-// zv7
     // return the instance of the AppImplMswRendererDx held by CinderMain
     return ::app->ren;
-
 #else
 	return ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;
 #endif

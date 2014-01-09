@@ -17,7 +17,7 @@
 //   may be used to endorse or promote products derived from this software 
 //   without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES, 
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
 // FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
 // INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
@@ -92,15 +92,6 @@ void GetPlatformWindowDimensions(Windows::UI::Core::CoreWindow^ wnd, float* widt
 	*width = swapDimensions ? windowHeight : windowWidth;
 	*height = swapDimensions ? windowWidth : windowHeight;
 }
-
-/*
-zv
-void GetPlatformPanelDimensions(Windows::UI::Xaml::Controls::SwapChainPanel^ scPanel, float* width, float* height) {
-	// nb. these are already in pixels
-	*width = scPanel->Width;
-	*height = scPanel->Height;
-}
-*/
 
 std::string PlatformStringToString(Platform::String^ s) {
 	std::wstring t = std::wstring(s->Data());
