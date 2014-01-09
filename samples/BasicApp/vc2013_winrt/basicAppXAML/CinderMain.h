@@ -62,6 +62,7 @@ using namespace Windows::UI::Core;
 namespace DX {
     class StepTimer;
     class DeviceResources;
+    class DeviceRelay;
 }
 
 namespace cinder { namespace app {
@@ -69,7 +70,7 @@ namespace cinder { namespace app {
     class CinderMain
     {
     public:
-        CinderMain() : m_timer(nullptr) {}
+        CinderMain() : m_timer(nullptr), m_relay(nullptr) {}
         ~CinderMain();
 
         // Cinder methods (app will inherit these)
@@ -108,8 +109,6 @@ namespace cinder { namespace app {
         void StopRenderLoop();
         Concurrency::critical_section& GetCriticalSection() { return m_criticalSection; }
 
-        cinder::app::AppImplMswRendererDx *ren;
-
         // share the DX/D3D/D2D objects with Cinder
         void shareWithCinder();
 
@@ -117,9 +116,24 @@ namespace cinder { namespace app {
         virtual void OnDeviceLost();
         virtual void OnDeviceRestored();
 
-    private:        
+        // singleton
+        static CinderMain*  getInstance();
+
+        cinder::app::AppImplMswRendererDx *getRenderer() { return ren; }
+
+    private:
+
+        // singleton enforcement:
+        CinderMain(CinderMain const &);
+        void operator=(CinderMain const &);
+
+        cinder::app::AppImplMswRendererDx *ren;
+
         bool    m_tracking;
         bool    m_pipeline_ready;
+
+        // relay for device lost/restored events from XAML
+        DX::DeviceRelay* m_relay;
 
         void ProcessInput();
         void Update();

@@ -244,12 +244,15 @@ class AppBasic : public App {
 	}
 #elif defined( CINDER_WINRT_XAML )
 // 
-// a XAML app is invoked in a generated main function that builds the XAML UI;
-// see the 'code-behind' for App.xaml and CinderPage.xaml
+// A XAML app starts with a call to a generated main function that builds the XAML UI.
+// XAML build-up calls the CinderPage ctor, which then calls CinderMain::setup().
+// After setup(), the rendering and event loop is entered in CinderMain.
+// See the 'code-behind' for App.xaml and CinderPage.xaml
+//
 // nb. below, a global base class ptr is declared and set, and the derived class is instantiated
 //
 #define CINDER_APP_BASIC( APP, RENDERER )														\
-    CinderMain *app = new APP;
+    CinderMain *CinderXAMLapp = new APP;
 
 #endif
 
