@@ -322,10 +322,8 @@ void AppImplMswRendererDx::defaultResize() const
 
 	// zv4
 	// protect
-	if (mMainFramebuffer) {
-        mMainFramebuffer->Release();
-        // mMainFramebuffer = NULL;
-    }
+	if (mMainFramebuffer) mMainFramebuffer->Release();
+
 	if (mDepthStencilView) {
 		mDepthStencilView->Release();
 		mDeviceContext->Flush();

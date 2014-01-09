@@ -60,6 +60,7 @@ using namespace cinder::winrt;
 
 namespace cinder { namespace app {
 
+// zv
 AppImplWinRTBasic::AppImplWinRTBasic( AppBasic *aApp )
 : AppImplWinRT(aApp), mApp(aApp), mWnd(nullptr)
 {
