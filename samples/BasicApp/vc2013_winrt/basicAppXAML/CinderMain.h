@@ -149,10 +149,4 @@ namespace cinder { namespace app {
 
 } }
 
-// nb. a global base class ptr is declared and set, but the derived class is instantiated
-#undef CINDER_APP_BASIC
-#define CINDER_APP_BASIC( APP, RENDERER ) \
-    CinderMain *app = new APP;
-
-//	AppBasicXAML *app = new APP;													
-
+// eof
