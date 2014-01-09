@@ -55,7 +55,7 @@
 #include "Common\StepTimer.h"
 #include "Common\DeviceResources.h"
 
-extern cinder::app::CinderMain *app;
+extern cinder::app::CinderMain *CinderXAMLapp;
 
 using namespace basicAppXAML;
 using namespace Windows::Foundation;
@@ -66,22 +66,22 @@ namespace DX {
     // This internal class relays DeviceLost and DeviceRestored events from 
     // class DeviceResources to class CinderMain, so that CinderMain
     // need not inherit from IDeviceNotify.
-    class DeviceRelay : public DX::IDeviceNotify
+    class DeviceRelay final : public DX::IDeviceNotify
     {
     public:
-        static void RegisterDeviceNotify(const std::shared_ptr<DX::DeviceResources>& deviceResources,
-            DX::DeviceRelay &relay )
-        {
-            deviceResources->RegisterDeviceNotify(&relay);
+        DeviceRelay::DeviceRelay( cinder::app::CinderMain * inst, 
+            const std::shared_ptr<DX::DeviceResources>& deviceResources) : m_inst(inst)
+        { 
+            deviceResources->RegisterDeviceNotify(this);
         }
 
         // relay events to CinderMain
-        virtual void OnDeviceLost()     {   ::app->OnDeviceLost();      }
-        virtual void OnDeviceRestored() {   ::app->OnDeviceRestored();  } 
+        // these implement the abstract methods in IDeviceNotify
+        virtual void OnDeviceLost()     {   m_inst->OnDeviceLost();      }
+        virtual void OnDeviceRestored() {   m_inst->OnDeviceRestored();  } 
+    private:
+        cinder::app::CinderMain * m_inst;
     };
-
-    // singleton, as is ::app
-    static DeviceRelay deviceRelay;
 }
 
 
@@ -94,9 +94,9 @@ namespace cinder {
             m_deviceResources = deviceResources;
 
             // Register to be notified if the Device is lost or recreated
-            DX::deviceRelay.RegisterDeviceNotify(m_deviceResources, DX::deviceRelay);
+            m_relay = new DX::DeviceRelay( this, m_deviceResources );
 
-            // call the app's content initialization.
+            // call the app's content initialization; this method can be overloaded.
             setup();
 
             // optional: frames per second renderer (see SampleFpsTextRenderer in the XAML template)
@@ -125,8 +125,11 @@ namespace cinder {
 
             delete ren;
             delete m_timer;
+            delete m_relay;
         }
 
+        CinderMain*  CinderMain::getInstance()   { return CinderXAMLapp; }
+        
         // Updates application state when the window size changes (e.g. device orientation change)
         void CinderMain::CreateWindowSizeDependentResources()
         {
