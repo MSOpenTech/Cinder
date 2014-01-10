@@ -57,7 +57,7 @@
 
 extern cinder::app::CinderMain *CinderXAMLapp;
 
-using namespace basicAppXAML;
+using namespace CinderXAML;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
 using namespace Concurrency;

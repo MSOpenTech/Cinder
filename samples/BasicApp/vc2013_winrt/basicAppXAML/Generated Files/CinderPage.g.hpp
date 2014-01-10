@@ -12,7 +12,7 @@
 
 
 
-void ::basicAppXAML::CinderPage::InitializeComponent()
+void ::CinderXAML::CinderPage::InitializeComponent()
 {
     if (_contentLoaded)
         return;
@@ -28,13 +28,13 @@ void ::basicAppXAML::CinderPage::InitializeComponent()
     bottomAppBar = safe_cast<::Windows::UI::Xaml::Controls::AppBar^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"bottomAppBar"));
 }
 
-void ::basicAppXAML::CinderPage::Connect(int connectionId, Platform::Object^ target)
+void ::CinderXAML::CinderPage::Connect(int connectionId, Platform::Object^ target)
 {
     switch (connectionId)
     {
     case 1:
         (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
-            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::basicAppXAML::CinderPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&CinderPage::AppBarButton_Click);
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::CinderXAML::CinderPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&CinderPage::AppBarButton_Click);
         break;
     }
     (void)connectionId; // Unused parameter

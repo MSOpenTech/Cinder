@@ -39,7 +39,7 @@
 #include "Common\DeviceResources.h"
 #include "CinderMain.h"
 
-namespace basicAppXAML
+namespace CinderXAML
 {
 	/// <summary>
 	/// A page that hosts a Cinder DirectX SwapChainPanel.

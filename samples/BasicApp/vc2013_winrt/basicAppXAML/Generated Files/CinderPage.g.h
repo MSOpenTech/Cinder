@@ -19,7 +19,7 @@ namespace Windows {
     }
 }
 
-namespace basicAppXAML
+namespace CinderXAML
 {
     partial ref class CinderPage : public ::Windows::UI::Xaml::Controls::Page, 
         public ::Windows::UI::Xaml::Markup::IComponentConnector

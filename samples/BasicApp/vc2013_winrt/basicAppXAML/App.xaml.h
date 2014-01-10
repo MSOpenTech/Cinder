@@ -38,7 +38,7 @@
 #include "App.g.h"
 #include "CinderPage.xaml.h"
 
-namespace basicAppXAML
+namespace CinderXAML
 {
 		/// <summary>
 	/// Provides application-specific behavior to supplement the default Application class.

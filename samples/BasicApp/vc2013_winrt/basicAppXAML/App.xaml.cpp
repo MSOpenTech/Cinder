@@ -52,7 +52,7 @@
 
 #include "CinderPage.xaml.h"
 
-using namespace basicAppXAML;
+using namespace CinderXAML;
 
 using namespace Platform;
 using namespace Windows::ApplicationModel;

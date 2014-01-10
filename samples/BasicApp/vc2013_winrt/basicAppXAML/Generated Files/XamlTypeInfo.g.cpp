@@ -72,14 +72,14 @@
         return ref new XamlSystemBaseType(typeName);
     }
 
-    if (typeName == L"basicAppXAML.CinderPage")
+    if (typeName == L"CinderXAML.CinderPage")
     {
         ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Windows.UI.Xaml.Controls.Page"));
         userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
         userType->Activator =
             []() -> Platform::Object^ 
             {
-                return ref new ::basicAppXAML::CinderPage(); 
+                return ref new ::CinderXAML::CinderPage(); 
             };
         return userType;
     }
