@@ -198,11 +198,11 @@
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="Common\DeviceResources.h" />
     <ClInclude Include="CinderMain.h" />
     <ClInclude Include="CinderPage.xaml.h">
       <DependentUpon>CinderPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="Common\DeviceResources.h" />
     <ClInclude Include="Common\DirectXHelper.h" />
     <ClInclude Include="Common\StepTimer.h" />
   </ItemGroup>
@@ -211,11 +211,11 @@
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="Common\DeviceResources.cpp" />
     <ClCompile Include="CinderMain.cpp" />
     <ClCompile Include="CinderPage.xaml.cpp">
       <DependentUpon>CinderPage.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="Common\DeviceResources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
