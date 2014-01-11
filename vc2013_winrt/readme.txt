@@ -20,11 +20,7 @@ Steps to upgrade project for Windows Store App in VC2013:
 
 2. In the Cinder project, add the define: WINRT_XAML
 
-3. TBD
-
-
-
-solution settings:
+3. solution settings:
 c++
     addl include was: ..\..\..\include\winrt\boost;..\..\..\include;..\..\..\boost;%(AdditionalIncludeDirectories)
     preproc: _DEBUG;%(PreprocessorDefinitions);USE_DIRECTX
@@ -37,6 +33,6 @@ Add Existing Project: cinder/winrt_vc2013
 retarget for vc2013
 Add Ref: cinder
 retarget for vc2013
-    nb. had to copy in icons per manifest, different icons for each platform
+    nb.  copy in icons per manifest, different icons for each platform
 
 
