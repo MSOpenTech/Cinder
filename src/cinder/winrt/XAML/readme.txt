@@ -17,15 +17,15 @@ Usage:
 Information:
 
 *   If needed, the XAML content can be modified in the "Cinder XAML App pages", however "CinderPage" has been modified from
-	the original WIndows Store XAML template.
+	the original Windows Store XAML template.
 
 *	Files in the "Generated Files" folder are dynamically written and changed; please do not touch.
 
-*	Likely build failure causes:
+*	Likely build failure causes, please check the following:
 
-	- please check the preprocessor include paths, in particular the number of ..\ expressions
-	- please insure the vc2013_winrt\cinder.vcproj is added a build dependency (use Add Reference to do this)
-	- please check that Boost has been patch as described in vc2013_winrt\readme.txt
-	- please insure that this symbol is defined in both projects: WINRT_XAML
+	- preprocessor include paths, in particular the number of ..\ expressions
+	- insure the vc2013_winrt\cinder.vcproj is added as a build dependency (use Add Reference to do this)
+	- check that Boost has been patched as described in vc2013_winrt\readme.txt
+	- insure that this symbol is defined in both projects: WINRT_XAML
 
 [eof]
