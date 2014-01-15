@@ -53,8 +53,7 @@
 #define TEXTURE_PIXEL (getDxRenderer()->mLightingEnabled) ? getDxRenderer()->mFixedTextureLightPixelShader : getDxRenderer()->mFixedTexturePixelShader
 
 #if defined ( CINDER_WINRT_XAML )
-// zv todo: move file to proper location & rename
-#include "..\..\samples\BasicApp\vc2013_winrt\basicAppXAML\CinderMain.h"
+#include "..\src\cinder\winrt\XAML\CinderMain.h"
 #endif
 
 
