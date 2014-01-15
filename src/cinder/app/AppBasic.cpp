@@ -86,11 +86,7 @@ void AppBasic::executeLaunch( AppBasic *app, RendererRef renderer, const char *t
 void AppBasic::executeLaunch( AppBasic *app, RendererRef renderer, const char *title )
 {
 	sInstance = app;
-    // zv
-    // don't do this for the XAML framework
-#if !defined( CINDER_WINRT_XAML )
 	App::executeLaunch( app, renderer, title, 0, NULL );
-#endif
 }
 #endif
 
@@ -134,7 +130,12 @@ void AppBasic::launch( const char *title, int argc, char * const argv[] )
     [pool drain];
 #elif defined( CINDER_WINRT )
 	mImpl = new AppImplWinRTBasic( this );	
+
+    // zv
+    // for XAML, we do NOT want to instantiate a Direct3DApplicationSource
+#if ! defined( CINDER_WINRT_XAML )
 	mImpl->run();
+#endif
 #else
 	mImpl = new AppImplMswBasic( this );	
 	mImpl->run();
