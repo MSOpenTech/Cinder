@@ -121,7 +121,7 @@ namespace cinder { namespace app {
         virtual void OnDeviceRestored();
 
         // singleton
-        static CinderMain*  getInstance();
+        static CinderMain*  getInstance() { return sInstance; }
 
         cinder::app::AppImplMswRendererDx *getRenderer() { return ren; }
 
@@ -136,6 +136,10 @@ namespace cinder { namespace app {
 
         bool    m_tracking;
         bool    m_pipeline_ready;
+
+        // zv
+        // singleton instance
+        static CinderMain*  sInstance;
 
         // relay for device lost/restored events from XAML
         DX::DeviceRelay* m_relay;

@@ -90,9 +90,7 @@ namespace DX {
 namespace cinder {
     namespace app {
 
-        // zv
-        // file scope
-        static CinderMain*  cmInstance;
+        CinderMain* CinderMain::sInstance;
 
         // Loads and initializes application assets when the application is loaded.
         void CinderMain::setup(const std::shared_ptr<DX::DeviceResources>& deviceResources)
@@ -108,7 +106,7 @@ namespace cinder {
 
             // zv
             // set singleton ptr
-            cmInstance = this;
+            CinderMain::sInstance = this;
             // cinder::app::AppBasic* app = cinder::app::AppBasic::get();
 
             // call the app's content initialization; this method can be overloaded.
@@ -141,12 +139,6 @@ namespace cinder {
             delete ren;
             delete m_timer;
             delete m_relay;
-        }
-
-        // zv
-        // CinderMain*  CinderMain::getInstance()   { return CinderXAMLapp; }
-        CinderMain*  CinderMain::getInstance()   {
-            return cmInstance;
         }
         
         // Updates application state when the window size changes (e.g. device orientation change)
