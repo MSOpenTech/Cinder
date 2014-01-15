@@ -82,7 +82,7 @@ namespace CinderXAML
 		// Resources used to render the DirectX content in the XAML page background.
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 
-        // Cinder main app instance (same as ::app)
+        // Cinder main app instance
         cinder::app::CinderMain *m_main;
 
 		bool m_windowVisible;

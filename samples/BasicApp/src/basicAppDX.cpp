@@ -9,7 +9,9 @@ using namespace ci::app;
 using namespace std;
 
 // We'll create a new Cinder Application by deriving from the CinderMain class
-class BasicApp : public CinderMain {
+// zv
+// class BasicApp : public CinderMain {
+class BasicApp : public AppBasic {
   public:
     void mouseDrag( MouseEvent event );
     void keyDown( KeyEvent event );
@@ -44,4 +46,16 @@ void BasicApp::draw()
 }
 
 // This line tells Cinder to actually create the application
-CINDER_APP_BASIC( BasicApp, RendererDx )
+// CINDER_APP_BASIC( BasicApp, RendererDx )
+
+// zv test
+cinder::app::AppBasic *app;
+int mainXAML() {
+    cinder::app::AppBasic::prepareLaunch();
+    ::app = new BasicApp;
+    // cinder::app::RendererRef ren(new RENDERER);												
+    // cinder::app::AppBasic::executeLaunch(app, ren, #APP);								
+    // cinder::app::AppBasic::cleanupLaunch();											
+    return 0;
+}
+

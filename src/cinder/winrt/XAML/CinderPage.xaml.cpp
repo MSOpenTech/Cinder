@@ -70,7 +70,8 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
 
-extern cinder::app::CinderMain *CinderXAMLapp;
+// zv
+// extern cinder::app::CinderMain *CinderXAMLapp;
 
 CinderPage::CinderPage():
 	m_windowVisible(true),
@@ -133,9 +134,11 @@ CinderPage::CinderPage():
 	// Run task on a dedicated high priority background thread.
 	m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
 
-    // setup the CinderMain base class instance
-    // nb. it is create as the global ::app singleton in the macro CINDER_APP_BASIC
-    m_main = CinderXAMLapp;
+    // zv
+    // create and setup the CinderMain base class instance
+//  m_main = CinderXAMLapp;
+    m_main = new cinder::app::CinderMain;
+
     m_main->setup(m_deviceResources);
     m_main->StartRenderLoop();
 }

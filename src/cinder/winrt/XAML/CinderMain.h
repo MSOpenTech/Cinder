@@ -73,12 +73,16 @@ namespace cinder { namespace app {
         CinderMain() : m_timer(nullptr), m_relay(nullptr) {}
         ~CinderMain();
 
+        /* 
+        // zv now called through ::app
+        //
         // Cinder methods (app will inherit these)
         virtual void mouseDrag(MouseEvent event) {}
         virtual void keyDown(KeyEvent event) {}
         virtual void update() {}
         virtual void draw() {}
         virtual void setup() {}     // nb. as in Processing
+        */
 
         // setFullScreen: n/a: a Windows RT store app is always full screen
         //
@@ -127,6 +131,7 @@ namespace cinder { namespace app {
         CinderMain(CinderMain const &);
         void operator=(CinderMain const &);
 
+        // owner/ptr to Cinder renderer for DirectX
         cinder::app::AppImplMswRendererDx *ren;
 
         bool    m_tracking;
