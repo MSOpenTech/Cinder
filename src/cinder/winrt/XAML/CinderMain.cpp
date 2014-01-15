@@ -56,9 +56,7 @@
 #include "Common\DeviceResources.h"
 
 // zv
-// extern cinder::app::CinderMain *CinderXAMLapp;
 #include "cinder/app/AppBasic.h"
-extern cinder::app::AppBasic* app;
 extern int mainXAML();
 
 using namespace CinderXAML;
@@ -94,7 +92,7 @@ namespace cinder {
 
         // zv
         // file scope
-        static CinderMain*  appInstance;
+        static CinderMain*  cmInstance;
 
         // Loads and initializes application assets when the application is loaded.
         void CinderMain::setup(const std::shared_ptr<DX::DeviceResources>& deviceResources)
@@ -105,15 +103,16 @@ namespace cinder {
             m_relay = new DX::DeviceRelay( this, m_deviceResources );
 
             // zv
-            // set singleton ptr
-            appInstance = this;
-
-            // zv
             // instantiate the Cinder ::app
             mainXAML();
 
+            // zv
+            // set singleton ptr
+            cmInstance = this;
+            // cinder::app::AppBasic* app = cinder::app::AppBasic::get();
+
             // call the app's content initialization; this method can be overloaded.
-            ::app->setup();
+            AppBasic::get()->setup();
 
             // optional: frames per second renderer (see SampleFpsTextRenderer in the XAML template)
             // m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
@@ -147,9 +146,7 @@ namespace cinder {
         // zv
         // CinderMain*  CinderMain::getInstance()   { return CinderXAMLapp; }
         CinderMain*  CinderMain::getInstance()   {
-            // zv INCOMPLETE: attempt to get the CinderPage from Windows XAML framework
-            //                  auto ^a = Windows::UI::Xaml::Application::Current;
-            return appInstance;
+            return cmInstance;
         }
         
         // Updates application state when the window size changes (e.g. device orientation change)
@@ -201,7 +198,7 @@ namespace cinder {
             {
                 // TODO: Replace this with your app's content update functions.
                 // call to overloaded Cinder update()
-                ::app->update();
+                AppBasic::get()->update();
 
                 // optional: if you are using the frame rate display
                 // m_fpsTextRenderer->Update(m_timer);
@@ -259,7 +256,7 @@ namespace cinder {
             ren->setupCamera(w, h);
 
             // calls to overloaded Cinder app draw() method
-            ::app->draw();
+            AppBasic::get()->draw();
 
             // optional: display the frame rate
             // m_fpsTextRenderer->Render();
@@ -315,7 +312,7 @@ namespace cinder {
             MouseEvent e(nullptr, 0, ix, iy, cinder::app::MouseEvent::LEFT_DOWN, 0, 0);
 
             // call the Cinder app mouse event handler
-            ::app->mouseDrag(e);
+            AppBasic::get()->mouseDrag(e);
         }
 
     }

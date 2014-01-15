@@ -62,12 +62,17 @@ void RendererDx::setup( App *aApp, DX_WINDOW_TYPE wnd)
 {
 	mWnd = wnd;
 	mApp = aApp;
+
+    // zv
+    // DirectX is initialized by the XAML framework instead of here
+#if !defined( CINDER_WINRT_XAML )
 	if( ! mImpl )
 		mImpl = new AppImplMswRendererDx( mApp, this );
 	mImpl->initialize( wnd);
 
-	// enable Vertical Sync drawing on WinRT
+    // enable Vertical Sync drawing on WinRT
 	mImpl->enableVsync(TRUE);
+#endif
 }
 #endif
 

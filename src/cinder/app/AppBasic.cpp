@@ -86,7 +86,11 @@ void AppBasic::executeLaunch( AppBasic *app, RendererRef renderer, const char *t
 void AppBasic::executeLaunch( AppBasic *app, RendererRef renderer, const char *title )
 {
 	sInstance = app;
+    // zv
+    // don't do this for the XAML framework
+#if !defined( CINDER_WINRT_XAML )
 	App::executeLaunch( app, renderer, title, 0, NULL );
+#endif
 }
 #endif
 

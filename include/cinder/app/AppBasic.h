@@ -204,10 +204,6 @@ class AppBasic : public App {
 
 } } // namespace cinder::app
 
-#if defined( CINDER_WINRT_XAML )
-// zv todo: fix file location
-#include "..\..\..\samples\BasicApp\vc2013_winrt\basicAppXAML\CinderMain.h"
-#endif
 
 // App-instantiation macros
 
@@ -249,10 +245,30 @@ class AppBasic : public App {
 // After setup(), the rendering and event loop is entered in CinderMain.
 // See the 'code-behind' for App.xaml and CinderPage.xaml
 //
-// nb. below, a global base class ptr is declared and set, and the derived class is instantiated
+//    cinder::app::AppBasic *app;                                                               
 //
 #define CINDER_APP_BASIC( APP, RENDERER )														\
-    CinderMain *CinderXAMLapp = new APP;
-
+    int mainXAML() {                                                                            \
+    cinder::app::AppBasic::prepareLaunch();														\
+	cinder::app::AppBasic *app = new APP;														\
+    cinder::app::RendererRef ren(new RENDERER);												    \
+    cinder::app::AppBasic::executeLaunch(app, ren, #APP);									    \
+    cinder::app::AppBasic::cleanupLaunch();													    \
+    return 0;																					\
+    }
 #endif
+
+/*
+zv debug
+
+int mainXAML() {
+    cinder::app::AppBasic::prepareLaunch();
+    cinder::app::AppBasic *app = new BasicApp;
+    cinder::app::RendererRef ren(new RendererDx);
+    cinder::app::AppBasic::executeLaunch(app, ren, "BasicApp");
+    cinder::app::AppBasic::cleanupLaunch();
+    return 0;
+}
+
+*/
 

@@ -46,16 +46,19 @@ void BasicApp::draw()
 }
 
 // This line tells Cinder to actually create the application
-// CINDER_APP_BASIC( BasicApp, RendererDx )
+CINDER_APP_BASIC( BasicApp, RendererDx )
 
-// zv test
-cinder::app::AppBasic *app;
+/*
+
+zv debug
+
 int mainXAML() {
     cinder::app::AppBasic::prepareLaunch();
-    ::app = new BasicApp;
-    // cinder::app::RendererRef ren(new RENDERER);												
-    // cinder::app::AppBasic::executeLaunch(app, ren, #APP);								
-    // cinder::app::AppBasic::cleanupLaunch();											
+    cinder::app::AppBasic *app = new BasicApp;
+    cinder::app::RendererRef ren(new RendererDx);
+    cinder::app::AppBasic::executeLaunch(app, ren, "BasicApp");
+    cinder::app::AppBasic::cleanupLaunch();
     return 0;
 }
 
+*/
