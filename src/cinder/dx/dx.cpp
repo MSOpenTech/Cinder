@@ -52,10 +52,6 @@
 #define TEXTURE_VERTEX (getDxRenderer()->mLightingEnabled) ? getDxRenderer()->mFixedTextureLightVertexShader : getDxRenderer()->mFixedTextureVertexShader
 #define TEXTURE_PIXEL (getDxRenderer()->mLightingEnabled) ? getDxRenderer()->mFixedTextureLightPixelShader : getDxRenderer()->mFixedTexturePixelShader
 
-#if defined ( CINDER_WINRT_XAML )
-#include "..\src\cinder\winrt\XAML\CinderMain.h"
-#endif
-
 
 namespace cinder { namespace dx {
 
@@ -84,12 +80,7 @@ typedef app::AppImplMswRendererDx::LightData LightData;
 
 app::AppImplMswRendererDx *getDxRenderer()
 {
-#if defined ( CINDER_WINRT_XAML )
-    // return the instance of the AppImplMswRendererDx held by CinderMain
-    return app::CinderMain::getInstance()->getRenderer();
-#else
 	return ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;
-#endif
 }
 
 static bool anyShadersActive()
