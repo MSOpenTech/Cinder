@@ -136,7 +136,7 @@ namespace cinder {
             // Before we can start the XAML render loop, Windows OS/XAML will fire some events 
             // into CinderPage.xaml.cpp. 
             //
-            // zv (really??  saw this, does it matter?? 
+            // zv (really??  saw this, does it matter??)  check it
             //
             auto impl = AppBasic::get()->getImpl();
             auto win = ::Window::Current->CoreWindow;
