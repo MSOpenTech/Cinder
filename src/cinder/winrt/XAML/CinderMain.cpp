@@ -57,9 +57,13 @@
 
 // zv
 #include "cinder/app/AppBasic.h"
+#include "cinder/app/AppImplWinRTBasic.h"
+
+// this function is defined by the application start macro
 extern int mainXAML();
 
 using namespace CinderXAML;
+using namespace Windows::UI::Xaml;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
 using namespace Concurrency;
@@ -109,9 +113,6 @@ namespace cinder {
             CinderMain::sInstance = this;
             // cinder::app::AppBasic* app = cinder::app::AppBasic::get();
 
-            // call the app's content initialization; this method can be overloaded.
-            AppBasic::get()->setup();
-
             // optional: frames per second renderer (see SampleFpsTextRenderer in the XAML template)
             // m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
@@ -124,11 +125,37 @@ namespace cinder {
             // m_timer->SetTargetElapsedSeconds(1.0 / 60);
             //
 
-            // create Cinder renderer for DirectX
+            // zv
+            // call AppImplWinRTBasic::runReady() manually
+            // runReady:
+            //      associates the renderer class with the app class, in Window::setRenderer
+            //      calls the setup() of the application
+            //      for WinRT (non-XAML) it then starts the renderer loop
+            //      for XAML, it returns early and returns control here to the XAML framework
+            //
+            // Before we can start the XAML render loop, Windows OS/XAML will fire some events 
+            // into CinderPage.xaml.cpp. 
+            //
+            // zv (really??  saw this, does it matter?? 
+            //
+            auto impl = AppBasic::get()->getImpl();
+            auto win = ::Window::Current->CoreWindow;
+            impl->runReady( win );
+
+            // get Cinder renderer for DirectX, created by RendererDx::setup()
             //  nb. Cinder will perform shader & lighting setup, and drawing via dx::
             //  initialization & device management is handled by the XAML framework
-            ren = new cinder::app::AppImplMswRendererDx(nullptr, nullptr);
+            //
+            // zv
+            // ren = new cinder::app::AppImplMswRendererDx(nullptr, nullptr);
+            mRenderer = ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;
 
+            // zv already done by runReady
+            // call the app's content initialization; this method can be overloaded.
+            // AppBasic::get()->setup();
+
+            // zv
+            // need to emit resize after pipeline setup
         }
 
         CinderMain::~CinderMain()
@@ -136,7 +163,8 @@ namespace cinder {
             // Deregister device notification
             m_deviceResources->RegisterDeviceNotify(nullptr);
 
-            delete ren;
+            // zv
+            // delete ren;
             delete m_timer;
             delete m_relay;
         }
@@ -188,7 +216,7 @@ namespace cinder {
             // nb. this is a C++ 11 lambda function using the instance of DX::StepTimer
             m_timer->Tick([&]()
             {
-                // TODO: Replace this with your app's content update functions.
+                // XAML template says here: "TODO: Replace this with your app's content update functions."
                 // call to overloaded Cinder update()
                 AppBasic::get()->update();
 
@@ -238,14 +266,22 @@ namespace cinder {
 
             // setup Cinder's shaders and lighting if needed
             if (!m_pipeline_ready) {
-                ren->setupPipeline();
+                // zv use member "ren", or use getDxRenderer
+                // static_cast<cinder::app::RendererDx>( AppBasic::get()->getRenderer() )
+                mRenderer->setupPipeline();
                 m_pipeline_ready = true;
             }
+
+            // zv 
+            // emit resize, refer to AppImplWinRTBasic::runReady
+            // mWindow->getWindow()->emitResize();
+            auto win = AppBasic::get()->getImpl()->getWindow();
+            win->emitResize();
 
             // setup Cinder's 3D camera and projection
             float w = m_deviceResources->GetOutputSize().Width;
             float h = m_deviceResources->GetOutputSize().Height;
-            ren->setupCamera(w, h);
+            mRenderer->setupCamera(w, h);
 
             // calls to overloaded Cinder app draw() method
             AppBasic::get()->draw();
@@ -266,11 +302,11 @@ namespace cinder {
             auto target = m_deviceResources->GetBackBufferRenderTargetView();
             auto stencil = m_deviceResources->GetDepthStencilView();
 
-            ren->md3dDevice = device;
-            ren->mFeatureLevel = features;
-            ren->mDeviceContext = context;
-            ren->mMainFramebuffer = target;
-            ren->mDepthStencilView = stencil;
+            mRenderer->md3dDevice = device;
+            mRenderer->mFeatureLevel = features;
+            mRenderer->mDeviceContext = context;
+            mRenderer->mMainFramebuffer = target;
+            mRenderer->mDepthStencilView = stencil;
         }
 
         // Notifies renderers that device resources need to be released.
@@ -296,8 +332,8 @@ namespace cinder {
             if (!m_tracking) return;
 
             auto p = evtArgs->CurrentPoint->Position;
-            int ix = p.X;
-            int iy = p.Y;
+            int ix = (int)p.X;
+            int iy = (int)p.Y;
 
             // create a Cinder mouse event
             // nb. refer to AppImplWinRT::prepPointerEventModifiers for a more complete implementation

@@ -123,7 +123,8 @@ namespace cinder { namespace app {
         // singleton
         static CinderMain*  getInstance() { return sInstance; }
 
-        cinder::app::AppImplMswRendererDx *getRenderer() { return ren; }
+        // zv not used
+        // cinder::app::AppImplMswRendererDx *getRenderer() { return mRenderer; }
 
     private:
 
@@ -131,8 +132,8 @@ namespace cinder { namespace app {
         CinderMain(CinderMain const &);
         void operator=(CinderMain const &);
 
-        // owner/ptr to Cinder renderer for DirectX
-        cinder::app::AppImplMswRendererDx *ren;
+        // ptr to Cinder renderer for DirectX, owned by Cinder
+        cinder::app::AppImplMswRendererDx *mRenderer;
 
         bool    m_tracking;
         bool    m_pipeline_ready;
