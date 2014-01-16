@@ -33,7 +33,7 @@
 
 namespace cinder { namespace app {
 
-	RendererDx::RendererDx( int aAntiAliasing )
+RendererDx::RendererDx(int aAntiAliasing)
 	: Renderer(), mImpl( 0 ), mAntiAliasing( aAntiAliasing )
 {
 }
@@ -58,21 +58,18 @@ void RendererDx::setup( App *aApp, HWND wnd, HDC dc,  RendererRef sharedRenderer
 	mImpl->initialize( wnd, dc, sharedRenderer );
 }
 #elif defined( CINDER_WINRT )
+// zv RendererDx::setup
 void RendererDx::setup( App *aApp, DX_WINDOW_TYPE wnd)
 {
 	mWnd = wnd;
 	mApp = aApp;
 
-    // zv
-    // DirectX is initialized by the XAML framework instead of here
-#if !defined( CINDER_WINRT_XAML )
 	if( ! mImpl )
 		mImpl = new AppImplMswRendererDx( mApp, this );
 	mImpl->initialize( wnd);
 
     // enable Vertical Sync drawing on WinRT
 	mImpl->enableVsync(TRUE);
-#endif
 }
 #endif
 
