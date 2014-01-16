@@ -477,6 +477,10 @@ bool AppImplMswRendererDx::initializeInternal( DX_WINDOW_TYPE wnd )
 {
 	mWnd = wnd;
 
+    // zv
+    // DirectX is initialized by the XAML framework instead of here
+#if !defined( CINDER_WINRT_XAML )
+
     if( ! createDeviceResources() )
 		return false;
 
@@ -485,6 +489,7 @@ bool AppImplMswRendererDx::initializeInternal( DX_WINDOW_TYPE wnd )
 
     if ( ! setupPipeline() )
         return false;
+#endif
 
     return true;
 }
