@@ -101,7 +101,7 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
     return;
 #endif
 
-    // zv moved
+    // zv emit moved after enable multitouch s/b OK
 	mWindow->getWindow()->emitResize();
 
 	// initialize our next frame time
