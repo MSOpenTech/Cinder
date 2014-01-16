@@ -113,7 +113,9 @@ CinderPage::CinderPage():
 	m_deviceResources->SetSwapChainPanel(swapChainPanel);
 
 	// Register our SwapChainPanel to get independent input pointer events
-	auto workItemHandler = ref new WorkItemHandler([this] (IAsyncAction ^)
+    // nb.  accepting input events on the bg thread appears to be REQUIRED for XAML,
+    //      see docs on CreateCoreIndependentInputSource
+    auto workItemHandler = ref new WorkItemHandler([this] (IAsyncAction ^)
 	{
 		// The CoreIndependentInputSource will raise pointer events for the specified device types on whichever thread it's created on.
 		m_coreInput = swapChainPanel->CreateCoreIndependentInputSource(
