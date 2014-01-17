@@ -1,4 +1,11 @@
+// zv status: compiles, runs, allows file pick, then fails with exception:
+// -		errorMessage	0x042245f0 L"Access is denied.\r\n"	Platform::String ^
+
 #include "cinder/app/AppBasic.h"
+
+// zv was missing
+#include "cinder/app/RendererDx.h"
+
 #include "cinder/Utilities.h"
 #include "cinder/ImageIo.h"
 #include "cinder/Surface.h"
@@ -22,8 +29,10 @@ class ImageFileBasicApp : public AppBasic {
 	void setup();
 	void keyDown( KeyEvent event );
 	void draw();
-	dx::Texture		mTexture;	
 
+    // zv chgd:
+	// dx::Texture		mTexture;	
+    dx::TextureRef  mTexture;
 
 };
 
@@ -50,8 +59,15 @@ void ImageFileBasicApp::setup()
 					and then delete the temporary copy of the image.
 				*/
 
+                // zv probably need to use create()
+                //
+                // 1>e:\documents\github\cinder\samples\imagefilebasic\src\imagefilebasicappxaml.cpp(54): 
+                // error C2248: 'cinder::dx::Texture::Texture' : 
+                // cannot access protected member declared in class 'cinder::dx::Texture'
+                // 
 				loadImageAsync(path, [this](ImageSourceRef imageRef){
-					this->mTexture = dx::Texture( imageRef );
+					// this->mTexture = dx::Texture( imageRef );
+					this->mTexture = dx::Texture::create( imageRef );
 				});
 
 
@@ -97,6 +113,16 @@ void ImageFileBasicApp::draw()
 	/*	Note: Since textures may be loaded asynchronously in WinRT, it is very important to test if 
 		your texture is not empty before trying to use it!
 	*/
+
+    // zv not sure why this error occurs?
+    // 1>e:\documents\github\cinder\samples\imagefilebasic\src\imagefilebasicappxaml.cpp(100): 
+    // error C2451: conditional expression of type 'cinder::dx::Texture' is illegal
+    // 
+
+    // zv error - need to use a TextureRef?
+    // 1>e:\documents\github\cinder\samples\imagefilebasic\src\imagefilebasicappxaml.cpp(101): 
+    // error C2665: 'cinder::dx::draw' : none of the 13 overloads could convert all the argument types
+    //
 	if( mTexture )
 		dx::draw( mTexture, Vec2f( 0, 0 ) );
 }
