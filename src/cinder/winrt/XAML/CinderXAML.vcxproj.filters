@@ -30,13 +30,13 @@
   <ItemGroup>
     <ClCompile Include="App.xaml.cpp" />
     <ClCompile Include="CinderPage.xaml.cpp" />
-    <ClCompile Include="..\..\..\..\samples\BasicApp\src\basicAppDX.cpp" />
     <ClCompile Include="CinderMain.cpp">
       <Filter>CinderMain class</Filter>
     </ClCompile>
     <ClCompile Include="Common\DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\samples\ImageFileBasic\src\ImageFileBasicAppXAML.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />

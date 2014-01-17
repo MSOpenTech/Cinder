@@ -207,7 +207,7 @@
     <ClInclude Include="Common\StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\samples\BasicApp\src\basicAppDX.cpp" />
+    <ClCompile Include="..\..\..\..\samples\ImageFileBasic\src\ImageFileBasicAppXAML.cpp" />
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
