@@ -20,6 +20,11 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+// zv
+using namespace Windows::ApplicationModel;
+using namespace Windows::Storage;
+
+
 
 
 
@@ -49,8 +54,18 @@ void ImageFileBasicApp::setup()
 		extensions.push_back(".png");
 		extensions.push_back(".jpg");
 
+        // zv preset to allowed location, see:
+        // http://msdn.microsoft.com/en-us/library/windows/apps/windows.storage.applicationdata.localfolder.aspx?cs-save-lang=1&cs-lang=cpp#code-snippet-1
+        // and
+        // http://lunarfrog.com/blog/2012/05/21/winrt-folders-access/
+        StorageFolder^ localFolder = ApplicationData::Current->LocalFolder;
+        std::string localPath( toUtf8( localFolder->Path->Data() ) );
+        //
+        // failed: localPath seems to be ignored, unable to access local app area from file picker
 
-		getOpenFilePath( "", extensions, [this](fs::path path){
+        // zv was
+        // getOpenFilePath( "", extensions, [this](fs::path path) {
+        getOpenFilePath( localPath, extensions, [this](fs::path path) {
 			if( ! path.empty() ) {
 				/*	Windows 8 Store Apps file access is highly sandboxed. In order to open 
 					a file outside of your Application's directory (such as the Pictures Directory), 
