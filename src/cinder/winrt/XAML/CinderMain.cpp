@@ -104,11 +104,9 @@ namespace cinder {
             // Register to be notified if the Device is lost or recreated
             m_relay = new DX::DeviceRelay( this, m_deviceResources );
 
-            // zv
             // instantiate the Cinder ::app
             mainXAML();
 
-            // zv
             // set singleton ptr
             CinderMain::sInstance = this;
             // cinder::app::AppBasic* app = cinder::app::AppBasic::get();
@@ -125,7 +123,6 @@ namespace cinder {
             // m_timer->SetTargetElapsedSeconds(1.0 / 60);
             //
 
-            // zv
             // call AppImplWinRTBasic::runReady() manually
             // runReady:
             //      associates the renderer class with the app class, in Window::setRenderer
@@ -136,8 +133,6 @@ namespace cinder {
             // Before we can start the XAML render loop, Windows OS/XAML will fire some events 
             // into CinderPage.xaml.cpp. 
             //
-            // zv (really??  saw this, does it matter??)  check it
-            //
             auto impl = AppBasic::get()->getImpl();
             auto win = ::Window::Current->CoreWindow;
             impl->runReady( win );
@@ -146,13 +141,21 @@ namespace cinder {
             //  nb. Cinder will perform shader & lighting setup, and drawing via dx::
             //  initialization & device management is handled by the XAML framework
             //
-            // zv
             // ren = new cinder::app::AppImplMswRendererDx(nullptr, nullptr);
             mRenderer = ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;
 
-            // zv already done by runReady
-            // call the app's content initialization; this method can be overloaded.
-            // AppBasic::get()->setup();
+            // call the app's content initialization setup(); this method can be overloaded.
+            shareWithCinder();
+
+            // setup Cinder's shaders and lighting if needed
+            if (!m_pipeline_ready) {
+                // zv use member "ren", or use getDxRenderer
+                // static_cast<cinder::app::RendererDx>( AppBasic::get()->getRenderer() )
+                mRenderer->setupPipeline();
+                m_pipeline_ready = true;
+            }
+
+            AppBasic::get()->setup();
 
             // zv
             // need to emit resize after pipeline setup
@@ -163,8 +166,6 @@ namespace cinder {
             // Deregister device notification
             m_deviceResources->RegisterDeviceNotify(nullptr);
 
-            // zv
-            // delete ren;
             delete m_timer;
             delete m_relay;
         }
@@ -264,15 +265,6 @@ namespace cinder {
             // set Cinder's pointers to the DX/D3D interfaces created here in the XAML framework
             shareWithCinder();
 
-            // setup Cinder's shaders and lighting if needed
-            if (!m_pipeline_ready) {
-                // zv use member "ren", or use getDxRenderer
-                // static_cast<cinder::app::RendererDx>( AppBasic::get()->getRenderer() )
-                mRenderer->setupPipeline();
-                m_pipeline_ready = true;
-            }
-
-            // zv 
             // emit resize, refer to AppImplWinRTBasic::runReady
             // mWindow->getWindow()->emitResize();
             auto win = AppBasic::get()->getImpl()->getWindow();

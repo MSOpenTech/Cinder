@@ -88,7 +88,11 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 
 	mWindow = new WindowImplWinRTBasic( mWnd, mApp->getDefaultRenderer()->clone(), this );
 	setWindow(mWindow->getWindow());
+
+    // for XAML, call setup() after the Renderer has been associated with Application
+#if ! defined( CINDER_WINRT_XAML )
 	mApp->privateSetup__();
+#endif
 	mSetupHasBeenCalled = true;
 
 	if(mApp->getSettings().isMultiTouchEnabled()) {
