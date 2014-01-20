@@ -1,5 +1,5 @@
-// zv status: compiles, runs, allows file pick, then fails with exception:
-// -		errorMessage	0x042245f0 L"Access is denied.\r\n"	Platform::String ^
+// updated for WinRT
+// n.b. Picture Capability must be enabled, and files copied into users Picture folder
 
 #include "cinder/app/AppBasic.h"
 
@@ -66,7 +66,7 @@ void ImageFileBasicApp::setup()
         // zv was
         // getOpenFilePath( "", extensions, [this](fs::path path) {
         getOpenFilePath( localPath, extensions, [this](fs::path path) {
-			if( ! path.empty() ) {
+			if ( ! path.empty() ) {
 				/*	Windows 8 Store Apps file access is highly sandboxed. In order to open 
 					a file outside of your Application's directory (such as the Pictures Directory), 
 					you will need to use the loadImageAsync()  method. If necessary, it will copy
