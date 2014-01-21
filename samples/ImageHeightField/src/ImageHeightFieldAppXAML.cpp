@@ -1,3 +1,5 @@
+// ImageHeightFieldAppXAML
+
 #include "cinder/app/AppBasic.h"
 #include "cinder/ArcBall.h"
 #include "cinder/Rand.h"
@@ -59,14 +61,30 @@ void ImageHFApp::setup()
 
 void ImageHFApp::openFile()
 {
+    try {
+    /*  On WinRT it is required that use use the async version of getOpenFilePath() 
+		since Windows 8 Store Apps only have an async version of the Open File dialog.
+		You will need to provide a callback function or lamba that will receive the fs::path to
+		the selected file.
+	*/
+    // zv added
+	std::vector<std::string> extensions;
+	extensions.push_back(".png");
+	extensions.push_back(".jpg");
+
     // zv
     // fs::path path = getOpenFilePath( "", ImageIo::getLoadExtensions() );
-    getOpenFilePath("", ImageIo::getLoadExtensions(), [this](fs::path path) {
+    getOpenFilePath("", extensions, [this](fs::path path) {
         // converted to async lambda fn for WinRT
         if (!path.empty()) {
+            // zv - need a Surface, not a Texture
+            // 	static void loadImageAsync(const fs::path path, SurfaceT &surface, const SurfaceConstraints &constraints = SurfaceConstraintsDefault(), boost::tribool alpha = boost::logic::indeterminate );
+            // loadImageAsync(path, [this](ImageSourceRef imageRef){
             loadImageAsync(path, [this](ImageSourceRef imageRef){
                 // this->mTexture = dx::Texture( imageRef );
-                this->mTexture = dx::Texture::create(imageRef);
+                // this->mTexture = dx::Texture::create(imageRef);
+                // mImage
+                // Surface32f::operator cinder::ImageSourceRef
             });
         }
     });
@@ -85,6 +103,10 @@ void ImageHFApp::openFile()
 		updateData( kColor );		
 	}
     */
+	}
+	catch( ... ) {
+		console() << "unable to load the texture file!" << std::endl;
+	}
 }
 
 void ImageHFApp::resize()
