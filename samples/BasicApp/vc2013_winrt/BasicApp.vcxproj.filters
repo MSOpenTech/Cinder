@@ -36,7 +36,7 @@
     <ClCompile Include="Common\DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\samples\BasicApp\src\basicAppDX.cpp" />
+    <ClCompile Include="..\src\basicAppDX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
@@ -58,9 +58,6 @@
     <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CinderXAML_TemporaryKey.pfx" />
-  </ItemGroup>
-  <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Filter>Cinder XAML App pages</Filter>
     </ApplicationDefinition>
@@ -72,5 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BasicApp_TemporaryKey.pfx" />
   </ItemGroup>
 </Project>
