@@ -55,6 +55,10 @@ cinder::dx::        contains the DirectX drawing methods, see dx.h
 #include "cinder/Vector.h"
 #include "cinder/app/MouseEvent.h"
 #include "cinder/app/KeyEvent.h"
+#include "InputEvent.h"
+#include <mutex>
+#include <queue>
+#include <memory>
 
 using namespace Windows::UI::Core;
 
@@ -104,9 +108,15 @@ namespace cinder { namespace app {
 
         // pointer
         void StartTracking() {  m_tracking = true; }
-        void TrackingUpdate(PointerEventArgs^ e);
+        void TrackingUpdate(Windows::UI::Core::PointerEventArgs^ e);
         void StopTracking() { m_tracking = false; }
         bool IsTracking() { return m_tracking; }
+
+        void OnKeyDown(Windows::UI::Core::KeyEventArgs^ arg);
+        void ProcessOnKeyDown(Windows::UI::Core::KeyEventArgs^ arg);
+        void OnKeyUp(Windows::UI::Core::KeyEventArgs^ arg);
+        void ProcessOnKeyUp(Windows::UI::Core::KeyEventArgs^ arg);
+        void OnPointerWheelChanged(Windows::UI::Core::PointerEventArgs^ args);
 
         // rendering
         void StartRenderLoop();
@@ -160,6 +170,10 @@ namespace cinder { namespace app {
 
         // Rendering loop timer.
         DX::StepTimer* m_timer;
+
+        // input event queue
+        std::queue<std::shared_ptr<InputEvent>> mInputEvents;
+        std::mutex mMutex;
     };
 
 } }
