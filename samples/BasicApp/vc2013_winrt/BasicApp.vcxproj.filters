@@ -20,39 +20,15 @@
     <Filter Include="Cinder XAML App pages">
       <UniqueIdentifier>{6673906c-a39a-42bb-ad79-bfccf888fd0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CinderMain class">
-      <UniqueIdentifier>{eb0290ae-49c1-47bb-b49b-6e2e04f4ce9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>0eb960f6-4e8f-4792-a40a-b1c087cf8754</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.xaml.cpp" />
     <ClCompile Include="CinderPage.xaml.cpp" />
-    <ClCompile Include="CinderMain.cpp">
-      <Filter>CinderMain class</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\DeviceResources.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\basicAppDX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
     <ClInclude Include="CinderPage.xaml.h" />
-    <ClInclude Include="CinderMain.h">
-      <Filter>CinderMain class</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\DeviceResources.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\DirectXHelper.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\StepTimer.h">
-      <Filter>Common</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -71,6 +47,6 @@
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BasicApp_TemporaryKey.pfx" />
+    <None Include="TemporaryKey.pfx" />
   </ItemGroup>
 </Project>

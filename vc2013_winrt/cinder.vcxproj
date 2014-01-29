@@ -158,7 +158,7 @@
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\src\AntTweakBar;..\include\winrt\boost;..\include\cinder;..\include;..\boost;..\src\dxShaders;..\src\linebreak;..\src\zlib-1.2.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WINRT_XAML;FT2_BUILD_LIBRARY;%(PreprocessorDefinitions);USE_DIRECTX</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINRT_XAML;FT2_BUILD_LIBRARY;NDEBUG;%(PreprocessorDefinitions);USE_DIRECTX</PreprocessorDefinitions>
       <PrecompiledHeaderFile />
       <PrecompiledHeaderOutputFile />
       <DisableSpecificWarnings>4996;4264;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -204,7 +204,7 @@
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\src\AntTweakBar;..\include\winrt\boost;..\include\cinder;..\include;..\boost;..\src\dxShaders;..\src\linebreak;..\src\zlib-1.2.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WINRT_XAML;FT2_BUILD_LIBRARY;WINRT_BOOST_VERSION=105300;_LITTLE_ENDIAN;%(PreprocessorDefinitions);USE_DIRECTX</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINRT_XAML;FT2_BUILD_LIBRARY;NDEBUG;WINRT_BOOST_VERSION=105300;_LITTLE_ENDIAN;%(PreprocessorDefinitions);USE_DIRECTX</PreprocessorDefinitions>
       <PrecompiledHeaderFile />
       <PrecompiledHeaderOutputFile />
       <DisableSpecificWarnings>4996;4264;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -244,7 +244,7 @@
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\src\AntTweakBar;..\include\winrt\boost;..\include\cinder;..\include;..\boost;..\src\dxShaders;..\src\linebreak;..\src\zlib-1.2.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WINRT_XAML;FT2_BUILD_LIBRARY;WINRT_BOOST_VERSION=105300;%(PreprocessorDefinitions);USE_DIRECTX</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINRT_XAML;FT2_BUILD_LIBRARY;NDEBUG;WINRT_BOOST_VERSION=105300;%(PreprocessorDefinitions);USE_DIRECTX</PreprocessorDefinitions>
       <PrecompiledHeaderFile />
       <PrecompiledHeaderOutputFile />
       <DisableSpecificWarnings>4996;4264;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -269,6 +269,9 @@
     <ClInclude Include="..\include\cinder\app\Renderer.h" />
     <ClInclude Include="..\include\cinder\app\Window.h" />
     <ClInclude Include="..\include\cinder\app\WinRTApp.h" />
+    <ClInclude Include="..\include\cinder\app\winrt\xaml\CinderMain.h" />
+    <ClInclude Include="..\include\cinder\app\winrt\xaml\Common\DeviceResources.h" />
+    <ClInclude Include="..\include\cinder\app\winrt\xaml\Common\DirectXHelper.h" />
     <ClInclude Include="..\include\cinder\Arcball.h" />
     <ClInclude Include="..\include\cinder\Area.h" />
     <ClInclude Include="..\include\cinder\AxisAlignedBox.h" />
@@ -364,6 +367,8 @@
     <ClCompile Include="..\src\cinder\app\RendererDx.cpp" />
     <ClCompile Include="..\src\cinder\app\Window.cpp" />
     <ClCompile Include="..\src\cinder\app\WinRTApp.cpp" />
+    <ClCompile Include="..\src\cinder\app\winrt\xaml\CinderMain.cpp" />
+    <ClCompile Include="..\src\cinder\app\winrt\xaml\Common\DeviceResources.cpp" />
     <ClCompile Include="..\src\cinder\Area.cpp" />
     <ClCompile Include="..\src\cinder\audio\Io.cpp" />
     <ClCompile Include="..\src\cinder\audio\Output.cpp" />

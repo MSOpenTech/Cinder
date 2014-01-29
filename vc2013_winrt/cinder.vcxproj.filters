@@ -71,6 +71,21 @@
     <Filter Include="Source Files\AntTweakBar">
       <UniqueIdentifier>{36b2c259-6e9a-48fb-9480-9369b069a7b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\app\Xaml">
+      <UniqueIdentifier>{7122903d-2b7a-4660-ba59-764c70e15f88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\app\Xaml\Common">
+      <UniqueIdentifier>{eb19b2d6-76aa-4977-a30d-6bac4ac87e55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\app\winrt">
+      <UniqueIdentifier>{9f0abe73-94be-431d-b279-04aa3b706c8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\app\winrt\xaml">
+      <UniqueIdentifier>{c0e3d505-5d90-4901-8b85-f418118499fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\app\winrt\xaml\Common">
+      <UniqueIdentifier>{e2f48e0e-c82c-4da6-9d28-85e7ba2a90cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\cinder\app\Renderer.h">
@@ -333,6 +348,15 @@
     </ClInclude>
     <ClInclude Include="..\include\cinder\dx\DxRenderTarget.h">
       <Filter>Header Files\dx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cinder\app\winrt\xaml\CinderMain.h">
+      <Filter>Header Files\app\winrt\xaml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cinder\app\winrt\xaml\Common\DeviceResources.h">
+      <Filter>Header Files\app\winrt\xaml\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cinder\app\winrt\xaml\Common\DirectXHelper.h">
+      <Filter>Header Files\app\winrt\xaml\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -794,6 +818,12 @@
     </ClCompile>
     <ClCompile Include="..\src\cinder\dx\DxRenderTarget.cpp">
       <Filter>Source Files\dx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cinder\app\winrt\xaml\CinderMain.cpp">
+      <Filter>Source Files\app\Xaml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cinder\app\winrt\xaml\Common\DeviceResources.cpp">
+      <Filter>Source Files\app\Xaml\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

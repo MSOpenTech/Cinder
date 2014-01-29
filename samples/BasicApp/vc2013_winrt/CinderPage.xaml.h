@@ -36,8 +36,8 @@
 
 #include "CinderPage.g.h"
 
-#include "Common\DeviceResources.h"
-#include "CinderMain.h"
+#include "cinder/app/winrt/xaml/Common/DeviceResources.h"
+#include "cinder/app/winrt/xaml/CinderMain.h"
 
 namespace CinderXAML
 {

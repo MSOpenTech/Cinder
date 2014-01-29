@@ -50,7 +50,7 @@
 #include "App.xaml.h"
 #include "CinderPage.xaml.h"
 
-#include "CinderMain.h"
+#include "cinder/app/winrt/xaml/CinderMain.h"
 
 using namespace CinderXAML;
 
