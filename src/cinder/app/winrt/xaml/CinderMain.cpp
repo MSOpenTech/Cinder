@@ -37,10 +37,8 @@
 #include <wrl/client.h>
 #include <d3d11_2.h>
 #include <d2d1_2.h>
-#include <d2d1effects_1.h>
 #include <dwrite_2.h>
 #include <wincodec.h>
-#include <DirectXColors.h>
 #include <DirectXMath.h>
 #include <memory>
 #include <agile.h>
@@ -60,9 +58,6 @@
 // this function is defined by the application start macro
 extern int mainXAML();
 
-#if 0
-using namespace CinderXAML;
-#endif // 0
 
 using namespace Windows::UI::Xaml;
 
@@ -229,11 +224,6 @@ namespace cinder {
             });
         }
 
-        // Process all input from the user before updating game state
-        void CinderMain::ProcessInput()
-        {
-            // optional: add per frame input handling here.
-        }
 
         // Renders the current frame according to the current application state.
         // Returns true if the frame was rendered and is ready to be displayed.
@@ -338,5 +328,48 @@ namespace cinder {
             AppBasic::get()->mouseDrag(e);
         }
 
+        void CinderMain::OnKeyDown(KeyEventArgs^ args)
+        {
+            std::lock_guard<std::mutex> guard(mMutex);
+            std::shared_ptr<KeyboardEvent> e(new KeyboardEvent(XamlKeyEvent::KeyDown, args));
+            mInputEvents.push(e);
+            //AppBasic::get()->getImpl()->handleKeyDown(arg);
+        }
+
+        void CinderMain::ProcessOnKeyDown(KeyEventArgs^ args)
+        {
+            AppBasic::get()->getImpl()->handleKeyDown(args);
+        }
+
+        void CinderMain::OnKeyUp(KeyEventArgs^ args)
+        {
+            std::lock_guard<std::mutex> guard(mMutex);
+            std::shared_ptr<KeyboardEvent> e(new KeyboardEvent(XamlKeyEvent::KeyUp, args));
+            mInputEvents.push(e);
+        }
+
+        void CinderMain::ProcessOnKeyUp(KeyEventArgs^ args)
+        {
+            AppBasic::get()->getImpl()->handleKeyUp(args);
+        }
+
+        void CinderMain::ProcessInput()
+        {
+            std::lock_guard<std::mutex> guard(mMutex);
+
+            while (!mInputEvents.empty())
+            {
+                InputEvent* e = mInputEvents.front().get();
+                e->execute(this);
+                mInputEvents.pop();
+            }
+        }
+
+
+        void CinderMain::OnPointerWheelChanged(PointerEventArgs^ args)
+        {
+
+
+        }
     }
 } // end namespaces

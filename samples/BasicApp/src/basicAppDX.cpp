@@ -28,9 +28,11 @@ void BasicApp::mouseDrag( MouseEvent event )
 
 void BasicApp::keyDown( KeyEvent event )
 {
-	// zv todo
-    // if( event.getChar() == 'f' )
-	//	setFullScreen( ! isFullScreen() );
+    char key = event.getChar();
+    if (key == 'e' || key == 'E')
+    {
+        mPoints.clear();
+    }
 }
 
 void BasicApp::draw()

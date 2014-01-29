@@ -58,6 +58,7 @@ using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::Graphics::Display;
+using namespace Windows::System;
 using namespace Windows::System::Threading;
 using namespace Windows::UI::Core;
 using namespace Windows::UI::Input;
@@ -75,6 +76,7 @@ using namespace concurrency;
 
 CinderPage::CinderPage():
 	m_windowVisible(true),
+    m_keyHandled(false),
 	m_coreInput(nullptr)
 {
 	InitializeComponent();
@@ -101,6 +103,15 @@ CinderPage::CinderPage():
 
 	swapChainPanel->SizeChanged +=
 		ref new SizeChangedEventHandler(this, &CinderPage::OnSwapChainPanelSizeChanged);
+
+    Window::Current->CoreWindow->KeyDown +=
+        ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &CinderPage::OnKeyDown);
+
+    Window::Current->CoreWindow->PointerWheelChanged +=
+        ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &CinderPage::OnPointerWheelChanged);
+
+    Window::Current->CoreWindow->KeyUp +=
+        ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &CinderPage::OnKeyUp);
 
 	// Disable all pointer visual feedback for better performance when touching.
 	auto pointerVisualizationSettings = PointerVisualizationSettings::GetForCurrentView();
@@ -138,28 +149,28 @@ CinderPage::CinderPage():
 
     // zv
     // create and setup the CinderMain base class instance
-//  m_main = CinderXAMLapp;
-    m_main = new cinder::app::CinderMain;
+//  m_cinder = CinderXAMLapp;
+    m_cinder = new cinder::app::CinderMain;
 
-    m_main->setup(m_deviceResources);
-    m_main->StartRenderLoop();
+    m_cinder->setup(m_deviceResources);
+    m_cinder->StartRenderLoop();
 }
 
 CinderPage::~CinderPage()
 {
 	// Stop rendering and processing events on destruction.
-	m_main->StopRenderLoop();
+	m_cinder->StopRenderLoop();
 	m_coreInput->Dispatcher->StopProcessEvents();
 }
 
 // Saves the current state of the app for suspend and terminate events.
 void CinderPage::SaveInternalState(IPropertySet^ state)
 {
-	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->Trim();
 
 	// Stop rendering when the app is suspended.
-	m_main->StopRenderLoop();
+	m_cinder->StopRenderLoop();
 
 	// Put code to save app state here.
 }
@@ -170,7 +181,7 @@ void CinderPage::LoadInternalState(IPropertySet^ state)
 	// Put code to load app state here.
 
 	// Start rendering when the app is resumed.
-	m_main->StartRenderLoop();
+	m_cinder->StartRenderLoop();
 }
 
 // Window event handlers.
@@ -180,11 +191,11 @@ void CinderPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventA
 	m_windowVisible = args->Visible;
 	if (m_windowVisible)
 	{
-		m_main->StartRenderLoop();
+		m_cinder->StartRenderLoop();
 	}
 	else
 	{
-		m_main->StopRenderLoop();
+		m_cinder->StopRenderLoop();
 	}
 }
 
@@ -192,22 +203,22 @@ void CinderPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventA
 
 void CinderPage::OnDpiChanged(DisplayInformation^ sender, Object^ args)
 {
-	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->SetDpi(sender->LogicalDpi);
-	m_main->CreateWindowSizeDependentResources();
+	m_cinder->CreateWindowSizeDependentResources();
 }
 
 void CinderPage::OnOrientationChanged(DisplayInformation^ sender, Object^ args)
 {
-	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->SetCurrentOrientation(sender->CurrentOrientation);
-	m_main->CreateWindowSizeDependentResources();
+	m_cinder->CreateWindowSizeDependentResources();
 }
 
 
 void CinderPage::OnDisplayContentsInvalidated(DisplayInformation^ sender, Object^ args)
 {
-	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->ValidateDevice();
 }
 
@@ -221,36 +232,63 @@ void CinderPage::AppBarButton_Click(Object^ sender, RoutedEventArgs^ e)
 void CinderPage::OnPointerPressed(Object^ sender, PointerEventArgs^ e)
 {
 	// When the pointer is pressed begin tracking the pointer movement.
-	m_main->StartTracking();
+	m_cinder->StartTracking();
 }
 
 void CinderPage::OnPointerMoved(Object^ sender, PointerEventArgs^ e)
 {
 	// Update the pointer tracking code.
-	if (m_main->IsTracking())
+	if (m_cinder->IsTracking())
 	{
-		m_main->TrackingUpdate(e);
+		m_cinder->TrackingUpdate(e);
 	}
 }
 
 void CinderPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
 {
 	// Stop tracking pointer movement when the pointer is released.
-	m_main->StopTracking();
+	m_cinder->StopTracking();
 }
+
+
+
+void CinderPage::OnKeyUp(CoreWindow^ sender, KeyEventArgs^ args)
+{
+ 
+    // check if keypress was already handled
+    if (m_keyHandled) {
+        m_keyHandled = false;
+        return;
+    }
+    m_cinder->OnKeyUp(args);
+}
+
+void CinderPage::OnKeyDown(CoreWindow^ sender, KeyEventArgs^ args)
+{
+    m_cinder->OnKeyDown(args);
+
+}
+
+void CinderPage::OnPointerWheelChanged(CoreWindow^ sender, PointerEventArgs^ args)
+{
+    int direction = args->CurrentPoint->Properties->MouseWheelDelta;
+}
+
+
+
 
 // nb. this event fires (2) at initialization
 void CinderPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)
 {
-	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->SetCompositionScale(sender->CompositionScaleX, sender->CompositionScaleY);
-	m_main->CreateWindowSizeDependentResources();
+	m_cinder->CreateWindowSizeDependentResources();
 }
 
 // nb. this event fires (1,3) at initialization
 void CinderPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventArgs^ e)
 {
-	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->SetLogicalSize(e->NewSize);
-	m_main->CreateWindowSizeDependentResources();
+	m_cinder->CreateWindowSizeDependentResources();
 }

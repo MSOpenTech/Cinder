@@ -272,6 +272,7 @@
     <ClInclude Include="..\include\cinder\app\winrt\xaml\CinderMain.h" />
     <ClInclude Include="..\include\cinder\app\winrt\xaml\Common\DeviceResources.h" />
     <ClInclude Include="..\include\cinder\app\winrt\xaml\Common\DirectXHelper.h" />
+    <ClInclude Include="..\include\cinder\app\winrt\xaml\InputEvent.h" />
     <ClInclude Include="..\include\cinder\Arcball.h" />
     <ClInclude Include="..\include\cinder\Area.h" />
     <ClInclude Include="..\include\cinder\AxisAlignedBox.h" />
@@ -369,6 +370,7 @@
     <ClCompile Include="..\src\cinder\app\WinRTApp.cpp" />
     <ClCompile Include="..\src\cinder\app\winrt\xaml\CinderMain.cpp" />
     <ClCompile Include="..\src\cinder\app\winrt\xaml\Common\DeviceResources.cpp" />
+    <ClCompile Include="..\src\cinder\app\winrt\xaml\InputEvent.cpp" />
     <ClCompile Include="..\src\cinder\Area.cpp" />
     <ClCompile Include="..\src\cinder\audio\Io.cpp" />
     <ClCompile Include="..\src\cinder\audio\Output.cpp" />
