@@ -248,7 +248,7 @@ class Texture {
 		friend class Texture;
 	};
 
- protected:
+public:
 	Texture();
 	/** \brief Constructs a texture of size(\a aWidth, \a aHeight), storing the data in internal format \a aInternalFormat. **/
 	Texture( int width, int height, Format format = Format() );
@@ -265,6 +265,7 @@ class Texture {
 	/** \brief Constructs a texture based on \a imageSource. A default value of -1 for \a internalFormat chooses an appropriate internal format based on the contents of \a imageSource. **/
 	Texture( ImageSourceRef imageSource, Format format = Format() );
 
+private:
 	void	init( int width, int height );
 	void	init( const unsigned char *srcData, DXGI_FORMAT srcDataFormat, const Format &format );	
 	void	init( const float *srcData, DXGI_FORMAT srcDataFormat, const Format &format );
