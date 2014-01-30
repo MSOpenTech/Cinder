@@ -102,7 +102,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>cinder.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <PrecompiledHeaderFile>
@@ -161,6 +161,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\basicAppDX.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\vc2012_winrt\cinder.vcxproj">
+      <Project>{7419a85e-0924-4afe-b5db-4f85d05fe1ab}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
