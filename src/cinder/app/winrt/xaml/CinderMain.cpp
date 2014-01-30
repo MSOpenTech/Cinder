@@ -102,7 +102,7 @@ namespace cinder {
             m_relay = new DX::DeviceRelay( this, m_deviceResources );
 
             // instantiate the Cinder ::app
-			// mainXAML() is declared by the CINDER_APP_BASIC macro AppBasic.h
+			// mainXAML() is declared by the CINDER_APP_BASIC macro in AppBasic.h
             mainXAML();
 
             // set singleton ptr

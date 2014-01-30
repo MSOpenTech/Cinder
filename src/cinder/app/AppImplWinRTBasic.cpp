@@ -149,7 +149,6 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 
 #endif // 0
 	}
-
 	mApp->emitShutdown();
 	delete mApp;
 }

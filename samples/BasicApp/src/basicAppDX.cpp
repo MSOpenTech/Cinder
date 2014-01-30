@@ -8,6 +8,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+
 // We'll create a new Cinder Application by deriving from the CinderMain class
 
 class BasicApp : public AppBasic {

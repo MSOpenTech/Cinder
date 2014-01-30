@@ -135,6 +135,7 @@ void AppBasic::launch( const char *title, int argc, char * const argv[] )
 #if ! defined( CINDER_WINRT_XAML )
 	mImpl->run();
 #endif
+	
 #else
 	mImpl = new AppImplMswBasic( this );	
 	mImpl->run();

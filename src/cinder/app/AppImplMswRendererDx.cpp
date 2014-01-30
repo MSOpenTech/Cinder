@@ -488,6 +488,7 @@ bool AppImplMswRendererDx::initializeInternal( DX_WINDOW_TYPE wnd )
 
     if ( ! setupPipeline() )
         return false;
+
 #endif
 
     return true;

@@ -72,6 +72,7 @@ using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
 
 
+
 CinderPage::CinderPage():
 	m_windowVisible(true),
     m_keyHandled(false),
