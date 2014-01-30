@@ -330,8 +330,7 @@ namespace cinder {
             std::lock_guard<std::mutex> guard(mMutex);
             std::shared_ptr<KeyboardEvent> e(new KeyboardEvent(XamlKeyEvent::KeyDown, args));
             mInputEvents.push(e);
-            //AppBasic::get()->getImpl()->handleKeyDown(arg);
-        }
+         }
 
         void CinderMain::ProcessOnKeyDown(KeyEventArgs^ args)
         {
@@ -365,7 +364,7 @@ namespace cinder {
 
         void CinderMain::OnPointerWheelChanged(PointerEventArgs^ args)
         {
-
+            // not implemented
 
         }
     }
