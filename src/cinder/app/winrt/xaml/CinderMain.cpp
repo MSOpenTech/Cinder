@@ -51,7 +51,6 @@
 #include "app/winrt/xaml/Common/StepTimer.h"
 #include "app/winrt/xaml/Common/DeviceResources.h"
 
-// zv
 #include "cinder/app/AppBasic.h"
 #include "cinder/app/AppImplWinRTBasic.h"
 
@@ -103,6 +102,7 @@ namespace cinder {
             m_relay = new DX::DeviceRelay( this, m_deviceResources );
 
             // instantiate the Cinder ::app
+			// mainXAML() is declared by the CINDER_APP_BASIC macro AppBasic.h
             mainXAML();
 
             // set singleton ptr
@@ -147,16 +147,13 @@ namespace cinder {
 
             // setup Cinder's shaders and lighting if needed
             if (!m_pipeline_ready) {
-                // zv use member "ren", or use getDxRenderer
-                // static_cast<cinder::app::RendererDx>( AppBasic::get()->getRenderer() )
                 mRenderer->setupPipeline();
                 m_pipeline_ready = true;
             }
 
             AppBasic::get()->setup();
 
-            // zv
-            // need to emit resize after pipeline setup
+            // emit resize after pipeline setup
         }
 
         CinderMain::~CinderMain()

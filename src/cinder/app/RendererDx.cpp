@@ -58,7 +58,6 @@ void RendererDx::setup( App *aApp, HWND wnd, HDC dc,  RendererRef sharedRenderer
 	mImpl->initialize( wnd, dc, sharedRenderer );
 }
 #elif defined( CINDER_WINRT )
-// zv RendererDx::setup
 void RendererDx::setup( App *aApp, DX_WINDOW_TYPE wnd)
 {
 	mWnd = wnd;

@@ -1,5 +1,7 @@
 Notes for the CinderXAML template as of 1/23/2014
 
+*** This template is currently NOT IN USE due to a possible bug in VC2013. ***
+
 This template allows the developer to easily create Cinder applications that run inside a
 DirectX window (called a "SwapChainPanel") in the XAML page.  It has been updated for
 Windows 8.1.
@@ -11,7 +13,7 @@ Pending tests: Surface tablet device at Windows 8.1, more samples
 
 Changelog:
 1/23/2014	Dave R		bug fix in CinderMain added to template, template updated
-
+1/29/2014	Dave R		work moved to: basicApp, and integrated into Cinder/app src & include by Dale S.
 
 Usage:
 

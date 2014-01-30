@@ -99,13 +99,12 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 		mWindow->enableMultiTouch();
 	}
 
-    // zv
     // for XAML, return control to the XAML DX framework
 #if defined( CINDER_WINRT_XAML )
     return;
 #endif
 
-    // zv emit moved after enable multitouch s/b OK
+    // emit moved after enable multitouch s/b OK
 	mWindow->getWindow()->emitResize();
 
 	// initialize our next frame time
@@ -150,7 +149,7 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 
 #endif // 0
 	}
-    // zv check shutdown
+
 	mApp->emitShutdown();
 	delete mApp;
 }

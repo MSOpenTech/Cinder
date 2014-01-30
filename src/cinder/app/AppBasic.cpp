@@ -131,7 +131,6 @@ void AppBasic::launch( const char *title, int argc, char * const argv[] )
 #elif defined( CINDER_WINRT )
 	mImpl = new AppImplWinRTBasic( this );	
 
-    // zv
     // for XAML, we do NOT want to instantiate a Direct3DApplicationSource
 #if ! defined( CINDER_WINRT_XAML )
 	mImpl->run();

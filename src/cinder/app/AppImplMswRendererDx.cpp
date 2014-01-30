@@ -333,7 +333,7 @@ void AppImplMswRendererDx::setupCamera( float width, float height ) const
 	dx::setProjection(cam);
 	dx::setModelView(cam);
 
-    // zv todo: implement tablet/phone rotation, see
+    // todo: implement tablet/phone rotation, see
     // Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 
 	// these two lines flip the y-axis and move the origin up
@@ -477,7 +477,6 @@ bool AppImplMswRendererDx::initializeInternal( DX_WINDOW_TYPE wnd )
 {
 	mWnd = wnd;
 
-    // zv
     // DirectX is initialized by the XAML framework instead of here
 #if !defined( CINDER_WINRT_XAML )
 

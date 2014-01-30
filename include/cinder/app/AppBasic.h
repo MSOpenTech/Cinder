@@ -258,17 +258,3 @@ class AppBasic : public App {
     }
 #endif
 
-/*
-zv debug
-
-int mainXAML() {
-    cinder::app::AppBasic::prepareLaunch();
-    cinder::app::AppBasic *app = new BasicApp;
-    cinder::app::RendererRef ren(new RendererDx);
-    cinder::app::AppBasic::executeLaunch(app, ren, "BasicApp");
-    cinder::app::AppBasic::cleanupLaunch();
-    return 0;
-}
-
-*/
-

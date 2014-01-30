@@ -77,31 +77,6 @@ namespace cinder { namespace app {
         CinderMain() : m_timer(nullptr), m_relay(nullptr) {}
         ~CinderMain();
 
-        /* 
-        // zv now called through ::app
-        //
-        // Cinder methods (app will inherit these)
-        virtual void mouseDrag(MouseEvent event) {}
-        virtual void keyDown(KeyEvent event) {}
-        virtual void update() {}
-        virtual void draw() {}
-        virtual void setup() {}     // nb. as in Processing
-        */
-
-        // setFullScreen: n/a: a Windows RT store app is always full screen
-        //
-        // zv todo multitouch: TBD
-        // void enableMultiTouch( bool enable = true ) { mEnableMultiTouch = enable; }
-        // 
-        // cursor: does not apply
-        //
-        // framerate: changing it is useful, not implemented now
-        //
-        // quit: TBD, stop the RenderLoop
-        //  nb. WinRT OS kills the app when it needs to, otherwise the app always runs
-        //  nb. RenderLoop is automatically paused when the app is not visible, by XAML framework
-
-
         // Methods called by XAML via CinderPage
         void setup(const std::shared_ptr<DX::DeviceResources>& deviceResources);
         void CreateWindowSizeDependentResources();
@@ -133,9 +108,6 @@ namespace cinder { namespace app {
         // singleton
         static CinderMain*  getInstance() { return sInstance; }
 
-        // zv not used
-        // cinder::app::AppImplMswRendererDx *getRenderer() { return mRenderer; }
-
     private:
 
         // singleton enforcement:
@@ -148,7 +120,6 @@ namespace cinder { namespace app {
         bool    m_tracking;
         bool    m_pipeline_ready;
 
-        // zv
         // singleton instance
         static CinderMain*  sInstance;
 
