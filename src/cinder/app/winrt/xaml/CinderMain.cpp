@@ -57,12 +57,12 @@
 // this function is defined by the application start macro
 extern int mainXAML();
 
-
 using namespace Windows::UI::Xaml;
 
 
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
+using namespace Platform;
 using namespace Concurrency;
 
 namespace DX {
@@ -309,20 +309,40 @@ namespace cinder {
             CreateWindowSizeDependentResources();
         }
 
-        void CinderMain::TrackingUpdate(PointerEventArgs ^evtArgs)
+        void CinderMain::OnPointerPressed(PointerEventArgs^ args)
         {
-            if (!m_tracking) return;
+            std::lock_guard<std::mutex> guard(mMutex);
+            std::shared_ptr<PointerEvent> e(new PointerEvent(PointerEventType::PointerPressed, args));
+            mInputEvents.push(e);
+        }
 
-            auto p = evtArgs->CurrentPoint->Position;
-            int ix = (int)p.X;
-            int iy = (int)p.Y;
+        void CinderMain::ProcessPointerPressed(PointerEventArgs^ args)
+        {
+            AppBasic::get()->getImpl()->handlePointerDown(args);
+        }
 
-            // create a Cinder mouse event
-            // nb. refer to AppImplWinRT::prepPointerEventModifiers for a more complete implementation
-            MouseEvent e(nullptr, 0, ix, iy, cinder::app::MouseEvent::LEFT_DOWN, 0, 0);
+        void CinderMain::OnPointerMoved(PointerEventArgs^ args)
+        {
+            std::lock_guard<std::mutex> guard(mMutex);
+            std::shared_ptr<PointerEvent> e(new PointerEvent(PointerEventType::PointerMoved, args));
+            mInputEvents.push(e);
+        }
 
-            // call the Cinder app mouse event handler
-            AppBasic::get()->mouseDrag(e);
+        void CinderMain::ProcessPointerMoved(PointerEventArgs^ args)
+        {
+            AppBasic::get()->getImpl()->handlePointerMoved(args);
+        }
+
+        void CinderMain::OnPointerReleased(PointerEventArgs^ args)
+        {
+            std::lock_guard<std::mutex> guard(mMutex);
+            std::shared_ptr<PointerEvent> e(new PointerEvent(PointerEventType::PointerReleased, args));
+            mInputEvents.push(e);
+        }
+
+        void CinderMain::ProcessPointerReleased(PointerEventArgs^ args)
+        {
+            AppBasic::get()->getImpl()->handlePointerUp(args);
         }
 
         void CinderMain::OnKeyDown(KeyEventArgs^ args)
