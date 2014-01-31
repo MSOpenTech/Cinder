@@ -77,20 +77,24 @@ namespace cinder { namespace app {
         CinderMain() : m_timer(nullptr), m_relay(nullptr) {}
         ~CinderMain();
 
+
         // Methods called by XAML via CinderPage
         void setup(const std::shared_ptr<DX::DeviceResources>& deviceResources);
         void CreateWindowSizeDependentResources();
 
         // pointer
-        void StartTracking() {  m_tracking = true; }
-        void TrackingUpdate(Windows::UI::Core::PointerEventArgs^ e);
-        void StopTracking() { m_tracking = false; }
-        bool IsTracking() { return m_tracking; }
+        void OnPointerPressed(Windows::UI::Core::PointerEventArgs^ args);
+        void ProcessPointerPressed(Windows::UI::Core::PointerEventArgs^ args);
+        void OnPointerMoved(Windows::UI::Core::PointerEventArgs^ args);
+        void ProcessPointerMoved(Windows::UI::Core::PointerEventArgs^ args);
+        void OnPointerReleased(Windows::UI::Core::PointerEventArgs^ args);
+        void ProcessPointerReleased(Windows::UI::Core::PointerEventArgs^ args);
 
-        void OnKeyDown(Windows::UI::Core::KeyEventArgs^ arg);
-        void ProcessOnKeyDown(Windows::UI::Core::KeyEventArgs^ arg);
-        void OnKeyUp(Windows::UI::Core::KeyEventArgs^ arg);
-        void ProcessOnKeyUp(Windows::UI::Core::KeyEventArgs^ arg);
+
+        void OnKeyDown(Windows::UI::Core::KeyEventArgs^ args);
+        void ProcessOnKeyDown(Windows::UI::Core::KeyEventArgs^ args);
+        void OnKeyUp(Windows::UI::Core::KeyEventArgs^ args);
+        void ProcessOnKeyUp(Windows::UI::Core::KeyEventArgs^ args);
         void OnPointerWheelChanged(Windows::UI::Core::PointerEventArgs^ args);
 
         // rendering
@@ -117,7 +121,6 @@ namespace cinder { namespace app {
         // ptr to Cinder renderer for DirectX, owned by Cinder
         cinder::app::AppImplMswRendererDx *mRenderer;
 
-        bool    m_tracking;
         bool    m_pipeline_ready;
 
         // singleton instance
