@@ -30,7 +30,7 @@
 #include <cfloat>
 #include <functional>
 
-#if defined( CINDER_MSW ) || defined( CINDER_WINRT_XAML )
+#if defined( CINDER_MSW ) || defined( CINDER_WINRT )
 	#undef min
 	#undef max
 #endif
