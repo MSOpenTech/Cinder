@@ -33,30 +33,27 @@
 namespace cinder {
     namespace app {
 
-#if 0
         PointerEvent::PointerEvent(PointerEventType type, Windows::UI::Core::PointerEventArgs^ args)
             : m_type(type), m_args(args)
         {
 
         }
 
-
         void PointerEvent::execute(CinderMain* cinder)
         {
             switch (m_type)
             {
             case PointerEventType::PointerPressed:
-                cinder->OnPointerPressed(m_args.Get());
+                cinder->ProcessPointerPressed(m_args.Get());
                 break;
             case PointerEventType::PointerMoved:
-                cinder->OnPointerMoved(m_args.Get());
+                cinder->ProcessPointerMoved(m_args.Get());
                 break;
             case PointerEventType::PointerReleased:
-                cinder->OnPointerReleased(m_args.Get());
+                cinder->ProcessPointerReleased(m_args.Get());
                 break;
             }
         }
-#endif
 
         KeyboardEvent::KeyboardEvent(XamlKeyEvent type, Windows::UI::Core::KeyEventArgs^ args)
             : m_type(type), m_args(args)
