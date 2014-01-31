@@ -6,7 +6,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageFileBasic", "ImageFile
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB} = {7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cinder", "..\..\..\winrt\cinder.vcxproj", "{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cinder", "..\..\..\vc2012_winrt\cinder.vcxproj", "{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,6 +4,7 @@
 #include "cinder/Surface.h"
 #include "cinder/dx/DxTexture.h"
 #include "cinder/dx/dx.h"
+#include "cinder/app/RendererDx.h"
 
 
 // Uncomment this line to enable specialized PNG handling
@@ -22,7 +23,7 @@ class ImageFileBasicApp : public AppBasic {
 	void setup();
 	void keyDown( KeyEvent event );
 	void draw();
-	dx::Texture		mTexture;	
+    dx::TextureRef		mTexture;
 
 
 };
@@ -51,7 +52,7 @@ void ImageFileBasicApp::setup()
 				*/
 
 				loadImageAsync(path, [this](ImageSourceRef imageRef){
-					this->mTexture = dx::Texture( imageRef );
+					this->mTexture = dx::Texture::create( imageRef );
 				});
 
 
