@@ -209,7 +209,11 @@ class App {
 		bool	isFrameRateEnabled() const { return mFrameRateEnabled; }
 		//! maximum frameRate of the application specified in frames per second
 		float	getFrameRate() const { return mFrameRate; }
-		
+
+#if defined( CINDER_WINRT )
+        void setXaml(bool isXaml) { mIsXaml = isXaml; }
+        bool getXaml() const { return mIsXaml; }
+#endif
 		Settings();
 		virtual ~Settings() {}	  
 
@@ -227,7 +231,12 @@ class App {
 		bool			mEnableHighDensityDisplay;
 		bool			mEnableMultiTouch;
 		std::string		mTitle;
-		
+
+#if defined( CINDER_WINRT )
+        bool mIsXaml;
+#endif
+
+
 		friend class App;
 	};
 
@@ -631,6 +640,7 @@ inline	Rectf	toPoints( const Rectf &a ) { return getWindow()->toPoints( a ); }
 inline double	getElapsedSeconds() { return App::get()->getElapsedSeconds(); }
 //! Returns the number of animation frames which have elapsed since the active App launched.
 inline uint32_t	getElapsedFrames() { return App::get()->getElapsedFrames(); }
+
 
 //! Returns a DataSource to an application resource. On Mac OS X, \a macPath is a path relative to the bundle's resources folder. On Windows, \a mswID and \a mswType identify the resource as defined the application's .rc file(s). \sa \ref CinderResources
 inline DataSourceRef		loadResource( const std::string &macPath, int mswID, const std::string &mswType ) { return App::loadResource( macPath, mswID, mswType ); }
