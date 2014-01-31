@@ -80,6 +80,8 @@ class AppBasic : public App {
 		bool	isConsoleWindowEnabled() const { return mEnableMswConsole; }
 #endif
 
+
+
 		//! Registers the app to receive multiTouch events from the operating system. Disabled by default. Only supported on WinRT, Windows 7/8 and Mac OS X trackpad.
 		void		enableMultiTouch( bool enable = true ) { mEnableMultiTouch = enable; }
 		//! Returns whether the app is registered to receive multiTouch events from the operating system. Disabled by default. Only supported on Windows 7 and Mac OS X trackpad.
@@ -95,6 +97,9 @@ class AppBasic : public App {
 #if defined( CINDER_MSW )
 		bool		mEnableMswConsole;
 #endif
+
+
+
 	};
 
 	// This is really just here to disambiguate app::WindowRef from the WindowRef found in QuickDraw (so that client code doesn't have to invoke cinder::app::WindowRef explicitly)	
@@ -149,6 +154,7 @@ class AppBasic : public App {
 
 #if defined( CINDER_WINRT)
 	class AppImplWinRTBasic*	getImpl() {return mImpl;};
+
 #endif
 
 	// DO NOT CALL - should be private but aren't for esoteric reasons
@@ -209,45 +215,37 @@ class AppBasic : public App {
 
 #if defined( CINDER_MAC )
 #define CINDER_APP_BASIC( APP, RENDERER )								\
-	int main( int argc, char * const argv[] ) {							\
-	cinder::app::AppBasic::prepareLaunch();								\
-	cinder::app::AppBasic *app = new APP;								\
-	cinder::app::RendererRef ren( new RENDERER );						\
-	cinder::app::AppBasic::executeLaunch( app, ren, #APP, argc, argv );	\
-	cinder::app::AppBasic::cleanupLaunch();								\
-	return 0;															\
-	}
+    int main( int argc, char * const argv[] ) {							\
+    cinder::app::AppBasic::prepareLaunch();								\
+    cinder::app::AppBasic *app = new APP;								\
+    cinder::app::RendererRef ren( new RENDERER );						\
+    cinder::app::AppBasic::executeLaunch( app, ren, #APP, argc, argv );	\
+    cinder::app::AppBasic::cleanupLaunch();								\
+    return 0;															\
+    }
 #elif defined( CINDER_MSW )
 #define CINDER_APP_BASIC( APP, RENDERER )														\
-	int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow) {	\
-	cinder::app::AppBasic::prepareLaunch();														\
-	cinder::app::AppBasic *app = new APP;														\
-	cinder::app::RendererRef ren( new RENDERER );												\
-	cinder::app::AppBasic::executeLaunch( app, ren, #APP );										\
+    int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow) {	\
+    cinder::app::AppBasic::prepareLaunch();														\
+    cinder::app::AppBasic *app = new APP;														\
+    cinder::app::RendererRef ren( new RENDERER );												\
+    cinder::app::AppBasic::executeLaunch( app, ren, #APP );										\
+    cinder::app::AppBasic::cleanupLaunch();														\
+    return 0;																					\
+    }
+#elif defined( CINDER_WINRT )
+#define CINDER_APP_BASIC( APP, RENDERER )														\
+    [Platform::MTAThread]																		\
+    int main(Platform::Array<Platform::String^>^) {                                             \
+    cinder::app::AppBasic::prepareLaunch();														\
+    cinder::app::AppBasic *app = new APP;														\
+    cinder::app::RendererRef ren(new RENDERER);													\
+    cinder::app::AppBasic::executeLaunch(app, ren, #APP);										\
 	cinder::app::AppBasic::cleanupLaunch();														\
 	return 0;																					\
 	}
-#elif defined( CINDER_WINRT ) && !defined( CINDER_WINRT_XAML )
-#define CINDER_APP_BASIC( APP, RENDERER )														\
-	[Platform::MTAThread]																		\
-	int main(Platform::Array<Platform::String^>^) {												\
-	cinder::app::AppBasic::prepareLaunch();														\
-	cinder::app::AppBasic *app = new APP;														\
-	cinder::app::RendererRef ren(new RENDERER);													\
-	cinder::app::AppBasic::executeLaunch(app, ren, #APP);										\
-	cinder::app::AppBasic::cleanupLaunch();														\
-	return 0;																					\
-	}
-#elif defined( CINDER_WINRT_XAML )
-// 
-// A XAML app starts with a call to a generated main function that builds the XAML UI.
-// XAML build-up calls the CinderPage ctor, which then calls CinderMain::setup().
-// After setup(), the rendering and event loop is entered in CinderMain.
-// See the 'code-behind' for App.xaml and CinderPage.xaml
-//
-//    cinder::app::AppBasic *app;                                                               
-//
-#define CINDER_APP_BASIC( APP, RENDERER )														\
+
+#define CINDER_APP_BASIC_XAML( APP, RENDERER )													\
     int mainXAML() {                                                                            \
     cinder::app::AppBasic::prepareLaunch();														\
 	cinder::app::AppBasic *app = new APP;														\
