@@ -53,9 +53,6 @@ using std::uint64_t;
 
 #define CINDER_CINDER
 
-#if defined(WINRT_XAML)
-#define CINDER_WINRT_XAML
-#endif
 
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 	#if defined(WINAPI_PARTITION_DESKTOP)
