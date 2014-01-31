@@ -75,6 +75,10 @@ App::Settings::Settings()
 	mEnableHighDensityDisplay = false;
 	mEnableMultiTouch = false;	
 #endif	
+
+#if defined( CINDER_WINRT )
+    mIsXaml = false;
+#endif
 }
 
 void App::Settings::disableFrameRate()
