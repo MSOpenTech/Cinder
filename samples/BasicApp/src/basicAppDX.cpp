@@ -12,14 +12,22 @@ using namespace std;
 // We'll create a new Cinder Application by deriving from the CinderMain class
 
 class BasicApp : public AppBasic {
-  public:
-    void mouseDrag( MouseEvent event );
+public:
+    void prepareSettings(Settings *settings);
+    void mouseDrag(MouseEvent event);
     void keyDown( KeyEvent event );
     void draw();
 
 	// This will maintain a list of points which we will draw line segments between
 	list<Vec2f>		mPoints;
 };
+
+void BasicApp::prepareSettings(Settings *settings)
+{
+#ifdef WINRT_XAML
+    settings->setXaml(true);
+#endif
+}
 
 void BasicApp::mouseDrag( MouseEvent event )
 {
@@ -48,5 +56,8 @@ void BasicApp::draw()
 }
 
 // This line tells Cinder to actually create the application
-CINDER_APP_BASIC( BasicApp, RendererDx )
-
+#ifdef WINRT_XAML
+CINDER_APP_BASIC_XAML(BasicApp, RendererDx)
+#else
+CINDER_APP_BASIC(BasicApp, RendererDx)
+#endif
