@@ -90,9 +90,13 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 	setWindow(mWindow->getWindow());
 
     // for XAML, call setup() after the Renderer has been associated with Application
-#if ! defined( CINDER_WINRT_XAML )
-	mApp->privateSetup__();
-#endif
+    bool isXaml = mApp->getSettings().getXaml();
+
+    if (!isXaml)
+    {
+        mApp->privateSetup__();
+    }
+
 	mSetupHasBeenCalled = true;
 
 	if(mApp->getSettings().isMultiTouchEnabled()) {
@@ -100,9 +104,10 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 	}
 
     // for XAML, return control to the XAML DX framework
-#if defined( CINDER_WINRT_XAML )
-    return;
-#endif
+    if (isXaml)
+    {
+        return;
+    }
 
     // emit moved after enable multitouch s/b OK
 	mWindow->getWindow()->emitResize();
