@@ -90,36 +90,36 @@ void AppBasic::executeLaunch( AppBasic *app, RendererRef renderer, const char *t
 }
 #endif
 
-void AppBasic::launch( const char *title, int argc, char * const argv[] )
+void AppBasic::launch(const char *title, int argc, char * const argv [])
 {
-	for( int arg = 0; arg < argc; ++arg )
-		mCommandLineArgs.push_back( std::string( argv[arg] ) );
+    for (int arg = 0; arg < argc; ++arg)
+        mCommandLineArgs.push_back(std::string(argv[arg]));
 
-	mSettings.setTitle( title );
+    mSettings.setTitle(title);
 
-	prepareSettings( &mSettings );
-	if( ! mSettings.isPrepared() ) {
-		return;
-	}
+    prepareSettings(&mSettings);
+    if (!mSettings.isPrepared()) {
+        return;
+    }
 
 #if defined( CINDER_MSW )
-	// allocate and redirect the console if requested
-	if( mSettings.isConsoleWindowEnabled() ) {
-		::AllocConsole();
-		freopen( "CONIN$", "r", stdin );
-		freopen( "CONOUT$", "w", stdout );
-		freopen( "CONOUT$", "w", stderr );
+    // allocate and redirect the console if requested
+    if( mSettings.isConsoleWindowEnabled() ) {
+        ::AllocConsole();
+        freopen( "CONIN$", "r", stdin );
+        freopen( "CONOUT$", "w", stdout );
+        freopen( "CONOUT$", "w", stderr );
 
-		// set the app's console stream to std::cout and give its shared_ptr a null deleter
-		mOutputStream = std::shared_ptr<std::ostream>( &std::cout, [](std::ostream*){} );
-	}
+        // set the app's console stream to std::cout and give its shared_ptr a null deleter
+        mOutputStream = std::shared_ptr<std::ostream>( &std::cout, [](std::ostream*){} );
+    }
 #endif
 
-	// pull out app-level variables
-	enablePowerManagement( mSettings.isPowerManagementEnabled() );
+    // pull out app-level variables
+    enablePowerManagement(mSettings.isPowerManagementEnabled());
 
 #if defined( CINDER_COCOA )
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     NSApplication * application = [NSApplication sharedApplication];
 
     mImpl = [[AppImplCocoaBasic alloc] init:this];
@@ -129,12 +129,14 @@ void AppBasic::launch( const char *title, int argc, char * const argv[] )
 
     [pool drain];
 #elif defined( CINDER_WINRT )
-	mImpl = new AppImplWinRTBasic( this );	
+    mImpl = new AppImplWinRTBasic(this);
 
     // for XAML, we do NOT want to instantiate a Direct3DApplicationSource
-#if ! defined( CINDER_WINRT_XAML )
-	mImpl->run();
-#endif
+    if (!getSettings().getXaml())
+    {
+        mImpl->run();
+    }
+
 	
 #else
 	mImpl = new AppImplMswBasic( this );	
@@ -294,6 +296,7 @@ AppBasic::Settings::Settings()
 #if defined( CINDER_MSW )
 	mEnableMswConsole = false;
 #endif
+
 }
 
 void AppBasic::Settings::setShouldQuit( bool aShouldQuit )
