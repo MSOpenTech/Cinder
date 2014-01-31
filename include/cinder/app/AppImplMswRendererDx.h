@@ -39,14 +39,13 @@
 #include <dxgi.h>
 #include <dxgi1_2.h>
 
-#if defined( CINDER_WINRT_XAML )
+#if (_MSC_VER >= 1800)
 #include <D3D11_2.h>
 #include <d2d1_2.h>
 #include <DirectXMath.h>
 
 using namespace D2D1;
 using namespace DirectX;
-
 #endif
 
 namespace cinder { namespace dx {
@@ -138,7 +137,7 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	RendererDx	*mRenderer;
 	D3D_FEATURE_LEVEL mFeatureLevel;
 	
-#if defined( CINDER_WINRT_XAML )
+#if (_MSC_VER >= 1800)
 	ID3D11DeviceContext2 *mDeviceContext;
 	IDXGISwapChain1 *mSwapChain;
 	ID3D11Device2 *md3dDevice;
@@ -151,6 +150,7 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
     IDXGISwapChain *mSwapChain;
     ID3D11Device *md3dDevice;
 #endif
+
 	ID3D11RenderTargetView *mMainFramebuffer;
 	ID3D11Texture2D *mDepthStencilTexture;
 	ID3D11DepthStencilView *mDepthStencilView;
