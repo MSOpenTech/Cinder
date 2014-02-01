@@ -107,7 +107,6 @@ namespace cinder {
 
             // set singleton ptr
             CinderMain::sInstance = this;
-            // cinder::app::AppBasic* app = cinder::app::AppBasic::get();
 
             // optional: frames per second renderer (see SampleFpsTextRenderer in the XAML template)
             // m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
