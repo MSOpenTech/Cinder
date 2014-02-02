@@ -231,22 +231,19 @@ void CinderPage::AppBarButton_Click(Object^ sender, RoutedEventArgs^ e)
 void CinderPage::OnPointerPressed(Object^ sender, PointerEventArgs^ e)
 {
 	// When the pointer is pressed begin tracking the pointer movement.
-	m_cinder->StartTracking();
+    m_cinder->OnPointerPressed(e);
 }
 
 void CinderPage::OnPointerMoved(Object^ sender, PointerEventArgs^ e)
 {
-	// Update the pointer tracking code.
-	if (m_cinder->IsTracking())
-	{
-		m_cinder->TrackingUpdate(e);
-	}
+    m_cinder->OnPointerMoved(e);
+
 }
 
 void CinderPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
 {
-	// Stop tracking pointer movement when the pointer is released.
-	m_cinder->StopTracking();
+    m_cinder->OnPointerReleased(e);
+
 }
 
 
