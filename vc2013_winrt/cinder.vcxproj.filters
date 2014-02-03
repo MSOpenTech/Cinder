@@ -361,6 +361,12 @@
     <ClInclude Include="..\include\cinder\app\winrt\xaml\InputEvent.h">
       <Filter>Header Files\app\winrt\xaml</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\cinder\Capture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cinder\CaptureImplWinRT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\cinder\app\App.cpp">
@@ -830,6 +836,12 @@
     </ClCompile>
     <ClCompile Include="..\src\cinder\app\winrt\xaml\InputEvent.cpp">
       <Filter>Source Files\app\Xaml\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cinder\Capture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cinder\CaptureImplWinRt.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
