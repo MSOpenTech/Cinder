@@ -50,6 +50,10 @@
 	namespace cinder {
 		class CaptureImplDirectShow;
 	}
+#elif defined( CINDER_WINRT )
+	namespace cinder {
+		class CaptureImplWinRT;
+	}
 #endif
 
 #include <map>
@@ -147,6 +151,8 @@ class Capture {
 		CaptureImplAvFoundation			*mImpl;
 #elif defined( CINDER_MSW )
 		CaptureImplDirectShow			*mImpl;
+#elif defined( CINDER_WINRT )
+		CaptureImplWinRT    			*mImpl;
 #endif
 	};
 	
