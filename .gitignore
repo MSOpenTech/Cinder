@@ -25,3 +25,20 @@ ipch/
 # doxygen generated files
 docs/html
 docs/doxygen/cinder.tag
+/nbproject/private/CodeAssistancePathMapper.properties
+/nbproject/private/launcher.properties
+/nbproject/private/private.xml
+/nbproject/private/configurations.xml
+/nbproject/private/Default-build.log.log
+/lib/msw/x86/cinder-v120_d.pdb
+/nbproject/project.xml
+/lib/msw/x86/cinder-v120_d.idb
+/lib/msw/x86/cinder-v110_d.pdb
+/samples/CaptureBasic/vc2012 - orig/CaptureBasic.sln
+/samples/CaptureBasic/vc2012 - orig/CaptureBasic.vcxproj.filters
+/makefile
+/samples/CaptureBasic/vc2012 - orig/CaptureBasic.vcxproj
+/samples/CaptureBasic/vc2012 - orig/Resources.rc
+/lib/winrt/x86/cinder.pri
+/lib/msw/x86/cinder-v110_d.idb
+/nbproject/configurations.xml
