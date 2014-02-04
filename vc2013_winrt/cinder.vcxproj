@@ -280,6 +280,8 @@
     <ClInclude Include="..\include\cinder\BSplineFit.h" />
     <ClInclude Include="..\include\cinder\Buffer.h" />
     <ClInclude Include="..\include\cinder\Camera.h" />
+    <ClInclude Include="..\include\cinder\Capture.h" />
+    <ClInclude Include="..\include\cinder\CaptureImplWinRT.h" />
     <ClInclude Include="..\include\cinder\Channel.h" />
     <ClInclude Include="..\include\cinder\Cinder.h" />
     <ClInclude Include="..\include\cinder\CinderMath.h" />
@@ -342,6 +344,7 @@
     <ClInclude Include="..\src\AntTweakBar\TwGraph.h" />
     <ClInclude Include="..\src\AntTweakBar\TwMgr.h" />
     <ClInclude Include="..\src\AntTweakBar\TwPrecomp.h" />
+    <ClInclude Include="..\src\cinder\winrt\MediaCaptureWinRT.h" />
     <ClInclude Include="..\src\libtess2\bucketalloc.h" />
     <ClInclude Include="..\src\libtess2\dict.h" />
     <ClInclude Include="..\src\libtess2\geom.h" />
@@ -384,6 +387,8 @@
     <ClCompile Include="..\src\cinder\BSplineFit.cpp" />
     <ClCompile Include="..\src\cinder\Buffer.cpp" />
     <ClCompile Include="..\src\cinder\Camera.cpp" />
+    <ClCompile Include="..\src\cinder\Capture.cpp" />
+    <ClCompile Include="..\src\cinder\CaptureImplWinRt.cpp" />
     <ClCompile Include="..\src\cinder\Channel.cpp" />
     <ClCompile Include="..\src\cinder\CinderMath.cpp" />
     <ClCompile Include="..\src\cinder\Color.cpp" />
@@ -441,6 +446,7 @@
     <ClCompile Include="..\src\cinder\dx\DxTexture.cpp" />
     <ClCompile Include="..\src\cinder\Exception.cpp" />
     <ClCompile Include="..\src\cinder\Rect.cpp" />
+    <ClCompile Include="..\src\cinder\winrt\MediaCaptureWinRT.cpp" />
     <ClCompile Include="..\src\cinder\Xml.cpp" />
     <ClCompile Include="..\src\freetype\autofit\autofit.c">
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
