@@ -20,14 +20,20 @@
 #include <vector>
 #include <utility>
 
-using namespace Windows::Foundation;
+using namespace concurrency;
+
 using namespace Platform;
+using namespace Platform::Collections;
+using namespace Windows::Foundation;
+using namespace Windows::Foundation::Collections;
+
 using namespace Windows::UI;
 using namespace Windows::UI::Core;
 using namespace Windows::Media::MediaProperties;
 using namespace Windows::Storage::Streams;
 using namespace Windows::System;
 // using namespace Windows::UI::Xaml::Media::Imaging;
+
 using namespace Windows::Devices::Enumeration;
 using namespace Windows::Media;
 using namespace Windows::Media::Capture;
@@ -107,7 +113,7 @@ IVector<String ^> ^MediaCaptureWinRT::EnumerateMicrophonesAsync()
 IVector<String ^> ^MediaCaptureWinRT::EnumerateWebCamsAsync()
 {
 
-    ShowStatusMessage("Enumerating Webcams...");
+    ShowStatusMessage("Enumerating WebCams...");
     m_devInfoCollection = nullptr;
 
     // vec gets filled in with a vector of strings, one for each device
@@ -195,8 +201,8 @@ void MediaCaptureWinRT::PrepareForVideoRecording()
 
 bool MediaCaptureWinRT::startDevices( int webcam, int mic )
 {
-    selectedMicrophoneDeviceIndex = mic;
     selectedVideoDeviceIndex = webcam;
+    selectedMicrophoneDeviceIndex = mic;
 
     auto mediaCapture = ref new Windows::Media::Capture::MediaCapture();
     m_mediaCaptureMgr = mediaCapture;

@@ -11,9 +11,17 @@
 // Interface to MediaCapture on WinRT
 // conforms to WinRT ABI
 
-// documentation links
+// related documentation links:
+//
+// media sample: http://code.msdn.microsoft.com/windowsapps/Media-Capture-Sample-adf87622
+//
+// MediaCapture.StartRecordToCustomSinkAsync:
+// http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
+//
 // type system: http://msdn.microsoft.com/en-us/library/windows/apps/hh700103.aspx
+//
 // ABI pass array: http://msdn.microsoft.com/en-us/library/windows/apps/hh700131.aspx 
+//
 // tasks: http://msdn.microsoft.com/en-us/library/dd492427.aspx
 
 #pragma once
@@ -27,11 +35,8 @@
 
 #include <array>
 
-using namespace concurrency;
-using namespace Platform;
-using namespace Platform::Collections;
-using namespace Windows::Devices::Enumeration;
-using namespace Windows::Foundation::Collections;
+// nb. no using statements in header files
+// see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
 
 typedef std::array<unsigned int,1920*1080> HD_STD_ARRAY;
 
@@ -49,8 +54,8 @@ public:
     MediaCaptureWinRT();
 
     // 1. enumerate the mics and webcams
-    IVector<String ^> ^EnumerateMicrophonesAsync();
-    IVector<String ^> ^EnumerateWebCamsAsync();
+    Windows::Foundation::Collections::IVector<Platform::String ^> ^EnumerateMicrophonesAsync();
+    Windows::Foundation::Collections::IVector<Platform::String ^> ^EnumerateWebCamsAsync();
 
     // 2. select and start the devices to use
     bool startDevices( int webcam, int mic );
@@ -72,7 +77,7 @@ public:
 
     // unsigned pointer to the frame buffer copy
     // used by getPixels()
-    property UIntPtr pFB;
+    property Platform::UIntPtr pFB;
 
 private:
 
@@ -83,12 +88,12 @@ private:
 
     // Media Extension communication via property set
     // must be private
-    PropertySet^ MEcomm;
+    Windows::Foundation::Collections::PropertySet^ MEcomm;
 
-    Agile<Windows::Media::Capture::MediaCapture> m_mediaCaptureMgr;
+    Platform::Agile<Windows::Media::Capture::MediaCapture> m_mediaCaptureMgr;
 
-    DeviceInformationCollection^ m_devInfoCollection;
-    DeviceInformationCollection^ m_microPhoneInfoCollection;
+    Windows::Devices::Enumeration::DeviceInformationCollection^ m_devInfoCollection;
+    Windows::Devices::Enumeration::DeviceInformationCollection^ m_microPhoneInfoCollection;
 
     // stubs - could be useful for debug
     void ShowStatusMessage(Platform::String^ text) {}
