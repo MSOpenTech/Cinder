@@ -9,8 +9,20 @@
 //*********************************************************
 
 // Interface to MediaCapture on WinRT
+// conforms to WinRT ABI
 
-// DOES NOT COMPILE AT THIS TIME
+// related documentation links:
+//
+// media sample: http://code.msdn.microsoft.com/windowsapps/Media-Capture-Sample-adf87622
+//
+// MediaCapture.StartRecordToCustomSinkAsync:
+// http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
+//
+// type system: http://msdn.microsoft.com/en-us/library/windows/apps/hh700103.aspx
+//
+// ABI pass array: http://msdn.microsoft.com/en-us/library/windows/apps/hh700131.aspx 
+//
+// tasks: http://msdn.microsoft.com/en-us/library/dd492427.aspx
 
 #pragma once
 
@@ -23,8 +35,8 @@
 
 #include <array>
 
-using namespace concurrency;
-using namespace Windows::Devices::Enumeration;
+// nb. no using statements in header files
+// see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
 
 typedef std::array<unsigned int,1920*1080> HD_STD_ARRAY;
 
@@ -41,38 +53,52 @@ ref class MediaCaptureWinRT sealed
 public:
     MediaCaptureWinRT();
 
-    // methods needed:
-    //
-    // getDevices
-    //
-    // listDevices
-    //
+    // 1. enumerate the mics and webcams
+    Windows::Foundation::Collections::IVector<Platform::String ^> ^EnumerateMicrophonesAsync();
+    Windows::Foundation::Collections::IVector<Platform::String ^> ^EnumerateWebCamsAsync();
+
+    // 2. select and start the devices to use
+    bool startDevices( int webcam, int mic );
+
+    // 3. create a target surface / texture TBD
     // create( width, height )
-    // start
-    // stop
+
+    // 4. start/stop capture as needed
+    // data is sent to the surface via the media extension (a plug in)
+    // these methods return 0 (false) on success
+    bool startCapture();
+    bool stopCapture();
+
+    // methods to use while capturing:
+    //
     // isCapturing
     // getPixels
     // isFrameNew
 
     // unsigned pointer to the frame buffer copy
+    // used by getPixels()
     property Platform::UIntPtr pFB;
 
 private:
+
+    int selectedVideoDeviceIndex;
+    int selectedMicrophoneDeviceIndex;
+
+    void PrepareForVideoRecording();
 
     // Media Extension communication via property set
     // must be private
     Windows::Foundation::Collections::PropertySet^ MEcomm;
 
-    void EnumerateWebcamsAsync();
-    void EnumerateMicrophonesAsync();
-    // ? void EnumerateSceneModeAsync();
-
-    void PrepareForVideoRecording();
-
     Platform::Agile<Windows::Media::Capture::MediaCapture> m_mediaCaptureMgr;
 
-    DeviceInformationCollection^ m_devInfoCollection;
-    DeviceInformationCollection^ m_microPhoneInfoCollection;
+    Windows::Devices::Enumeration::DeviceInformationCollection^ m_devInfoCollection;
+    Windows::Devices::Enumeration::DeviceInformationCollection^ m_microPhoneInfoCollection;
+
+    // stubs - could be useful for debug
+    void ShowStatusMessage(Platform::String^ text) {}
+    void ShowExceptionMessage(Platform::Exception^ ex) {};
+
 
 };
 
