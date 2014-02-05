@@ -28,12 +28,8 @@
 
 // #include "pch.h"
 
-#include <collection.h>
-#include <ppltasks.h>
-#include <ppl.h>
-#include <agile.h>
-
 #include <array>
+#include <agile.h>
 
 // nb. no using statements in header files
 // see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
@@ -53,11 +49,14 @@ ref class MediaCaptureWinRT sealed
 public:
     MediaCaptureWinRT();
 
-    // 1. enumerate the mics and webcams
-    Windows::Foundation::Collections::IVector<Platform::String ^> ^EnumerateMicrophonesAsync();
-    Windows::Foundation::Collections::IVector<Platform::String ^> ^EnumerateWebCamsAsync();
+    // 1. enumerate webcams
+    static void EnumerateWebCamsAsync();
+
+    // 1A. async completion results are stored here:
+    //    property Windows::Foundation::Collections::IVector<Platform::String ^> ^webcamList;
 
     // 2. select and start the devices to use
+    // ints are the indices from the lists obtained in step 1
     bool startDevices( int webcam, int mic );
 
     // 3. create a target surface / texture TBD

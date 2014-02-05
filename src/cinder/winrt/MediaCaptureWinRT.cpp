@@ -20,6 +20,10 @@
 #include <vector>
 #include <utility>
 
+#include <collection.h>
+#include <ppltasks.h>
+#include <ppl.h>
+
 using namespace concurrency;
 
 using namespace Platform;
@@ -49,125 +53,59 @@ MediaCaptureWinRT::MediaCaptureWinRT()
     // zv todo: Media Extension init
 }
 
-IVector<String ^> ^MediaCaptureWinRT::EnumerateMicrophonesAsync()
+void MediaCaptureWinRT::EnumerateWebCamsAsync()
 {
+    // ShowStatusMessage("Enumerating WebCams...");
 
-    ShowStatusMessage("Enumerating Microphones...");
-    m_microPhoneInfoCollection = nullptr;
+    // webcamList gets filled in with a vector of strings, one for each device
+    // webcamList = ref new Vector<String ^>;
 
-    // vec gets filled in with a vector of strings, one for each device
-    auto vec = ref new Vector<String ^>;
-
-    create_task(DeviceInformation::FindAllAsync(DeviceClass::AudioCapture)).then([this, vec](task<DeviceInformationCollection^> findTask)
+    create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture)).then([](task<DeviceInformationCollection^> findTask)
     {
         try
         {
-            m_microPhoneInfoCollection = findTask.get();
-            if (m_microPhoneInfoCollection == nullptr || m_microPhoneInfoCollection->Size == 0)
+            auto devInfoCollection = findTask.get();
+            if (devInfoCollection == nullptr || devInfoCollection->Size == 0)
             {
-                ShowStatusMessage("No Microphones found.");
+                // ShowStatusMessage("No WebCams found.");
             }
             else
             {
-                for (unsigned int i = 0; i < m_microPhoneInfoCollection->Size; i++)
+                for (unsigned int i = 0; i < devInfoCollection->Size; i++)
                 {
-                    auto devInfo = m_microPhoneInfoCollection->GetAt(i);
+                    auto devInfo = devInfoCollection->GetAt(i);
                     auto location = devInfo->EnclosureLocation;
                     if (location != nullptr)
                     {
                         if (location->Panel == Windows::Devices::Enumeration::Panel::Front)
                         {
                             String ^s = devInfo->Name + "-Front";
-                            vec->Append( s );
+                            // webcamList->Append( s );
                         }
                         else if (location->Panel == Windows::Devices::Enumeration::Panel::Back)
                         {
                             String ^s = devInfo->Name + "-Back";
-                            vec->Append( s );
+                            // webcamList->Append( s );
                         }
                         else
                         {
-                            vec->Append(devInfo->Name);
+                            // webcamList->Append(devInfo->Name);
                         }
                     }
                     else
                     {
-                        vec->Append(devInfo->Name);
+                        // webcamList->Append(devInfo->Name);
                     }
                 }
-                ShowStatusMessage("Enumerating Microphones completed successfully.");
+                // ShowStatusMessage("Enumerating Webcams completed successfully.");
             }
         }
         catch (Exception ^e)
         {
-            ShowExceptionMessage(e);
+            // ShowExceptionMessage(e);
         }
     
-        // wait for the task to complete, then return the vector
-    }).wait();
-
-    return vec;
-}
-
-
-IVector<String ^> ^MediaCaptureWinRT::EnumerateWebCamsAsync()
-{
-
-    ShowStatusMessage("Enumerating WebCams...");
-    m_devInfoCollection = nullptr;
-
-    // vec gets filled in with a vector of strings, one for each device
-    auto vec = ref new Vector<String ^>;
-
-    create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture)).then([this, vec](task<DeviceInformationCollection^> findTask)
-    {
-        try
-        {
-            m_devInfoCollection = findTask.get();
-            if (m_devInfoCollection == nullptr || m_devInfoCollection->Size == 0)
-            {
-                ShowStatusMessage("No WebCams found.");
-            }
-            else
-            {
-                for (unsigned int i = 0; i < m_devInfoCollection->Size; i++)
-                {
-                    auto devInfo = m_devInfoCollection->GetAt(i);
-                    auto location = devInfo->EnclosureLocation;
-                    if (location != nullptr)
-                    {
-                        if (location->Panel == Windows::Devices::Enumeration::Panel::Front)
-                        {
-                            String ^s = devInfo->Name + "-Front";
-                            vec->Append( s );
-                        }
-                        else if (location->Panel == Windows::Devices::Enumeration::Panel::Back)
-                        {
-                            String ^s = devInfo->Name + "-Back";
-                            vec->Append( s );
-                        }
-                        else
-                        {
-                            vec->Append(devInfo->Name);
-                        }
-                    }
-                    else
-                    {
-                        vec->Append(devInfo->Name);
-                    }
-                }
-                ShowStatusMessage("Enumerating Webcams completed successfully.");
-            }
-        }
-        catch (Exception ^e)
-        {
-            ShowExceptionMessage(e);
-        }
-    
-        // wait for the task to complete, then return the vector
-    }).wait();
-
-    return vec;
+    });
 }
 
 bool MediaCaptureWinRT::startCapture()

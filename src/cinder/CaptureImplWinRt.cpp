@@ -43,12 +43,16 @@
 #include "cinder/CaptureImplWinRT.h"
 #include <boost/noncopyable.hpp>
 
-#include <set>
-using namespace std;
+// #include <set>
 
 // zv temp
 class videoInput;
 
+// interface to WinRT OS and Media Capture subsystem
+#include <ppltasks.h>
+#include <ppl.h>
+
+using namespace std;
 
 namespace cinder {
 
@@ -160,6 +164,8 @@ const vector<Capture::DeviceRef>& CaptureImplWinRT::getDevices( bool forceRefres
 
 	sDevices.clear();
 
+    // 
+
 // zv from MSW impl
 #if 0
     CaptureMgr::instance()->sTotalDevices = CaptureMgr::instanceVI()->listDevices( true );
@@ -172,9 +178,22 @@ const vector<Capture::DeviceRef>& CaptureImplWinRT::getDevices( bool forceRefres
 	return sDevices;
 }
 
+const void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f)
+{
+    if (sDevicesEnumerated && (!forceRefresh)) return;
+	sDevices.clear();
+	sDevicesEnumerated = true;
+
+    // need to make a create_task call here, what to do with f?
+    // MediaCaptureWinRT::EnumerateWebCamsAsync();
+}
+
+
 CaptureImplWinRT::CaptureImplWinRT( int32_t width, int32_t height, const Capture::DeviceRef device )
 	: mWidth( width ), mHeight( height ), mCurrentFrame( width, height, false, SurfaceChannelOrder::BGR ), mDeviceID( 0 )
 {
+    m_MediaCaptureWinRT = ref new MediaCaptureWinRT;
+
 // zv from MSW impl
 #if 0
 	mDevice = device;

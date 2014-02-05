@@ -54,6 +54,20 @@ const vector<Capture::DeviceRef>& Capture::getDevices( bool forceRefresh )
 #endif
 }
 
+#if defined( CINDER_WINRT )
+
+    // WinRT Async methods
+
+    // void AppImplWinRT::getDeviceAsync(bool refresh, std::function<void (std::vector<DeviceRef>&)> f)
+
+    static const void getDevicesAsync(bool forceRefresh, std::function<void (std::vector<Capture::DeviceRef>&)> f)
+    {
+        CapturePlatformImpl::getDevicesAsync( forceRefresh, f );
+    }
+
+#endif
+
+
 Capture::DeviceRef Capture::findDeviceByName( const string &name )
 {
 	const vector<DeviceRef> &devices = getDevices();

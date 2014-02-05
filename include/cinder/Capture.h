@@ -107,6 +107,16 @@ class Capture {
 	//! Finds the first device whose name contains the string \a nameFragment
 	static DeviceRef findDeviceByNameContains( const std::string &nameFragment );
 
+#if defined( CINDER_WINRT )
+
+    // WinRT Async methods
+
+    // void AppImplWinRT::getDeviceAsync(bool refresh, std::function<void (std::vector<DeviceRef>&)> f)
+
+    static const void getDevicesAsync(bool forceRefresh, std::function<void (std::vector<DeviceRef>&)> f);
+
+#endif
+
 #if defined( CINDER_COCOA )
 	typedef std::string DeviceIdentifier;
 #else

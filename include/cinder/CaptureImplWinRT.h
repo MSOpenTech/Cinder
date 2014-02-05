@@ -38,6 +38,9 @@
 // zv
 // #include "msw/videoInput/videoInput.h"
 
+#include "winrt/MediaCaptureWinRT.h"
+
+
 namespace cinder {
 
     class CaptureImplWinRT {
@@ -62,6 +65,8 @@ namespace cinder {
         const Capture::DeviceRef getDevice() const { return mDevice; }
 
         static const std::vector<Capture::DeviceRef>&	getDevices(bool forceRefresh = false);
+
+        static const void getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f);
 
         class Device : public Capture::Device {
         public:
@@ -91,6 +96,9 @@ namespace cinder {
 
         static bool							sDevicesEnumerated;
         static std::vector<Capture::DeviceRef>	sDevices;
+
+    private:
+        MediaCaptureWinRT^  m_MediaCaptureWinRT;
     };
 
 } //namespace
