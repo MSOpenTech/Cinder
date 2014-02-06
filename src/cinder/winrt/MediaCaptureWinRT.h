@@ -23,6 +23,8 @@
 // ABI pass array: http://msdn.microsoft.com/en-us/library/windows/apps/hh700131.aspx 
 //
 // tasks: http://msdn.microsoft.com/en-us/library/dd492427.aspx
+//
+// lambdas: http://msdn.microsoft.com/en-us/library/dd293603.aspx
 
 #pragma once
 
@@ -49,8 +51,10 @@ ref class MediaCaptureWinRT sealed
 public:
     MediaCaptureWinRT();
 
+    // DECLARATION HAS COMPILE ERRORS:
     // 1. enumerate webcams
-    static void EnumerateWebCamsAsync();
+    // e is callback lambda
+    void EnumerateWebCamsAsync( std::function<void(std::vector<std::string>)> e );
 
     // 1A. async completion results are stored here:
     //    property Windows::Foundation::Collections::IVector<Platform::String ^> ^webcamList;

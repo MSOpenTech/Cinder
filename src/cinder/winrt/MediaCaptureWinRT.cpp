@@ -53,28 +53,35 @@ MediaCaptureWinRT::MediaCaptureWinRT()
     // zv todo: Media Extension init
 }
 
-void MediaCaptureWinRT::EnumerateWebCamsAsync()
+void MediaCaptureWinRT::EnumerateWebCamsAsync( std::function<void(std::vector<std::string>)> e )
 {
-    // ShowStatusMessage("Enumerating WebCams...");
+    ShowStatusMessage("Enumerating WebCams...");
 
     // webcamList gets filled in with a vector of strings, one for each device
     // webcamList = ref new Vector<String ^>;
 
-    create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture)).then([](task<DeviceInformationCollection^> findTask)
+    // nb.  create_task() function is for taking an IAsyncOperation and turning it into a task 
+    create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture)).then([this](task<DeviceInformationCollection^> findTask)
     {
         try
         {
-            auto devInfoCollection = findTask.get();
-            if (devInfoCollection == nullptr || devInfoCollection->Size == 0)
+            m_devInfoCollection = findTask.get();
+            if (m_devInfoCollection == nullptr || m_devInfoCollection->Size == 0)
             {
-                // ShowStatusMessage("No WebCams found.");
+                ShowStatusMessage("No WebCams found.");
             }
             else
             {
-                for (unsigned int i = 0; i < devInfoCollection->Size; i++)
+                for (unsigned int i = 0; i < m_devInfoCollection->Size; i++)
                 {
-                    auto devInfo = devInfoCollection->GetAt(i);
+                    auto devInfo = m_devInfoCollection->GetAt(i);
                     auto location = devInfo->EnclosureLocation;
+
+                    // debug output
+                    OutputDebugStringW( L"name = " ); 
+                    OutputDebugStringW( devInfo->Name->Data() );
+                    OutputDebugStringW( L"\n" ); 
+
                     if (location != nullptr)
                     {
                         if (location->Panel == Windows::Devices::Enumeration::Panel::Front)
@@ -97,12 +104,14 @@ void MediaCaptureWinRT::EnumerateWebCamsAsync()
                         // webcamList->Append(devInfo->Name);
                     }
                 }
-                // ShowStatusMessage("Enumerating Webcams completed successfully.");
+                ShowStatusMessage("Enumerating Webcams completed successfully.");
+
+                // now call e() ?
             }
         }
         catch (Exception ^e)
         {
-            // ShowExceptionMessage(e);
+            ShowExceptionMessage(e);
         }
     
     });
