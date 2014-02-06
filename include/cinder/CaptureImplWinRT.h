@@ -66,7 +66,7 @@ namespace cinder {
 
         static const std::vector<Capture::DeviceRef>&	getDevices(bool forceRefresh = false);
 
-        static const void getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f);
+        void getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f);
 
         class Device : public Capture::Device {
         public:

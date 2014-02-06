@@ -178,14 +178,53 @@ const vector<Capture::DeviceRef>& CaptureImplWinRT::getDevices( bool forceRefres
 	return sDevices;
 }
 
+/*
+
+
 const void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f)
 {
-    if (sDevicesEnumerated && (!forceRefresh)) return;
-	sDevices.clear();
-	sDevicesEnumerated = true;
-
+    if (sDevicesEnumerated && (!forceRefresh))
+    {
+        f(sDevices);
+        return;
+    }
+    
+       sDevices.clear();
+       sDevicesEnumerated = true;
+ 
     // need to make a create_task call here, what to do with f?
-    // MediaCaptureWinRT::EnumerateWebCamsAsync();
+    MediaCaptureWinRT::EnumerateWebCamsAsync([this, f] vector<deviceinfo>
+        sDevicesEnumerated = true;
+        parse WinRT List and create DeviceRef list
+ 
+        f(sDevices);
+      );
+}
+
+*/
+
+
+void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f)
+{
+    if (sDevicesEnumerated && (!forceRefresh))
+    {
+        f(sDevices);
+        return;
+    }
+
+    sDevices.clear();
+    sDevicesEnumerated = true;
+
+    m_MediaCaptureWinRT->EnumerateWebCamsAsync( [this, f] ( std::vector<std::string&> v ) {
+
+        // how is v to be used - is it a return value?
+
+        //        sDevicesEnumerated = true;
+        // parse WinRT List and create DeviceRef list
+
+        //        f(sDevices);
+        //
+    });
 }
 
 
