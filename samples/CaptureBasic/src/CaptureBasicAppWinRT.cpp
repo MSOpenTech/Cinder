@@ -10,8 +10,10 @@
 #if 0
 #include "cinder/app/AppNative.h"
 // #include "cinder/gl/Texture.h"
-#include "cinder/Capture.h"
 #endif
+
+#include "cinder/Capture.h"
+#include "cinder/dx/dxTexture.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -29,8 +31,8 @@ class CaptureBasicApp : public AppBasic {
 	void update();
 	void draw();
 
-	// CaptureRef			mCapture;
-	// gl::TextureRef		mTexture;
+	CaptureRef			mCapture;
+	dx::TextureRef		mTexture;
 };
 
 void CaptureBasicApp::prepareSettings(Settings *settings)
@@ -40,8 +42,21 @@ void CaptureBasicApp::prepareSettings(Settings *settings)
 #endif
 }
 
+
 void CaptureBasicApp::setup()
 {
+    // WinRT we need Capture object to hold the devInfoCollection (internally) for enumeration
+    mCapture = Capture::create( 640, 480 );
+
+    // ( ) is return value we are expecting in the lambda
+    mCapture->getDevicesAsync( true, [=]( std::vector<Capture::DeviceRef> &vec ) {
+
+//        console();
+       
+    });
+
+//    console();
+
 #if 0
 
 	// print the devices
@@ -77,34 +92,35 @@ void CaptureBasicApp::update()
 {
 #if 0
 	if( mCapture && mCapture->checkNewFrame() ) {
-		mTexture = gl::Texture::create( mCapture->getSurface() );
+		mTexture = dx::Texture::create( mCapture->getSurface() );
 	}
 #endif
 }
 
 void CaptureBasicApp::draw()
 {
-    dx::clear(Color(0.1f, 1.0f, 0.15f));
+    dx::clear(Color(0.1f, 0.5f, 0.15f));
 
-#if 0
-	gl::clear( Color( 0.0f, 0.0f, 0.0f ) );
-	gl::setMatricesWindow( getWindowWidth(), getWindowHeight() );
+//	dx::clear( Color( 0.0f, 0.0f, 0.0f ) );
+
+    dx::setMatricesWindow( getWindowWidth(), getWindowHeight() );
 	
 	if( mTexture ) {
-		glPushMatrix();
+		// glPushMatrix();
+        dx::pushMatrices();
 #if defined( CINDER_COCOA_TOUCH )
 		//change iphone to landscape orientation
-		gl::rotate( 90.0f );
-		gl::translate( 0.0f, -getWindowWidth() );
+		dx::rotate( 90.0f );
+		dx::translate( 0.0f, -getWindowWidth() );
 
 		Rectf flippedBounds( 0.0f, 0.0f, getWindowHeight(), getWindowWidth() );
-		gl::draw( mTexture, flippedBounds );
+		dx::draw( mTexture, flippedBounds );
 #else
-		gl::draw( mTexture );
+		dx::draw( mTexture );
 #endif
-		glPopMatrix();
-	}
-#endif
+		// glPopMatrix();
+        dx::popMatrices();
+    }
 }
 
 // CINDER_APP_NATIVE( CaptureBasicApp, RendererGl )
