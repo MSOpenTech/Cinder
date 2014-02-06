@@ -53,15 +53,22 @@ MediaCaptureWinRT::MediaCaptureWinRT()
     // zv todo: Media Extension init
 }
 
-void MediaCaptureWinRT::EnumerateWebCamsAsync( std::function<void(std::vector<std::string>)> e )
+
+void MediaCaptureWinRT::EnumerateWebCamsAsync( Platform::Array<Platform::String^> ^*webcams )
 {
+    // nb. we do not use return form, due to internal async call, eg.
+    // Platform::Array<Platform::String^> ^MediaCaptureWinRT::EnumerateWebCamsAsync()
+    //
+    // we must use an 'out' parm instead
+    //
+    // nb.  Platform::Collections::IVector could have been used instead of Platform::Array
+
     ShowStatusMessage("Enumerating WebCams...");
 
-    // webcamList gets filled in with a vector of strings, one for each device
-    // webcamList = ref new Vector<String ^>;
+    // webcams gets filled in with an array of strings, one for each device
 
-    // nb.  create_task() function is for taking an IAsyncOperation and turning it into a task 
-    create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture)).then([this](task<DeviceInformationCollection^> findTask)
+    // nb. create_task() function is for taking an IAsyncOperation and turning it into a task 
+    create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture)).then([this,webcams](task<DeviceInformationCollection^> findTask)
     {
         try
         {
@@ -72,6 +79,7 @@ void MediaCaptureWinRT::EnumerateWebCamsAsync( std::function<void(std::vector<st
             }
             else
             {
+                auto w = ref new Platform::Array<Platform::String^>( m_devInfoCollection->Size );
                 for (unsigned int i = 0; i < m_devInfoCollection->Size; i++)
                 {
                     auto devInfo = m_devInfoCollection->GetAt(i);
@@ -87,26 +95,27 @@ void MediaCaptureWinRT::EnumerateWebCamsAsync( std::function<void(std::vector<st
                         if (location->Panel == Windows::Devices::Enumeration::Panel::Front)
                         {
                             String ^s = devInfo->Name + "-Front";
-                            // webcamList->Append( s );
+                            w[i] = s;
                         }
                         else if (location->Panel == Windows::Devices::Enumeration::Panel::Back)
                         {
                             String ^s = devInfo->Name + "-Back";
-                            // webcamList->Append( s );
+                            w[i] = s;
                         }
                         else
                         {
-                            // webcamList->Append(devInfo->Name);
+                            w[i] = devInfo->Name;
                         }
                     }
                     else
                     {
-                        // webcamList->Append(devInfo->Name);
+                        w[i] = devInfo->Name;
                     }
                 }
                 ShowStatusMessage("Enumerating Webcams completed successfully.");
 
-                // now call e() ?
+                // return the 'out' parm
+                *webcams = w;
             }
         }
         catch (Exception ^e)

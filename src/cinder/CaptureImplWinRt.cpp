@@ -46,7 +46,7 @@
 // #include <set>
 
 // zv temp
-class videoInput;
+// class videoInput;
 
 // interface to WinRT OS and Media Capture subsystem
 #include <ppltasks.h>
@@ -66,13 +66,13 @@ class CaptureMgr : private boost::noncopyable
 	~CaptureMgr();
 
 	static std::shared_ptr<CaptureMgr>	instance();
-	static videoInput*	instanceVI() { return instance()->mVideoInput; }
+	// static videoInput*	instanceVI() { return instance()->mVideoInput; }
 
 	static std::shared_ptr<CaptureMgr>	sInstance;
 	static int						sTotalDevices;
 	
  private:	
-	videoInput			*mVideoInput;
+	// videoInput			*mVideoInput;
 };
 std::shared_ptr<CaptureMgr>	CaptureMgr::sInstance;
 int							CaptureMgr::sTotalDevices = 0;
@@ -87,7 +87,7 @@ CaptureMgr::CaptureMgr()
 CaptureMgr::~CaptureMgr()
 {
     // zv temp incomplete class; can't call dtor
-	delete mVideoInput;
+	// delete mVideoInput;
 }
 
 std::shared_ptr<CaptureMgr> CaptureMgr::instance()
@@ -215,15 +215,23 @@ void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std
     sDevices.clear();
     sDevicesEnumerated = true;
 
-    m_MediaCaptureWinRT->EnumerateWebCamsAsync( [this, f] ( std::vector<std::string&> v ) {
+    Platform::Array<Platform::String^> ^*webcams;
 
-        // how is v to be used - is it a return value?
+    // PROBLEM HERE - webcams below is not syntactically valid.  how to get it into EnumerateWebCamsAsync?
+    // using a custom delegate instead of a lambda?
 
-        //        sDevicesEnumerated = true;
+    m_MediaCaptureWinRT->EnumerateWebCamsAsync([this, f]( Platform::Array<Platform::String^> ^*webcams ) {
+
         // parse WinRT List and create DeviceRef list
+        /*
+        for (int i=0; i< webcams.size(); i++)
+        {
+        		sDevices.push_back( Capture::DeviceRef( new CaptureImplWinRT::Device( v[i], i ) ) );
+        }
+        */
 
-        //        f(sDevices);
-        //
+        // return control to caller's lambda
+        f(sDevices);
     });
 }
 

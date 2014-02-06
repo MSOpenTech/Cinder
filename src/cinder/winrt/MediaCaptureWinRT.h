@@ -11,20 +11,35 @@
 // Interface to MediaCapture on WinRT
 // conforms to WinRT ABI
 
-// related documentation links:
+// related documentation links: (these links will open in the embedded viewer in visual studio)
 //
 // media sample: http://code.msdn.microsoft.com/windowsapps/Media-Capture-Sample-adf87622
 //
 // MediaCapture.StartRecordToCustomSinkAsync:
 // http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
 //
-// type system: http://msdn.microsoft.com/en-us/library/windows/apps/hh700103.aspx
 //
-// ABI pass array: http://msdn.microsoft.com/en-us/library/windows/apps/hh700131.aspx 
+// Creating Windows Runtime Components in C++:
+// http://msdn.microsoft.com/en-US/library/windows/apps/hh441569.aspx
+//
+// type system and all types: http://msdn.microsoft.com/en-us/library/windows/apps/hh700103.aspx
+//
+// arrays: http://msdn.microsoft.com/en-us/library/windows/apps/hh700131.aspx
 //
 // tasks: http://msdn.microsoft.com/en-us/library/dd492427.aspx
 //
+// create_task:
+// http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k("ppltasks%2FConcurrency%3A%3Acreate_task");k("Concurrency%3A%3Acreate_task");k(create_task);k(DevLang-C%2B%2B);k(TargetOS-Windows);k(TargetFrameworkMoniker-MoCOM-CLR)&rd=true
+//
 // lambdas: http://msdn.microsoft.com/en-us/library/dd293603.aspx
+//
+// collections: http://msdn.microsoft.com/en-US/library/windows/apps/hh700103.aspx
+//
+// delegates: http://msdn.microsoft.com/library/windows/apps/hh755798.aspx
+//
+// why no using statements in header files
+// see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
+
 
 #pragma once
 
@@ -33,28 +48,24 @@
 #include <array>
 #include <agile.h>
 
-// nb. no using statements in header files
-// see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
-
 typedef std::array<unsigned int,1920*1080> HD_STD_ARRAY;
 
-// Device class?
-//
-// std::string & getDeviceName( int enumListID )
-// bool isDeviceSetup
-// bool isConnected
-// int getUniqueID
-// bool setupDevice
+/*
+namespace foo {
+    public delegate Platform::String^ testDel();
+}
+*/
 
 ref class MediaCaptureWinRT sealed
 {
 public:
     MediaCaptureWinRT();
 
-    // DECLARATION HAS COMPILE ERRORS:
+
     // 1. enumerate webcams
-    // e is callback lambda
-    void EnumerateWebCamsAsync( std::function<void(std::vector<std::string>)> e );
+    // uses WinRT ReceiveArray pattern
+    void EnumerateWebCamsAsync( Platform::Array<Platform::String^> ^*webcams );
+//    void EnumerateWebCamsAsync2( ) {}
 
     // 1A. async completion results are stored here:
     //    property Windows::Foundation::Collections::IVector<Platform::String ^> ^webcamList;
