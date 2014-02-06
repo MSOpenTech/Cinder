@@ -113,7 +113,9 @@ class Capture {
 
     // void AppImplWinRT::getDeviceAsync(bool refresh, std::function<void (std::vector<DeviceRef>&)> f)
 
-    static const void getDevicesAsync(bool forceRefresh, std::function<void (std::vector<DeviceRef>&)> f);
+    // notes: this is not a static method, and requires an instance of Capture
+    //  f is the callback function when the async call completes, written as a lambda in caller
+    void getDevicesAsync(bool forceRefresh, std::function<void (std::vector<DeviceRef>&)> f);
 
 #endif
 
@@ -167,7 +169,7 @@ class Capture {
 	};
 	
 	std::shared_ptr<Obj>				mObj;
-	
+
   public:
  	//@{
 	//! Emulates shared_ptr-like behavior
