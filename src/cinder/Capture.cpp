@@ -60,9 +60,11 @@ const vector<Capture::DeviceRef>& Capture::getDevices( bool forceRefresh )
 
 // void AppImplWinRT::getDeviceAsync(bool refresh, std::function<void (std::vector<DeviceRef>&)> f)
 
-void Capture::getDevicesAsync(bool forceRefresh, std::function<void (std::vector<Capture::DeviceRef>&)> f)
+// void Capture::getDevicesAsync(bool forceRefresh, std::function<void (std::vector<Capture::DeviceRef>&)> f)
+// void Capture::getDevicesAsync(bool forceRefresh, std::function<void ()> f)
+void Capture::getDevicesAsync(bool forceRefresh, void(*completion)())
 {
-    mObj->mImpl->getDevicesAsync( forceRefresh, f );
+    mObj->mImpl->getDevicesAsync( forceRefresh, completion );
 }
 
 #endif
