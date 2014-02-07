@@ -39,6 +39,9 @@
 //
 // boxing: http://msdn.microsoft.com/en-us/library/windows/apps/hh969554.aspx
 //
+// Alternatives to Windows APIs in Windows Store apps:
+// http://msdn.microsoft.com/en-us/library/windows/apps/hh464945.aspx
+//
 // why no using statements in header files
 // see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
 
