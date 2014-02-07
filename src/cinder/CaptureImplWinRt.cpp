@@ -52,6 +52,7 @@
 #include <ppltasks.h>
 #include <ppl.h>
 
+using namespace Platform;
 using namespace std;
 
 namespace cinder {
@@ -159,12 +160,15 @@ bool CaptureImplWinRT::Device::isConnected() const
 
 const vector<Capture::DeviceRef>& CaptureImplWinRT::getDevices( bool forceRefresh )
 {
+    // test
+    return sDevices;
+
+    /*
 	if( sDevicesEnumerated && ( ! forceRefresh ) )
 		return sDevices;
 
-	sDevices.clear();
-
-    // 
+    sDevices.clear();
+    */
 
 // zv from MSW impl
 #if 0
@@ -172,55 +176,75 @@ const vector<Capture::DeviceRef>& CaptureImplWinRT::getDevices( bool forceRefres
 	for( int i = 0; i < CaptureMgr::instance()->sTotalDevices; ++i ) {
 		sDevices.push_back( Capture::DeviceRef( new CaptureImplWinRT::Device( videoInput::getDeviceName( i ), i ) ) );
 	}
-#endif
 
 	sDevicesEnumerated = true;
 	return sDevices;
+#endif
 }
 
-/*
-
-
-const void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f)
+void getDevicesAsyncCompletion( std::vector<std::string> *webcamsPtr, Object ^callerObj, Object ^devicesObj )
 {
+    auto webcams = *webcamsPtr;
+
+    // unbox
+    auto f = reinterpret_cast< void (*)() >( safe_cast<uintptr_t>(callerObj) );
+    auto sDevices = reinterpret_cast< std::vector<Capture::DeviceRef> * >
+        ( safe_cast<uintptr_t>( devicesObj ) );
+
+    // parse WinRT List and create DeviceRef list
+    for (size_t i = 0; i < webcams.size(); i++)
+    {
+        sDevices->push_back(Capture::DeviceRef(new CaptureImplWinRT::Device( webcams[i], i)));
+    }
+
+    // return control to caller's lambda
+    f();
+    // f(sDevices);
+
+    // WIP notes:
+    // auto f = reinterpret_cast< std::function<void()> >( safe_cast<uintptr_t>(callerObj) );
+    // auto f0 = safe_cast<uintptr_t>(callerObj);
+    // auto f = reinterpret_cast<void(*)()>(f0);
+    // auto f1 = reinterpret_cast<void(*)()>
+    // std::function<void()> *f1;
+    // auto f = std::function<void()>(safe_cast<uintptr_t>(callerObj));
+    // auto f = reinterpret_cast< std::function<void()> >( safe_cast<uintptr_t>(callerObj) );
+    // auto g = f.target<void()>();
+}
+
+void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, void(*callerCompletion)())
+// void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void()> f)
+{
+    /*
+    always enumerate
     if (sDevicesEnumerated && (!forceRefresh))
     {
         f(sDevices);
         return;
     }
-    
-       sDevices.clear();
-       sDevicesEnumerated = true;
- 
-    // need to make a create_task call here, what to do with f?
-    MediaCaptureWinRT::EnumerateWebCamsAsync([this, f] vector<deviceinfo>
-        sDevicesEnumerated = true;
-        parse WinRT List and create DeviceRef list
- 
-        f(sDevices);
-      );
-}
-
-*/
-
-
-void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f)
-{
-    if (sDevicesEnumerated && (!forceRefresh))
-    {
-        f(sDevices);
-        return;
-    }
+    */
 
     sDevices.clear();
     sDevicesEnumerated = true;
 
-    Platform::Array<Platform::String^> ^*webcams;
+    auto *webcams = new std::vector<std::string>;
 
-    // PROBLEM HERE - webcams below is not syntactically valid.  how to get it into EnumerateWebCamsAsync?
-    // using a custom delegate instead of a lambda?
+    // obtain address of the lambda - PROBLEM - compiles but returns 0 at runtime
+    // auto g = f.target<void(*)>();
 
-    m_MediaCaptureWinRT->EnumerateWebCamsAsync([this, f]( Platform::Array<Platform::String^> ^*webcams ) {
+    // box
+    Object ^completionObj = reinterpret_cast<uintptr_t>( &getDevicesAsyncCompletion );
+    Object ^webcamsObj = reinterpret_cast<uintptr_t>( webcams );
+    Object ^callerCompletionObj = reinterpret_cast<uintptr_t>( callerCompletion );
+    Object ^deviceObj = reinterpret_cast<uintptr_t>( &sDevices );
+
+    m_MediaCaptureWinRT->EnumerateWebCamsAsync( completionObj, webcamsObj, callerCompletionObj, deviceObj );
+
+
+#if 0
+    // old code for notes:
+
+    m_MediaCaptureWinRT->EnumerateWebCamsAsync([this, f, webcams]( Platform::Array<Platform::String^> ^*webcams ) {
 
         // parse WinRT List and create DeviceRef list
         /*
@@ -233,6 +257,7 @@ void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std
         // return control to caller's lambda
         f(sDevices);
     });
+#endif
 }
 
 
