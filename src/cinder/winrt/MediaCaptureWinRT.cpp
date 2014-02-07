@@ -53,9 +53,49 @@ MediaCaptureWinRT::MediaCaptureWinRT()
     // zv todo: Media Extension init
 }
 
-
-void MediaCaptureWinRT::EnumerateWebCamsAsync( Platform::Array<Platform::String^> ^*webcams )
+void MediaCaptureWinRT::EnumerateWebCamsAsync(
+    Platform::Object ^completionObj,
+    Platform::Object ^webcamsObj,
+    Platform::Object ^callerCompletionObj,
+    Platform::Object ^deviceObj
+    )
 {
+    // unbox
+    auto completion = reinterpret_cast<
+        void(*)(std::vector<std::string> *, Object ^caller, Object ^devices)
+    >(safe_cast<uintptr_t>(completionObj));
+    auto webcams = reinterpret_cast<std::vector<std::string> *>(safe_cast<uintptr_t>(webcamsObj));
+    // nb. we leave some args boxed
+
+    /*
+    // test fill webcam vector
+    webcams->push_back( "test" );
+
+    // call completion routine
+    completion( webcams, callerObj, deviceObj );
+    */
+
+    // WIP notes:
+    //
+    // auto completion = std::function<
+    //        void(std::vector<std::string> &, Object ^caller, Object ^devices)
+    //    >(completionPtr);
+    // auto completion = reinterpret_cast< 
+    //        void (*)( std::vector<std::string> *, Object ^caller, Object ^devices ) 
+    //    >(completionPtr);
+    //
+    // completion( webcams, callerPtr, devicePtr );
+    // (*completion)( webcams, callerPtr, devicePtr );
+    //
+    // auto completion = reinterpret_cast< void (*)( std::vector<std::string> *, void (*)() ) >(completionPtr);
+    // auto caller = reinterpret_cast< void (*)() >(callerPtr);
+    // auto devices = reinterpret_cast< void * >(devicePtr);
+    //
+    // void EnumerateWebCamsAsync( Platform::Array<Platform::String^> ^*webcams ) {}
+    //
+
+    // void MediaCaptureWinRT::EnumerateWebCamsAsync( Platform::Array<Platform::String^> ^*webcams )
+
     // nb. we do not use return form, due to internal async call, eg.
     // Platform::Array<Platform::String^> ^MediaCaptureWinRT::EnumerateWebCamsAsync()
     //
@@ -68,7 +108,8 @@ void MediaCaptureWinRT::EnumerateWebCamsAsync( Platform::Array<Platform::String^
     // webcams gets filled in with an array of strings, one for each device
 
     // nb. create_task() function is for taking an IAsyncOperation and turning it into a task 
-    create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture)).then([this,webcams](task<DeviceInformationCollection^> findTask)
+    create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture))
+        .then([this, webcams, completion, callerCompletionObj, deviceObj](task<DeviceInformationCollection^> findTask)
     {
         try
         {
@@ -79,7 +120,7 @@ void MediaCaptureWinRT::EnumerateWebCamsAsync( Platform::Array<Platform::String^
             }
             else
             {
-                auto w = ref new Platform::Array<Platform::String^>( m_devInfoCollection->Size );
+                // auto w = ref new Platform::Array<Platform::String^>( m_devInfoCollection->Size );
                 for (unsigned int i = 0; i < m_devInfoCollection->Size; i++)
                 {
                     auto devInfo = m_devInfoCollection->GetAt(i);
@@ -95,27 +136,45 @@ void MediaCaptureWinRT::EnumerateWebCamsAsync( Platform::Array<Platform::String^
                         if (location->Panel == Windows::Devices::Enumeration::Panel::Front)
                         {
                             String ^s = devInfo->Name + "-Front";
-                            w[i] = s;
+                            // Could Be Better (CBB)
+                            std::wstring w( s->Begin() );
+                            std::string s0( w.begin(), w.end() );
+                            webcams->push_back( s0 );
                         }
                         else if (location->Panel == Windows::Devices::Enumeration::Panel::Back)
                         {
                             String ^s = devInfo->Name + "-Back";
-                            w[i] = s;
+                            // cbb ...
+                            std::wstring w( s->Begin() );
+                            std::string s0( w.begin(), w.end() );
+                            webcams->push_back( s0 );
                         }
                         else
                         {
-                            w[i] = devInfo->Name;
+                            String ^s = devInfo->Name;
+                            // cbb ...
+                            std::wstring w( s->Begin() );
+                            std::string s0( w.begin(), w.end() );
+                            webcams->push_back( s0 );
                         }
                     }
                     else
                     {
-                        w[i] = devInfo->Name;
+                        String ^s = devInfo->Name;
+                        // cbb ...
+                        std::wstring w(s->Begin());
+                        std::string s0(w.begin(), w.end());
+                        webcams->push_back(s0);
                     }
                 }
                 ShowStatusMessage("Enumerating Webcams completed successfully.");
 
                 // return the 'out' parm
-                *webcams = w;
+                // *webcams = w;
+
+                // call completion routine
+                completion( webcams, callerCompletionObj, deviceObj );
+
             }
         }
         catch (Exception ^e)

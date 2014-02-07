@@ -37,6 +37,8 @@
 //
 // delegates: http://msdn.microsoft.com/library/windows/apps/hh755798.aspx
 //
+// boxing: http://msdn.microsoft.com/en-us/library/windows/apps/hh969554.aspx
+//
 // why no using statements in header files
 // see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
 
@@ -45,6 +47,7 @@
 
 // #include "pch.h"
 
+#include <vector>
 #include <array>
 #include <agile.h>
 
@@ -61,14 +64,15 @@ ref class MediaCaptureWinRT sealed
 public:
     MediaCaptureWinRT();
 
-
     // 1. enumerate webcams
-    // uses WinRT ReceiveArray pattern
-    void EnumerateWebCamsAsync( Platform::Array<Platform::String^> ^*webcams );
-//    void EnumerateWebCamsAsync2( ) {}
-
-    // 1A. async completion results are stored here:
-    //    property Windows::Foundation::Collections::IVector<Platform::String ^> ^webcamList;
+    // nb. args are boxed
+    // CBB: consider using an Interface class to enforce correct types for boxing ? and how do we do that ??
+    void EnumerateWebCamsAsync( 
+        Platform::Object ^completionObj, 
+        Platform::Object ^webcamsObj,
+        Platform::Object ^callerCompletionObj,
+        Platform::Object ^deviceObj
+        );
 
     // 2. select and start the devices to use
     // ints are the indices from the lists obtained in step 1
