@@ -26,7 +26,9 @@ class CaptureBasicApp : public AppBasic {
     void prepareSettings(Settings *settings);
 
     void setup();
-	void keyDown( KeyEvent event );
+    static void setupCompletion();
+
+    void keyDown( KeyEvent event );
 	
 	void update();
 	void draw();
@@ -43,21 +45,45 @@ void CaptureBasicApp::prepareSettings(Settings *settings)
 }
 
 
+void CaptureBasicApp::setupCompletion()
+{
+    auto s = Capture::getDevices( false );
+
+    // test
+    auto t = s[0]->getName();
+
+    int a = 0;
+    /*
+    // WIP mess ...
+
+    for (auto device = Capture::getDevices().begin(); device != Capture::getDevices().end(); ++device) {
+        string s = (*device)->getName();
+        // console() << "Device: " << (*device)->getName() << " "	<< std::endl;
+        int a = 0;
+	}
+    */
+    // console() << sDevices
+}
+
+
 void CaptureBasicApp::setup()
 {
     // WinRT we need Capture object to hold the devInfoCollection (internally) for enumeration
     mCapture = Capture::create( 640, 480 );
 
-    // ( ) is return value we are expecting in the lambda
-    mCapture->getDevicesAsync( true, [=]( std::vector<Capture::DeviceRef> &vec ) {
-
-//        console();
-       
-    });
-
-//    console();
+    // use named completion instead of lambda - cannot get address of lambda at runtime (?)
+    mCapture->getDevicesAsync(true, &CaptureBasicApp::setupCompletion);
 
 #if 0
+    // WIP mess ...
+
+    // ( ) is return value we are expecting in the lambda
+    // mCapture->getDevicesAsync( true, [=]( std::vector<Capture::DeviceRef> &vec ) {
+/*
+    mCapture->getDevicesAsync( true, [=]() {
+//        console();
+    });
+    */
 
 	// print the devices
 	for( auto device = Capture::getDevices().begin(); device != Capture::getDevices().end(); ++device ) {
