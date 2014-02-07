@@ -66,9 +66,7 @@ namespace cinder {
 
         static const std::vector<Capture::DeviceRef>&	getDevices(bool forceRefresh = false);
 
-        void getDevicesAsync(bool forceRefresh, void(*completion)());
-        // void getDevicesAsync(bool forceRefresh, std::function<void()> f);
-        // void getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f);
+        void getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f);
 
         class Device : public Capture::Device {
         public:
@@ -100,7 +98,7 @@ namespace cinder {
         static std::vector<Capture::DeviceRef>	sDevices;
 
     private:
-        MediaCaptureWinRT^  m_MediaCaptureWinRT;
+        WinRTMediaCapture::MediaCaptureWinRT^  m_MediaCaptureWinRT;
     };
 
 } //namespace

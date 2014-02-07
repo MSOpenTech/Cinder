@@ -41,6 +41,7 @@
 
 
 #include "cinder/CaptureImplWinRT.h"
+#include "cinder/Utilities.h"
 #include <boost/noncopyable.hpp>
 
 // #include <set>
@@ -52,8 +53,12 @@
 #include <ppltasks.h>
 #include <ppl.h>
 
+using namespace Windows::Foundation::Collections;
 using namespace Platform;
+using namespace Windows::Foundation::Collections;
+
 using namespace std;
+using namespace WinRTMediaCapture;
 
 namespace cinder {
 
@@ -212,52 +217,31 @@ void getDevicesAsyncCompletion( std::vector<std::string> *webcamsPtr, Object ^ca
     // auto g = f.target<void()>();
 }
 
-void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, void(*callerCompletion)())
-// void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void()> f)
+void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f)
 {
-    /*
-    always enumerate
     if (sDevicesEnumerated && (!forceRefresh))
     {
         f(sDevices);
         return;
     }
-    */
 
     sDevices.clear();
-    sDevicesEnumerated = true;
+    sDevicesEnumerated = false;
 
-    auto *webcams = new std::vector<std::string>;
-
-    // obtain address of the lambda - PROBLEM - compiles but returns 0 at runtime
-    // auto g = f.target<void(*)>();
-
-    // box
-    Object ^completionObj = reinterpret_cast<uintptr_t>( &getDevicesAsyncCompletion );
-    Object ^webcamsObj = reinterpret_cast<uintptr_t>( webcams );
-    Object ^callerCompletionObj = reinterpret_cast<uintptr_t>( callerCompletion );
-    Object ^deviceObj = reinterpret_cast<uintptr_t>( &sDevices );
-
-    m_MediaCaptureWinRT->EnumerateWebCamsAsync( completionObj, webcamsObj, callerCompletionObj, deviceObj );
-
-
-#if 0
-    // old code for notes:
-
-    m_MediaCaptureWinRT->EnumerateWebCamsAsync([this, f, webcams]( Platform::Array<Platform::String^> ^*webcams ) {
-
-        // parse WinRT List and create DeviceRef list
-        /*
-        for (int i=0; i< webcams.size(); i++)
+    // callback delegate
+    GetMediaDevicesDelegate^ delegate = ref new GetMediaDevicesDelegate([f](const Array<Platform::String^>^ devices)
+    {
+        for (size_t i = 0; i < devices->Length; ++i)
         {
-        		sDevices.push_back( Capture::DeviceRef( new CaptureImplWinRT::Device( v[i], i ) ) );
+            std::string s = toUtf8(devices[i]->Data());
+            sDevices.push_back(Capture::DeviceRef(new Device(s, i)));
         }
-        */
-
-        // return control to caller's lambda
+        sDevicesEnumerated = true;
         f(sDevices);
     });
-#endif
+
+    m_MediaCaptureWinRT->GetVideoCamerasAsync(delegate);
+
 }
 
 

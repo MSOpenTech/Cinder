@@ -62,9 +62,9 @@ const vector<Capture::DeviceRef>& Capture::getDevices( bool forceRefresh )
 
 // void Capture::getDevicesAsync(bool forceRefresh, std::function<void (std::vector<Capture::DeviceRef>&)> f)
 // void Capture::getDevicesAsync(bool forceRefresh, std::function<void ()> f)
-void Capture::getDevicesAsync(bool forceRefresh, void(*completion)())
+void Capture::getDevicesAsync(bool forceRefresh, std::function<void(std::vector<DeviceRef>&)> f)
 {
-    mObj->mImpl->getDevicesAsync( forceRefresh, completion );
+    mObj->mImpl->getDevicesAsync( forceRefresh, f );
 }
 
 #endif

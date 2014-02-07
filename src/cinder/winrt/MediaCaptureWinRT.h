@@ -53,70 +53,74 @@
 
 typedef std::array<unsigned int,1920*1080> HD_STD_ARRAY;
 
-/*
-namespace foo {
-    public delegate Platform::String^ testDel();
-}
-*/
 
-ref class MediaCaptureWinRT sealed
+namespace WinRTMediaCapture
 {
-public:
-    MediaCaptureWinRT();
+    public delegate void GetMediaDevicesDelegate(const Platform::Array<Platform::String^>^ devices);
 
-    // 1. enumerate webcams
-    // nb. args are boxed
-    // CBB: consider using an Interface class to enforce correct types for boxing ? and how do we do that ??
-    void EnumerateWebCamsAsync( 
-        Platform::Object ^completionObj, 
-        Platform::Object ^webcamsObj,
-        Platform::Object ^callerCompletionObj,
-        Platform::Object ^deviceObj
-        );
+    ref class MediaCaptureWinRT sealed
+    {
+    public:
+        MediaCaptureWinRT();
 
-    // 2. select and start the devices to use
-    // ints are the indices from the lists obtained in step 1
-    bool startDevices( int webcam, int mic );
+        // 1. enumerate webcams
+        // nb. args are boxed
+        // CBB: consider using an Interface class to enforce correct types for boxing ? and how do we do that ??
+        void EnumerateWebCamsAsync(
+            Platform::Object ^completionObj,
+            Platform::Object ^webcamsObj,
+            Platform::Object ^callerCompletionObj,
+            Platform::Object ^deviceObj
+            );
 
-    // 3. create a target surface / texture TBD
-    // create( width, height )
-
-    // 4. start/stop capture as needed
-    // data is sent to the surface via the media extension (a plug in)
-    // these methods return 0 (false) on success
-    bool startCapture();
-    bool stopCapture();
-
-    // methods to use while capturing:
-    //
-    // isCapturing
-    // getPixels
-    // isFrameNew
-
-    // unsigned pointer to the frame buffer copy
-    // used by getPixels()
-    property Platform::UIntPtr pFB;
-
-private:
-
-    int selectedVideoDeviceIndex;
-    int selectedMicrophoneDeviceIndex;
-
-    void PrepareForVideoRecording();
-
-    // Media Extension communication via property set
-    // must be private
-    Windows::Foundation::Collections::PropertySet^ MEcomm;
-
-    Platform::Agile<Windows::Media::Capture::MediaCapture> m_mediaCaptureMgr;
-
-    Windows::Devices::Enumeration::DeviceInformationCollection^ m_devInfoCollection;
-    Windows::Devices::Enumeration::DeviceInformationCollection^ m_microPhoneInfoCollection;
-
-    // stubs - could be useful for debug
-    void ShowStatusMessage(Platform::String^ text) {}
-    void ShowExceptionMessage(Platform::Exception^ ex) {};
+        void GetVideoCamerasAsync(GetMediaDevicesDelegate^ func);
 
 
-};
+        // 2. select and start the devices to use
+        // ints are the indices from the lists obtained in step 1
+        bool startDevices(int webcam, int mic);
 
+        // 3. create a target surface / texture TBD
+        // create( width, height )
+
+        // 4. start/stop capture as needed
+        // data is sent to the surface via the media extension (a plug in)
+        // these methods return 0 (false) on success
+        bool startCapture();
+        bool stopCapture();
+
+        // methods to use while capturing:
+        //
+        // isCapturing
+        // getPixels
+        // isFrameNew
+
+        // unsigned pointer to the frame buffer copy
+        // used by getPixels()
+        property Platform::UIntPtr pFB;
+
+    private:
+
+        int selectedVideoDeviceIndex;
+        int selectedMicrophoneDeviceIndex;
+
+ 
+        void PrepareForVideoRecording();
+
+        // Media Extension communication via property set
+        // must be private
+        Windows::Foundation::Collections::PropertySet^ MEcomm;
+
+        Platform::Agile<Windows::Media::Capture::MediaCapture> m_mediaCaptureMgr;
+
+        Windows::Devices::Enumeration::DeviceInformationCollection^ m_devInfoCollection;
+        Windows::Devices::Enumeration::DeviceInformationCollection^ m_microPhoneInfoCollection;
+
+        // stubs - could be useful for debug
+        void ShowStatusMessage(Platform::String^ text) {}
+        void ShowExceptionMessage(Platform::Exception^ ex) {};
+
+
+    };
+
+}

@@ -71,20 +71,14 @@ void CaptureBasicApp::setup()
     // WinRT we need Capture object to hold the devInfoCollection (internally) for enumeration
     mCapture = Capture::create( 640, 480 );
 
-    // use named completion instead of lambda - cannot get address of lambda at runtime (?)
-    mCapture->getDevicesAsync(true, &CaptureBasicApp::setupCompletion);
+    mCapture->getDevicesAsync( true, [=]( std::vector<Capture::DeviceRef> &vec ) {
+        for (auto device = Capture::getDevices().begin(); device != Capture::getDevices().end(); ++device) {
+            std::string s = (*device)->getName();
+            console() << "Device: " << (*device)->getName() << " ";
+        }
+    });
 
 #if 0
-    // WIP mess ...
-
-    // ( ) is return value we are expecting in the lambda
-    // mCapture->getDevicesAsync( true, [=]( std::vector<Capture::DeviceRef> &vec ) {
-/*
-    mCapture->getDevicesAsync( true, [=]() {
-//        console();
-    });
-    */
-
 	// print the devices
 	for( auto device = Capture::getDevices().begin(); device != Capture::getDevices().end(); ++device ) {
 		console() << "Device: " << (*device)->getName() << " "
