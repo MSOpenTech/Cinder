@@ -67,17 +67,7 @@ namespace WinRTMediaCapture
         MediaCaptureWinRT();
 
         // 1. enumerate webcams
-        // nb. args are boxed
-        // CBB: consider using an Interface class to enforce correct types for boxing ? and how do we do that ??
-        void EnumerateWebCamsAsync(
-            Platform::Object ^completionObj,
-            Platform::Object ^webcamsObj,
-            Platform::Object ^callerCompletionObj,
-            Platform::Object ^deviceObj
-            );
-
-        void GetVideoCamerasAsync(GetMediaDevicesDelegate^ func);
-
+        static void GetVideoCamerasAsync(GetMediaDevicesDelegate^ func);
 
         // 2. select and start the devices to use
         // ints are the indices from the lists obtained in step 1
@@ -105,8 +95,6 @@ namespace WinRTMediaCapture
     private:
 
         int selectedVideoDeviceIndex;
-        int selectedMicrophoneDeviceIndex;
-
  
         void PrepareForVideoRecording();
 
