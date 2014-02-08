@@ -109,13 +109,8 @@ class Capture {
 
 #if defined( CINDER_WINRT )
 
-    // WinRT Async methods
-
-    // void AppImplWinRT::getDeviceAsync(bool refresh, std::function<void (std::vector<DeviceRef>&)> f)
-
-    // notes: this is not a static method, and requires an instance of Capture
-    //  f is the callback function when the async call completes, written as a lambda in caller
-    void getDevicesAsync(bool forceRefresh, std::function<void (std::vector<DeviceRef>&)> f);
+    // nb. f is the callback function, when the async call completes, written as a lambda in caller
+    static void getDevicesAsync(bool forceRefresh, std::function<void()> f);
 
 #endif
 

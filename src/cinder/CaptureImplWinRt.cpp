@@ -165,18 +165,10 @@ bool CaptureImplWinRT::Device::isConnected() const
 
 const vector<Capture::DeviceRef>& CaptureImplWinRT::getDevices( bool forceRefresh )
 {
-    // test
     return sDevices;
 
-    /*
-	if( sDevicesEnumerated && ( ! forceRefresh ) )
-		return sDevices;
-
-    sDevices.clear();
-    */
-
-// zv from MSW impl
 #if 0
+    // from MSW impl
     CaptureMgr::instance()->sTotalDevices = CaptureMgr::instanceVI()->listDevices( true );
 	for( int i = 0; i < CaptureMgr::instance()->sTotalDevices; ++i ) {
 		sDevices.push_back( Capture::DeviceRef( new CaptureImplWinRT::Device( videoInput::getDeviceName( i ), i ) ) );
@@ -187,41 +179,11 @@ const vector<Capture::DeviceRef>& CaptureImplWinRT::getDevices( bool forceRefres
 #endif
 }
 
-void getDevicesAsyncCompletion( std::vector<std::string> *webcamsPtr, Object ^callerObj, Object ^devicesObj )
-{
-    auto webcams = *webcamsPtr;
-
-    // unbox
-    auto f = reinterpret_cast< void (*)() >( safe_cast<uintptr_t>(callerObj) );
-    auto sDevices = reinterpret_cast< std::vector<Capture::DeviceRef> * >
-        ( safe_cast<uintptr_t>( devicesObj ) );
-
-    // parse WinRT List and create DeviceRef list
-    for (size_t i = 0; i < webcams.size(); i++)
-    {
-        sDevices->push_back(Capture::DeviceRef(new CaptureImplWinRT::Device( webcams[i], i)));
-    }
-
-    // return control to caller's lambda
-    f();
-    // f(sDevices);
-
-    // WIP notes:
-    // auto f = reinterpret_cast< std::function<void()> >( safe_cast<uintptr_t>(callerObj) );
-    // auto f0 = safe_cast<uintptr_t>(callerObj);
-    // auto f = reinterpret_cast<void(*)()>(f0);
-    // auto f1 = reinterpret_cast<void(*)()>
-    // std::function<void()> *f1;
-    // auto f = std::function<void()>(safe_cast<uintptr_t>(callerObj));
-    // auto f = reinterpret_cast< std::function<void()> >( safe_cast<uintptr_t>(callerObj) );
-    // auto g = f.target<void()>();
-}
-
-void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f)
+void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void()> f)
 {
     if (sDevicesEnumerated && (!forceRefresh))
     {
-        f(sDevices);
+        f();
         return;
     }
 
@@ -237,10 +199,10 @@ void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void(std
             sDevices.push_back(Capture::DeviceRef(new Device(s, i)));
         }
         sDevicesEnumerated = true;
-        f(sDevices);
+        f();
     });
 
-    m_MediaCaptureWinRT->GetVideoCamerasAsync(delegate);
+    MediaCaptureWinRT::GetVideoCamerasAsync(delegate);
 
 }
 

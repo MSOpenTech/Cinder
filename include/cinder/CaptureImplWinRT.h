@@ -64,9 +64,10 @@ namespace cinder {
 
         const Capture::DeviceRef getDevice() const { return mDevice; }
 
+        // returns the previously enumerated devices; use the Async version to re-enumerate
         static const std::vector<Capture::DeviceRef>&	getDevices(bool forceRefresh = false);
 
-        void getDevicesAsync(bool forceRefresh, std::function<void(std::vector<Capture::DeviceRef>&)> f);
+        static void getDevicesAsync(bool forceRefresh, std::function<void()> f);
 
         class Device : public Capture::Device {
         public:
