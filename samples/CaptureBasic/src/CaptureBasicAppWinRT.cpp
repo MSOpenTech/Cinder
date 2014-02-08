@@ -44,58 +44,27 @@ void CaptureBasicApp::prepareSettings(Settings *settings)
 #endif
 }
 
-
-void CaptureBasicApp::setupCompletion()
-{
-    auto s = Capture::getDevices( false );
-
-    // test
-    auto t = s[0]->getName();
-
-    int a = 0;
-    /*
-    // WIP mess ...
-
-    for (auto device = Capture::getDevices().begin(); device != Capture::getDevices().end(); ++device) {
-        string s = (*device)->getName();
-        // console() << "Device: " << (*device)->getName() << " "	<< std::endl;
-        int a = 0;
-	}
-    */
-    // console() << sDevices
-}
-
-
 void CaptureBasicApp::setup()
 {
-    // WinRT we need Capture object to hold the devInfoCollection (internally) for enumeration
-    mCapture = Capture::create( 640, 480 );
-
-    mCapture->getDevicesAsync( true, [=]( std::vector<Capture::DeviceRef> &vec ) {
+    Capture::getDevicesAsync( true, [=]() {
         for (auto device = Capture::getDevices().begin(); device != Capture::getDevices().end(); ++device) {
             std::string s = (*device)->getName();
-            console() << "Device: " << (*device)->getName() << " ";
-        }
-    });
-
-#if 0
-	// print the devices
-	for( auto device = Capture::getDevices().begin(); device != Capture::getDevices().end(); ++device ) {
-		console() << "Device: " << (*device)->getName() << " "
+            console() << "Device: " << (*device)->getName() << " "
 #if defined( CINDER_COCOA_TOUCH )
 					<< ( (*device)->isFrontFacing() ? "Front" : "Rear" ) << "-facing"
 #endif
 					<< std::endl;
-	}
+        }
+    });
 
 	try {
-		mCapture = Capture::create( 640, 480 );
-		mCapture->start();
+        // zv Not Yet Implemented (NYI): 
+        // mCapture = Capture::create( 640, 480 );
+		// mCapture->start();
 	}
 	catch( ... ) {
 		console() << "Failed to initialize capture" << std::endl;
 	}
-#endif
 }
 
 void CaptureBasicApp::keyDown( KeyEvent event )
