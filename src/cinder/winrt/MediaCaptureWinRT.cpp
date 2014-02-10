@@ -43,7 +43,7 @@ using namespace Windows::Media;
 using namespace Windows::Media::Capture;
 using namespace std;
 
-namespace WinRTMediaCapture
+namespace MediaWinRT
 {
 
     MediaCaptureWinRT::MediaCaptureWinRT()
@@ -61,15 +61,25 @@ namespace WinRTMediaCapture
         create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture))
             .then([delegate](task<DeviceInformationCollection^> findTask)
         {
-            Platform::Array<Platform::String^>^ devices = ref new Platform::Array<Platform::String^>(0);
+            Platform::Array<VideoDeviceInfo^>^ devices = ref new Platform::Array<VideoDeviceInfo^>(0);
             try
             {
                 auto devInfoCollection = findTask.get();
-                devices = ref new Platform::Array<Platform::String^>(devInfoCollection->Size);
+                devices = ref new Platform::Array<VideoDeviceInfo^>(devInfoCollection->Size);
                 for (size_t i = 0; i < devInfoCollection->Size; i++)
                 {
                     auto devInfo = devInfoCollection->GetAt(i);
-                    devices[i] = devInfo->Name;
+                    auto location = devInfo->EnclosureLocation;
+                    bool isFrontFacing = false;
+                    bool isBackFacing = false;
+                    if ( location != nullptr ) 
+                    {
+                        isFrontFacing = (location->Panel == Windows::Devices::Enumeration::Panel::Front);
+                        isBackFacing = (location->Panel == Windows::Devices::Enumeration::Panel::Back);
+                    }   
+                    devices[i]->devName = devInfo->Name;
+                    devices[i]->isFrontFacing = isFrontFacing;
+                    devices[i]->isBackFacing = isBackFacing;
                 }
             }
             catch (Exception ^e)

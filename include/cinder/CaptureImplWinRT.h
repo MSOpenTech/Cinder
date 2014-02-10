@@ -75,9 +75,23 @@ namespace cinder {
             bool						isConnected() const;
             Capture::DeviceIdentifier	getUniqueId() const { return mUniqueId; }
 
-            Device(const std::string &name, int uniqueId) : Capture::Device(), mUniqueId(uniqueId) { mName = name; }
+            Device(const std::string &name, int uniqueId) : 
+                Capture::Device(), mUniqueId(uniqueId), m_isFrontFacing(false), m_isBackFacing(false)
+            { mName = name; }
+
+            virtual bool		isFrontFacing() const { return m_isFrontFacing; }
+            virtual bool		isBackFacing()  const { return m_isBackFacing; }
+
+            void    setFacing( bool front, bool back )
+            {
+                m_isFrontFacing = front;
+                m_isBackFacing = back;
+            }
+
         protected:
             int				            mUniqueId;
+            bool		                m_isFrontFacing;
+            bool		                m_isBackFacing;
         };
     protected:
         void	init(int32_t width, int32_t height, const Capture::Device &device);
@@ -99,7 +113,7 @@ namespace cinder {
         static std::vector<Capture::DeviceRef>	sDevices;
 
     private:
-        WinRTMediaCapture::MediaCaptureWinRT^  m_MediaCaptureWinRT;
+        MediaWinRT::MediaCaptureWinRT^      m_MediaCaptureWinRT;
     };
 
 } //namespace

@@ -58,7 +58,7 @@ using namespace Platform;
 using namespace Windows::Foundation::Collections;
 
 using namespace std;
-using namespace WinRTMediaCapture;
+using namespace MediaWinRT;
 
 namespace cinder {
 
@@ -191,12 +191,15 @@ void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void()> 
     sDevicesEnumerated = false;
 
     // callback delegate
-    GetMediaDevicesDelegate^ delegate = ref new GetMediaDevicesDelegate([f](const Array<Platform::String^>^ devices)
+    GetMediaDevicesDelegate^ delegate = ref new GetMediaDevicesDelegate([f](const Array<VideoDeviceInfo^>^ devices)
     {
         for (size_t i = 0; i < devices->Length; ++i)
         {
-            std::string s = toUtf8(devices[i]->Data());
-            sDevices.push_back(Capture::DeviceRef(new Device(s, i)));
+            auto src = devices[i];
+            std::string s = toUtf8(src->devName->Data());
+            auto dest = new CaptureImplWinRT::Device(s, i);
+            dest->setFacing( src->isFrontFacing, src->isBackFacing );
+            sDevices.push_back(Capture::DeviceRef(dest));
         }
         sDevicesEnumerated = true;
         f();

@@ -140,6 +140,10 @@ class Capture {
 		//! Returns whether device is front-facing. False implies rear-facing.
 		virtual bool		isFrontFacing() const = 0;
 #endif
+#if defined( CINDER_WINRT )
+		virtual bool		isFrontFacing() const = 0;
+		virtual bool		isBackFacing() const = 0;
+#endif
 	 protected:
 		Device() {}
 		std::string		mName;
