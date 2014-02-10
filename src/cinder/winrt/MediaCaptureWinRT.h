@@ -59,12 +59,12 @@ typedef std::array<unsigned int,1920*1080> HD_STD_ARRAY;
 
 namespace MediaWinRT
 {
-    ref class VideoDeviceInfo sealed
+    public ref class VideoDeviceInfo sealed
     {
     public:
-    property Platform::String^  devName;
-    property Platform::Boolean  isFrontFacing;
-    property Platform::Boolean  isBackFacing;
+        property Platform::String^  devName;
+        property Platform::Boolean  isFrontFacing;
+        property Platform::Boolean  isBackFacing;
     };
     
     /*

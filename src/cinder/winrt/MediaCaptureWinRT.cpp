@@ -77,6 +77,9 @@ namespace MediaWinRT
                         isFrontFacing = (location->Panel == Windows::Devices::Enumeration::Panel::Front);
                         isBackFacing = (location->Panel == Windows::Devices::Enumeration::Panel::Back);
                     }   
+
+                    // don't forget to allocate the VideoDeviceInfo object!
+                    devices[i] = ref new VideoDeviceInfo();
                     devices[i]->devName = devInfo->Name;
                     devices[i]->isFrontFacing = isFrontFacing;
                     devices[i]->isBackFacing = isBackFacing;
