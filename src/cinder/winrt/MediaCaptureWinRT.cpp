@@ -45,6 +45,60 @@ using namespace std;
 
 namespace MediaWinRT
 {
+        // temp test to get the WinRT capture engine going
+        void MediaCaptureWinRT::test()
+        {
+#if 0
+            // notes
+            create_task(m_mediaCaptureMgr->StartRecordToStorageFileAsync(recordProfile, 
+                this->m_recordStorageFile)).then([this](task<void> recordTask)
+
+                IAsyncAction^ StartRecordToCustomSinkAsync(
+                MediaEncodingProfile^ encodingProfile,
+                IMediaExtension^ customMediaSink
+                );
+#endif
+            // trial
+            m_mediaCaptureMgr = ref new Windows::Media::Capture::MediaCapture();
+
+            create_task(m_mediaCaptureMgr->InitializeAsync())
+                .then([this]( task<void> initTask )
+            {
+                try
+                {
+                    initTask.get();
+
+                    MediaEncodingProfile^ recordProfile = nullptr;
+                    recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
+
+                    // TODO: get the IMediaExtension, using COM and WRL
+                    //  also:   add the media extension to the project, and have it grab the frame buffers
+                    IMediaExtension^ customMediaSink;
+
+                    create_task( m_mediaCaptureMgr->StartRecordToCustomSinkAsync( recordProfile, customMediaSink ))
+                        .then( [this]( task<void> recordTask )
+                    {
+                            try
+                            {
+                            }
+                            catch (Exception ^e)
+                            {
+                            }
+                    });
+
+                }
+                catch (Exception ^e)
+                {
+                }
+            });
+
+            // WIP notes
+            // see CaptureReaderSharedState
+#if 0
+
+
+#endif
+        }
 
     MediaCaptureWinRT::MediaCaptureWinRT()
     {

@@ -72,6 +72,9 @@ namespace MediaWinRT
     ref class MediaCaptureWinRT sealed
     {
     public:
+        // temp test to get the WinRT capture engine going
+        void test();
+
         MediaCaptureWinRT();
 
         // 1. enumerate webcams
