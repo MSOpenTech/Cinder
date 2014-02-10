@@ -67,17 +67,6 @@ namespace MediaWinRT
         property Platform::Boolean  isBackFacing;
     };
     
-    /*
-
-    COMPILER ERROR:
-    1>e:\documents\github\cinxaml\src\cinder\winrt\mediacapturewinrt.h(70): 
-    error C3985: 'Invoke': signature of public member contains private type 'MediaWinRT::VideoDeviceInfo' 
-    (..\src\cinder\CaptureImplWinRt.cpp)
-    1>          e:\documents\github\cinxaml\src\cinder\winrt\mediacapturewinrt.h(63) : 
-    see declaration of 'MediaWinRT::VideoDeviceInfo'
-
-    */
-
     public delegate void GetMediaDevicesDelegate(const Platform::Array<VideoDeviceInfo^>^ devices);
 
     ref class MediaCaptureWinRT sealed
