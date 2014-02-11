@@ -46,6 +46,12 @@ void CaptureBasicApp::prepareSettings(Settings *settings)
 
 void CaptureBasicApp::setup()
 {
+    // test
+    mCapture = Capture::create( 640, 480 );
+    mCapture->test();
+
+#if 0
+
     Capture::getDevicesAsync( true, [=]() {
         for (auto device = Capture::getDevices().begin(); device != Capture::getDevices().end(); ++device) {
             std::string s = (*device)->getName();
@@ -65,6 +71,7 @@ void CaptureBasicApp::setup()
 	catch( ... ) {
 		console() << "Failed to initialize capture" << std::endl;
 	}
+#endif
 }
 
 void CaptureBasicApp::keyDown( KeyEvent event )
