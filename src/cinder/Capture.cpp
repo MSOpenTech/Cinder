@@ -111,6 +111,8 @@ Capture::Capture( int32_t width, int32_t height, const DeviceRef device )
 	mObj = shared_ptr<Obj>( new Obj( width, height, device ) );
 }
 
+void Capture::test() { mObj->mImpl->test(); }
+
 void Capture::start()
 {
 #if defined( CINDER_COCOA )

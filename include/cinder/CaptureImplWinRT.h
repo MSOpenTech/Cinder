@@ -51,6 +51,8 @@ namespace cinder {
         CaptureImplWinRT(int32_t width, int32_t height);
         ~CaptureImplWinRT();
 
+        void test() {   m_MediaCaptureWinRT->test();    }
+
         void start();
         void stop();
 
