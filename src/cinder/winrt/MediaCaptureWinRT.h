@@ -44,6 +44,12 @@
 //
 // why no using statements in header files
 // see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
+//
+// Media Foundation (top) 
+// http://msdn.microsoft.com/en-us/library/ms694197.aspx
+//
+// MF interfaces: http://msdn.microsoft.com/en-us/library/ms696268(v=vs.85).aspx
+//
 
 
 #pragma once

@@ -68,13 +68,19 @@ namespace MediaWinRT
                 {
                     initTask.get();
 
+                    if (m_mediaCaptureMgr->MediaCaptureSettings->VideoDeviceId == nullptr)
+                    {
+                        // usage ?
+                        // throw "cannot access capture device"
+                    }
+
                     MediaEncodingProfile^ recordProfile = nullptr;
                     recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
 
                     // TODO: get the IMediaExtension, using COM and WRL
                     //  also:   add the media extension to the project, and have it grab the frame buffers
-                    IMediaExtension^ customMediaSink;
-
+                    IMediaExtension^ customMediaSink = nullptr;
+#if 0
                     create_task( m_mediaCaptureMgr->StartRecordToCustomSinkAsync( recordProfile, customMediaSink ))
                         .then( [this]( task<void> recordTask )
                     {
@@ -85,6 +91,7 @@ namespace MediaWinRT
                             {
                             }
                     });
+#endif
 
                 }
                 catch (Exception ^e)
