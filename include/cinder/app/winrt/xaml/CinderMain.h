@@ -74,9 +74,8 @@ namespace cinder { namespace app {
     class CinderMain
     {
     public:
-        CinderMain() : m_timer(nullptr), m_relay(nullptr) {}
+        CinderMain() : m_timer(nullptr), m_relay(nullptr), m_pipeline_ready(false), m_resize_needed(false) {}
         ~CinderMain();
-
 
         // Methods called by XAML via CinderPage
         void setup(const std::shared_ptr<DX::DeviceResources>& deviceResources);
@@ -100,6 +99,7 @@ namespace cinder { namespace app {
         // rendering
         void StartRenderLoop();
         void StopRenderLoop();
+
         Concurrency::critical_section& GetCriticalSection() { return m_criticalSection; }
 
         // share the DX/D3D/D2D objects with Cinder
@@ -122,6 +122,7 @@ namespace cinder { namespace app {
         cinder::app::AppImplMswRendererDx *mRenderer;
 
         bool    m_pipeline_ready;
+        bool    m_resize_needed;
 
         // singleton instance
         static CinderMain*  sInstance;

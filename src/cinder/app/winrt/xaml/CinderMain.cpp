@@ -138,7 +138,6 @@ namespace cinder {
             //  nb. Cinder will perform shader & lighting setup, and drawing via dx::
             //  initialization & device management is handled by the XAML framework
             //
-            // ren = new cinder::app::AppImplMswRendererDx(nullptr, nullptr);
             mRenderer = ((app::RendererDx*)(&*app::App::get()->getRenderer()))->mImpl;
 
             // call the app's content initialization setup(); this method can be overloaded.
@@ -148,6 +147,7 @@ namespace cinder {
             if (!m_pipeline_ready) {
                 mRenderer->setupPipeline();
                 m_pipeline_ready = true;
+                m_resize_needed = true;
             }
 
             AppBasic::get()->setup();
@@ -168,6 +168,7 @@ namespace cinder {
         void CinderMain::CreateWindowSizeDependentResources()
         {
             // optional: add call to the size-dependent initialization of your app's content.
+            m_resize_needed = true;
         }
 
         void CinderMain::StartRenderLoop()
@@ -255,9 +256,11 @@ namespace cinder {
             shareWithCinder();
 
             // emit resize, refer to AppImplWinRTBasic::runReady
-            // mWindow->getWindow()->emitResize();
             auto win = AppBasic::get()->getImpl()->getWindow();
-            win->emitResize();
+            if (m_resize_needed) {
+                m_resize_needed = false;
+                win->emitResize();
+            }
 
             // setup Cinder's 3D camera and projection
             float w = m_deviceResources->GetOutputSize().Width;
