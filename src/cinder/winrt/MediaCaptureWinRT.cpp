@@ -24,6 +24,8 @@
 #include <ppltasks.h>
 #include <ppl.h>
 
+#include <mfobjects.h>
+
 using namespace concurrency;
 
 using namespace Platform;
@@ -80,6 +82,26 @@ namespace MediaWinRT
                     // TODO: get the IMediaExtension, using COM and WRL
                     //  also:   add the media extension to the project, and have it grab the frame buffers
                     IMediaExtension^ customMediaSink = nullptr;
+
+                    Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
+
+                    // won't compile:
+                    // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps;
+
+#if 0
+    // from CaptureReaderSharedState.cpp
+    CHK(MakeAndInitialize<MediaSink>(&_mediaSink, audioPropsABI.Get(), videoPropsABI.Get(), audioSampleHandler, videoSampleHandler));
+    _mediaExtension = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(_mediaSink.Get()));
+
+    // from MediaSink.h
+    Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
+    if (videoProps != nullptr)
+    {
+        CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
+        CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get(), videoSampleHandler));
+    }
+#endif
+
 #if 0
                     create_task( m_mediaCaptureMgr->StartRecordToCustomSinkAsync( recordProfile, customMediaSink ))
                         .then( [this]( task<void> recordTask )
