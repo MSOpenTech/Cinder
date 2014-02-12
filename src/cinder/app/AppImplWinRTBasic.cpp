@@ -91,7 +91,6 @@ void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 
     // for XAML, call setup() after the Renderer has been associated with Application
     bool isXaml = mApp->getSettings().getXaml();
-
     if (!isXaml)
     {
         mApp->privateSetup__();
