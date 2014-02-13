@@ -54,7 +54,13 @@ namespace CinderXAML
 		void LoadInternalState(Windows::Foundation::Collections::IPropertySet^ state);
 
 	private:
-		// XAML low-level rendering event handler.
+		// nb. events sequence at startup:
+        //
+        // OnVisibilityChanged
+        // OnSwapChainPanelSizeChanged
+        // OnCompositionScaleChanged
+        
+        // XAML low-level rendering event handler.
 		void OnRendering(Platform::Object^ sender, Platform::Object^ args);
 
 		// Window event handlers.
