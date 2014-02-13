@@ -120,6 +120,11 @@ namespace cinder {
             // m_timer->SetTargetElapsedSeconds(1.0 / 60);
             //
 
+            // zv test
+            m_timer->SetFixedTimeStep(true);
+            m_timer->SetTargetElapsedSeconds( 30.0 / 60 );
+
+
             // call AppImplWinRTBasic::runReady() manually
             // runReady:
             //      associates the renderer class with the app class, in Window::setRenderer
@@ -202,6 +207,8 @@ namespace cinder {
         {
             m_renderLoopWorker->Cancel();
         }
+
+        int CinderMain::GetFrameCount() const {   return m_timer->GetFrameCount(); }
 
         // Updates the application state once per frame.
         void CinderMain::Update()
