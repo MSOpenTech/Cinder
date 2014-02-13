@@ -200,6 +200,7 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 
     // breakouts to expose functionality for CinderMain
     // ideally s/b friends
+    void    setDeviceOrientation( const Matrix44f& m ) {}
     void    setupCamera( float width, float height ) const;
     bool    setupPipeline();
 	void	releaseNonDeviceResources();
@@ -223,6 +224,8 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	int mStateFlags;
 	bool mFullScreen;
 	bool mVsyncEnable;
+
+    Matrix44f   deviceOrientation;
 };
 
 } } // namespace cinder::app

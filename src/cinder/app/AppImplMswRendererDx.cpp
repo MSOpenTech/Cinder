@@ -230,6 +230,7 @@ AppImplMswRendererDx::AppImplMswRendererDx( App *aApp, RendererDx *aRenderer )
   mVsyncEnable( false ),
   mFullScreen( false )
 {
+    deviceOrientation.setToIdentity();
 }
 
 void AppImplMswRendererDx::prepareToggleFullScreen()
@@ -333,8 +334,8 @@ void AppImplMswRendererDx::setupCamera( float width, float height ) const
 	dx::setProjection(cam);
 	dx::setModelView(cam);
 
-    // todo: implement tablet/phone rotation, see
-    // Sample3DSceneRenderer::CreateWindowSizeDependentResources()
+    // apply device orientation transform - defaults to identity if not set
+    dx::multModelView( deviceOrientation );
 
 	// these two lines flip the y-axis and move the origin up
 	dx::multModelView(Matrix44f::createScale(Vec3f(1, -1, 1)));
