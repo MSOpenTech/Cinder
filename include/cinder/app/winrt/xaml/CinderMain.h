@@ -100,6 +100,8 @@ namespace cinder { namespace app {
         void StartRenderLoop();
         void StopRenderLoop();
 
+        int GetFrameCount() const;
+
         Concurrency::critical_section& GetCriticalSection() { return m_criticalSection; }
 
         // share the DX/D3D/D2D objects with Cinder

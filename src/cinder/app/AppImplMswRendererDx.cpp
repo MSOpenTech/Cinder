@@ -41,6 +41,9 @@
 #include "cinder/WinRTUtils.h"
 #include <windows.ui.xaml.media.dxinterop.h>
 
+// zv for GetFrameCount debug output
+#include "cinder/app/winrt/XAML/CinderMain.h"
+
 using namespace Windows::UI::Core;
 using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
@@ -329,17 +332,29 @@ void AppImplMswRendererDx::defaultResize() const
 
 void AppImplMswRendererDx::setupCamera( float width, float height ) const
 {
+    // zv debug
+    auto frame = CinderMain::getInstance()->GetFrameCount();
+    TCC( "setupCamera" );   TC( frame );
+    TC( width ); TC( height );  TCNL;
+
 	cinder::CameraPersp cam( static_cast<int>(width), static_cast<int>(height), 60.0f );
 
 	dx::setProjection(cam);
 	dx::setModelView(cam);
 
+    // 1
     // apply device orientation transform - defaults to identity if not set
     dx::multModelView( deviceOrientation );
+
+    // zv debug
+    TCC( "dev mtx: ");  TCNL;
+    TCC( deviceOrientation ); 
 
 	// these two lines flip the y-axis and move the origin up
 	dx::multModelView(Matrix44f::createScale(Vec3f(1, -1, 1)));
 	dx::multModelView(Matrix44f::createTranslation(Vec3f(0, -height, 0)));
+
+    // 2
 }
 
 // nb. not called for XAML apps, see DeviceResources.cpp:614
