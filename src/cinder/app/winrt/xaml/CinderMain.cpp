@@ -262,6 +262,13 @@ namespace cinder {
                 win->emitResize();
             }
 
+            // setup Cinder's device orientation
+            auto mdx = m_deviceResources->GetOrientationTransform3D();
+            // nb. both DX and Cinder frameworks use compiler keyword 'float' for fundamental type
+            // reinterpret_cast s/b OK
+            Matrix44f mcin( reinterpret_cast<const float *>(&mdx), true );
+            mRenderer->setDeviceOrientation( mcin );
+
             // setup Cinder's 3D camera and projection
             float w = m_deviceResources->GetOutputSize().Width;
             float h = m_deviceResources->GetOutputSize().Height;
