@@ -269,6 +269,7 @@
     <ClInclude Include="..\include\cinder\app\Renderer.h" />
     <ClInclude Include="..\include\cinder\app\Window.h" />
     <ClInclude Include="..\include\cinder\app\WinRTApp.h" />
+    <ClInclude Include="..\include\cinder\app\winrt\cdebug.h" />
     <ClInclude Include="..\include\cinder\app\winrt\xaml\CinderMain.h" />
     <ClInclude Include="..\include\cinder\app\winrt\xaml\Common\DeviceResources.h" />
     <ClInclude Include="..\include\cinder\app\winrt\xaml\Common\DirectXHelper.h" />
