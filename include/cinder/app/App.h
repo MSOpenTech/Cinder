@@ -58,9 +58,6 @@
 	#include "cinder/msw/OutputDebugStringStream.h"
 #elif defined( CINDER_WINRT)
 	#include "cinder/msw/OutputDebugStringStream.h"
-
-    // zv define some debug macros to Visual Studio Output window
-    #include "cinder/app/winrt/cdebug.h"
 #endif
 
 #include <vector>
