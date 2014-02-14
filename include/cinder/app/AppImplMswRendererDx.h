@@ -198,9 +198,8 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	ID3D11DepthStencilState *mDepthStencilState;
 	D3D11_DEPTH_STENCIL_DESC mDepthStencilDesc;
 
-    // breakouts to expose functionality for CinderMain
+    // breakouts to expose functionality for CinderMain (XAML support)
     // ideally s/b friends
-    void    setDeviceOrientation( const Matrix44f& m ) {}
     void    setupCamera( float width, float height ) const;
     bool    setupPipeline();
 	void	releaseNonDeviceResources();
@@ -224,8 +223,6 @@ class AppImplMswRendererDx : public AppImplMswRenderer {
 	int mStateFlags;
 	bool mFullScreen;
 	bool mVsyncEnable;
-
-    Matrix44f   deviceOrientation;
 };
 
 } } // namespace cinder::app
