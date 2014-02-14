@@ -52,9 +52,8 @@
 
 #include "cinder/app/winrt/xaml/CinderMain.h"
 
-// zv for debug
-#include "cinder/app/winrt/cdebug.h"
-
+// For event tracing with TCC macros:
+// #include "cinder/app/winrt/cdebug.h"
 
 using namespace CinderXAML;
 
@@ -191,7 +190,7 @@ void CinderPage::LoadInternalState(IPropertySet^ state)
 
 void CinderPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventArgs^ args)
 {
-    TCC( "OnVisibilityChanged\n" );
+    // TCC( "OnVisibilityChanged\n" );
 
 	m_windowVisible = args->Visible;
 	if (m_windowVisible)
@@ -208,7 +207,7 @@ void CinderPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventA
 
 void CinderPage::OnDpiChanged(DisplayInformation^ sender, Object^ args)
 {
-    TCC( "OnDpiChanged\n" );
+    // TCC( "OnDpiChanged\n" );
 
 	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->SetDpi(sender->LogicalDpi);
@@ -217,7 +216,7 @@ void CinderPage::OnDpiChanged(DisplayInformation^ sender, Object^ args)
 
 void CinderPage::OnOrientationChanged(DisplayInformation^ sender, Object^ args)
 {
-    TCC( "OnOrientationChanged\n" );
+    // TCC( "OnOrientationChanged\n" );
 
 	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->SetCurrentOrientation(sender->CurrentOrientation);
@@ -227,7 +226,7 @@ void CinderPage::OnOrientationChanged(DisplayInformation^ sender, Object^ args)
 
 void CinderPage::OnDisplayContentsInvalidated(DisplayInformation^ sender, Object^ args)
 {
-    TCC( "OnDisplayContentsInvalidated\n" );
+    // TCC( "OnDisplayContentsInvalidated\n" );
 
     critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->ValidateDevice();
@@ -288,7 +287,7 @@ void CinderPage::OnPointerWheelChanged(CoreWindow^ sender, PointerEventArgs^ arg
 // nb. this event fires (2) at initialization
 void CinderPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)
 {
-    TCC( "OnCompositionScaleChanged\n" );
+    // TCC( "OnCompositionScaleChanged\n" );
 
 	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->SetCompositionScale(sender->CompositionScaleX, sender->CompositionScaleY);
@@ -298,7 +297,7 @@ void CinderPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)
 // nb. this event fires (1,3) at initialization
 void CinderPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventArgs^ e)
 {
-    TCC( "OnSwapChainPanelSizeChanged\n" );
+    // TCC( "OnSwapChainPanelSizeChanged\n" );
 
 	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
 	m_deviceResources->SetLogicalSize(e->NewSize);
