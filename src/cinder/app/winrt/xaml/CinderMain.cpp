@@ -54,6 +54,8 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/app/AppImplWinRTBasic.h"
 
+#include "cinder/WinRTUtils.h"
+
 // this function is defined by the application start macro
 extern int mainXAML();
 
@@ -119,13 +121,6 @@ namespace cinder {
             // m_timer->SetFixedTimeStep(true);
             // m_timer->SetTargetElapsedSeconds(1.0 / 60);
             //
-
-            // zv test
-            const float fps = 1.0f;
-            const float delay = 1.0f / fps;
-            m_timer->SetFixedTimeStep(true);
-            m_timer->SetTargetElapsedSeconds( fps );
-
 
             // call AppImplWinRTBasic::runReady() manually
             // runReady:
@@ -241,14 +236,6 @@ namespace cinder {
                 return false;
             }
 
-            // zv temp - throttle rendering to timer; otherwise only update is throttled
-            if (m_timer->GetFrameCount() == mLastFrameRendered)
-            {              
-                return false;
-            }
-            mLastFrameRendered = m_timer->GetFrameCount();
-
-
             auto context = m_deviceResources->GetD3DDeviceContext();
 
             // Reset the viewport to target the whole screen.
@@ -273,35 +260,18 @@ namespace cinder {
             shareWithCinder();
 
             // emit resize, refer to AppImplWinRTBasic::runReady
-            auto win = AppBasic::get()->getImpl()->getWindow();
+            auto cwin = AppBasic::get()->getImpl()->getWindow();
             if (m_resize_needed) {
                 m_resize_needed = false;
-                win->emitResize();
+                cwin->emitResize();
             }
-
-            // setup Cinder's device orientation
-            auto mdx = m_deviceResources->GetOrientationTransform3D();
-
-            // zv temp - dump the XMFLOAT4X4 matrix
-            TCC("mdx:\n");
-            {
-                for (int ii = 0; ii <= 3; ii++) {
-                    for (int jj = 0; jj <= 3; jj++) {
-                        TCCW(7, mdx(ii, jj));
-                    }
-                    TCNL;
-                }
-            }
-
-            // nb. both DX and Cinder frameworks use compiler keyword 'float' for fundamental type
-            // reinterpret_cast s/b OK
-            Matrix44f mcin( reinterpret_cast<const float *>(&mdx), true );
-            TCC( "mcin:\n" );   TCC( mcin );    // zv
-            mRenderer->setDeviceOrientation( mcin );
 
             // setup Cinder's 3D camera and projection
             float w = m_deviceResources->GetOutputSize().Width;
             float h = m_deviceResources->GetOutputSize().Height;
+
+            cinder::winrt::SwapWindowDimensions( &w, &h );
+
             mRenderer->setupCamera(w, h);
 
             // calls to overloaded Cinder app draw() method
