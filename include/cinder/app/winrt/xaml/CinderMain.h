@@ -92,7 +92,7 @@ namespace cinder { namespace app {
     class CinderMain
     {
     public:
-        CinderMain() : m_timer(nullptr), m_relay(nullptr), m_pipeline_ready(false), m_resize_needed(false), mLastFrameRendered(0) {}
+        CinderMain() : m_timer(nullptr), m_relay(nullptr), m_pipeline_ready(false), m_resize_needed(false) {}
         ~CinderMain();
 
         // Methods called by XAML via CinderPage
@@ -143,7 +143,6 @@ namespace cinder { namespace app {
 
         bool    m_pipeline_ready;
         bool    m_resize_needed;
-        uint32  mLastFrameRendered;
 
         // singleton instance
         static CinderMain*  sInstance;
