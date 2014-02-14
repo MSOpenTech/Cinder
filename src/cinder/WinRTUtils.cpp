@@ -93,6 +93,28 @@ void GetPlatformWindowDimensions(Windows::UI::Core::CoreWindow^ wnd, float* widt
 	*height = swapDimensions ? windowWidth : windowHeight;
 }
 
+// if the device is rotated then swap dimensions for Cinder
+// used by XAML impl
+void SwapWindowDimensions(float* width, float* height)
+{
+    bool swapDimensions = false;
+
+    // The width and height of the swap chain must be based on the window's
+    // landscape-oriented width and height. If the window is in a portrait
+    // orientation, the dimensions must be reversed.
+    Windows::Graphics::Display::DisplayOrientations orientation = DisplayProperties::CurrentOrientation;
+    swapDimensions =
+        orientation == DisplayOrientations::Portrait ||
+        orientation == DisplayOrientations::PortraitFlipped;
+
+    if (swapDimensions)
+    {
+        float tw = *width;
+        *width = *height;
+        *height = tw;
+    }
+}
+
 std::string PlatformStringToString(Platform::String^ s) {
 	std::wstring t = std::wstring(s->Data());
 	return std::string(t.begin(),t.end());
