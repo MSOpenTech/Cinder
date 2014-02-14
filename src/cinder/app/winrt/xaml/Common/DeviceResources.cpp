@@ -55,6 +55,9 @@
 // added to template code:
 #include <minmax.h>
 
+// zv debug
+#include "cinder/app/winrt/cdebug.h"
+
 using namespace D2D1;
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -258,6 +261,8 @@ void DX::DeviceResources::CreateDeviceResources()
 // These resources need to be recreated every time the window size is changed.
 void DX::DeviceResources::CreateWindowSizeDependentResources() 
 {
+    TCC( "DX::DeviceResources::CreateWindowSizeDependentResources\n" );
+
 	// Clear the previous window size specific context.
 	ID3D11RenderTargetView* nullViews[] = {nullptr};
 	m_d3dContext->OMSetRenderTargets(ARRAYSIZE(nullViews), nullViews, nullptr);
@@ -279,6 +284,8 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
 	// natively-oriented width and height. If the window is not in the native
 	// orientation, the dimensions must be reversed.
 	DXGI_MODE_ROTATION displayRotation = ComputeDisplayRotation();
+
+    TC( displayRotation ); TCNL;    // zv
 
 	bool swapDimensions = displayRotation == DXGI_MODE_ROTATION_ROTATE90 || displayRotation == DXGI_MODE_ROTATION_ROTATE270;
 	m_d3dRenderTargetSize.Width = swapDimensions ? m_outputSize.Height : m_outputSize.Width;
@@ -412,6 +419,17 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
 	default:
 		throw ref new FailureException();
 	}
+
+    // zv temp - dump the XMFLOAT4X4 matrix
+    TCC( "m_orientationTransform3D:\n" );
+    {
+        for (int ii = 0; ii <= 3; ii++) {
+            for (int jj = 0; jj <= 3; jj++) {
+                TCCW(7, m_orientationTransform3D(ii, jj));
+            }
+            TCNL;
+        }
+    }
 
 	DX::ThrowIfFailed(
 		m_swapChain->SetRotation(displayRotation)
