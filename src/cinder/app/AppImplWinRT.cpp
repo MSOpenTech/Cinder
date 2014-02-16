@@ -35,6 +35,8 @@
 #include "cinder/WinRTUtils.h"
 #include "cinder/Utilities.h"
 
+#include "cinder/app/winrt/XAML/CinderMain.h"
+
 #include <Windows.h>
 #include <CommDlg.h>
 #include <ShellAPI.h>
@@ -636,15 +638,14 @@ void WindowImplWinRT::handlePointerUp(PointerEventArgs^ args)
 void WindowImplWinRT::handleTouchDown(PointerEventArgs^ args) 
 {
 	PointerPoint^ p = args->CurrentPoint;
+    auto v = TransformToOrientation( Vec2f( p->Position.X, p->Position.Y ) ); 
 	vector<TouchEvent::Touch> touches;
-	float x = getScaledDPIValue(p->Position.X);
-	float y = getScaledDPIValue(p->Position.Y);
 
 	auto id = mTouchId++;
 	mTouchIds[p->PointerId] = id;
 
-	mMultiTouchPrev[id] = Vec2f(x, y);
-	TouchEvent::Touch e( Vec2f(x, y ), Vec2f(x, y), id, app::getElapsedSeconds(), nullptr);
+	mMultiTouchPrev[id] = v;
+	TouchEvent::Touch e( v, v, id, app::getElapsedSeconds(), nullptr);
 	touches.push_back(e);
 	mActiveTouches.push_back(e);
 
@@ -655,10 +656,9 @@ void WindowImplWinRT::handleTouchDown(PointerEventArgs^ args)
 void WindowImplWinRT::handleMouseDown(PointerEventArgs^ args) 
 {
 	PointerPoint^ p = args->CurrentPoint;
+    auto v = TransformToOrientation( Vec2f( p->Position.X, p->Position.Y ) ); 
 	mIsDragging = true;		
-	float x = getScaledDPIValue(p->Position.X);
-	float y = getScaledDPIValue(p->Position.Y);
-	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>(x), static_cast<int>(y), prepPointerEventModifiers( args ), 0.0f, 0L);
+	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>(v.x), static_cast<int>(v.y), prepPointerEventModifiers( args ), 0.0f, 0L);
 	getWindow()->emitMouseDown( &event );
 }
 
@@ -666,14 +666,14 @@ void WindowImplWinRT::handleMouseDown(PointerEventArgs^ args)
 void WindowImplWinRT::handleTouchMoved(PointerEventArgs^ args) 
 {
 	PointerPoint^ p = args->CurrentPoint;
+    auto v = TransformToOrientation( Vec2f( p->Position.X, p->Position.Y ) ); 
 	vector<TouchEvent::Touch> touches;
-	float x = getScaledDPIValue(p->Position.X);
-	float y = getScaledDPIValue(p->Position.Y);
-	auto id = mTouchIds[p->PointerId];
+
+    auto id = mTouchIds[p->PointerId];
 	
 	if(mMultiTouchPrev.find(id) != mMultiTouchPrev.end()) {
-		mMultiTouchPrev[id] = Vec2f(x, y);
-		TouchEvent::Touch e(  Vec2f(x, y ), mMultiTouchPrev[id], id, app::getElapsedSeconds(), nullptr);
+		mMultiTouchPrev[id] = v;
+		TouchEvent::Touch e( v, mMultiTouchPrev[id], id, app::getElapsedSeconds(), nullptr);
 		mActiveTouches.erase(std::find_if(mActiveTouches.begin(), mActiveTouches.end(),[id](const TouchEvent::Touch & m) -> bool { return m.getId() == id; }));
 		mActiveTouches.push_back(e);
 		touches.push_back(e);
@@ -685,9 +685,8 @@ void WindowImplWinRT::handleTouchMoved(PointerEventArgs^ args)
 void WindowImplWinRT::handleMouseMoved(PointerEventArgs^ args) 
 {
 	PointerPoint^ p = args->CurrentPoint;
-	float x = getScaledDPIValue(p->Position.X);
-	float y = getScaledDPIValue(p->Position.Y);
-	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>(x), static_cast<int>(y), prepPointerEventModifiers( args ), 0.0f, 0L);
+    auto v = TransformToOrientation( Vec2f( p->Position.X, p->Position.Y ) ); 
+	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>(v.x), static_cast<int>(v.y), prepPointerEventModifiers( args ), 0.0f, 0L);
 	if(mIsDragging)		
 		getWindow()->emitMouseDrag( &event );
 	else
@@ -697,11 +696,12 @@ void WindowImplWinRT::handleMouseMoved(PointerEventArgs^ args)
 void WindowImplWinRT::handleTouchUp(PointerEventArgs^ args) 
 {
 	PointerPoint^ p = args->CurrentPoint;
+    auto v = TransformToOrientation( Vec2f( p->Position.X, p->Position.Y ) ); 
 	vector<TouchEvent::Touch> touches;
-	float x = getScaledDPIValue(p->Position.X);
-	float y = getScaledDPIValue(p->Position.Y);
-	auto id = mTouchIds[p->PointerId];
-	touches.push_back( TouchEvent::Touch(  Vec2f(x, y ), mMultiTouchPrev[id], id, app::getElapsedSeconds(), nullptr) );
+
+    auto id = mTouchIds[p->PointerId];
+
+    touches.push_back( TouchEvent::Touch( v, mMultiTouchPrev[id], id, app::getElapsedSeconds(), nullptr) );
 	TouchEvent event( getWindow(), touches );
 	getWindow()->emitTouchesEnded( &event );
 	mActiveTouches.erase(std::find_if(mActiveTouches.begin(), mActiveTouches.end(),[id](const TouchEvent::Touch & m) -> bool { return m.getId() == id; }));
@@ -712,38 +712,58 @@ void WindowImplWinRT::handleTouchUp(PointerEventArgs^ args)
 void WindowImplWinRT::handleMouseUp(PointerEventArgs^ args) 
 {
 	PointerPoint^ p = args->CurrentPoint;
-	float x = getScaledDPIValue(p->Position.X);
-	float y = getScaledDPIValue(p->Position.Y);
+    auto v = TransformToOrientation( Vec2f( p->Position.X, p->Position.Y ) ); 
 	mIsDragging = false;		
-	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>(x), static_cast<int>(y), prepPointerEventModifiers( args ), 0.0f, 0L);
+	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>(v.x), static_cast<int>(v.y), prepPointerEventModifiers( args ), 0.0f, 0L);
 	getWindow()->emitMouseUp( &event );
 }
 
 
+// handles device orientation and also scales pointer for zoom
 Vec2f WindowImplWinRT::TransformToOrientation(Vec2f p) const
 {
-//    auto r = Vec2f( getScaledDPIValue(p.x), getScaledDPIValue(p.y) );
-    auto r = p;
+    auto r = Vec2f( getScaledDPIValue(p.x), getScaledDPIValue(p.y) );
+    //  auto r = p;
 
-// 	Windows::Graphics::Display::DisplayOrientations orientation = DisplayProperties::CurrentOrientation;
+    // INCOMPLETE
+    // use new method CinderMain::GetOrientationTransform2D
 
-    switch (DisplayProperties::CurrentOrientation)
+    //    auto rs = cinder::app::CinderMain::getInstance()->getDeviceResources().get();
+
+    // unlikely, but only you can prevent forest fires
+    //    if ( rs == nullptr ) return r;
+
+    return r;
+}
+
+#if 0
+    // 	Windows::Graphics::Display::DisplayOrientations orientation = DisplayProperties::CurrentOrientation;
+
+    auto m = cinder::app::CinderMain::getInstance()->ComputeDisplayRotation();
+
+    switch (m)
     {
-    // case DisplayOrientations::Portrait:
-    // default:
-        // nop
-    case DisplayOrientations::Landscape:
-        r = Vec2f( p.y, mWindowWidth - p.x);
+    case DXGI_MODE_ROTATION_IDENTITY:
+        //  case DisplayOrientations::Portrait:
+    default:
         break;
-    case DisplayOrientations::PortraitFlipped:
-        r = Vec2f( mWindowWidth - p.x, mWindowHeight - p.y);
+    case DXGI_MODE_ROTATION_ROTATE90:
+        //  case DisplayOrientations::Landscape:
+        r = Vec2f( mWindowHeight - p.y, p.x );
+//        r = Vec2f( p.y, mWindowWidth - p.x);
         break;
-    case DisplayOrientations::LandscapeFlipped:
-        r = Vec2f(mWindowHeight - p.y, p.x);
+    case DXGI_MODE_ROTATION_ROTATE180:
+        //  case DisplayOrientations::PortraitFlipped:
+        r = Vec2f( mWindowWidth - p.x, mWindowHeight - p.y );
+        break;
+    case DXGI_MODE_ROTATION_ROTATE270:
+        //  case DisplayOrientations::LandscapeFlipped:
+        r = Vec2f( 0.f, 0.f );
+//        r = Vec2f(mWindowHeight - p.y, p.x);
         break;
     }
 
-    // todo - handle zoom factor
+    // zoom factor; probably already handled by getScaledDPIValue
 #if 0
 	if(zoomFactor > 0.0f) {
 		r.x /= zoomFactor;
@@ -754,6 +774,7 @@ Vec2f WindowImplWinRT::TransformToOrientation(Vec2f p) const
     // return-value optimization
     return r;
 }
+#endif
 
 
 void WindowImplWinRT::keyDown( const KeyEvent &event )
