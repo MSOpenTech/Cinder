@@ -719,6 +719,43 @@ void WindowImplWinRT::handleMouseUp(PointerEventArgs^ args)
 	getWindow()->emitMouseUp( &event );
 }
 
+
+Vec2f WindowImplWinRT::TransformToOrientation(Vec2f p) const
+{
+//    auto r = Vec2f( getScaledDPIValue(p.x), getScaledDPIValue(p.y) );
+    auto r = p;
+
+// 	Windows::Graphics::Display::DisplayOrientations orientation = DisplayProperties::CurrentOrientation;
+
+    switch (DisplayProperties::CurrentOrientation)
+    {
+    // case DisplayOrientations::Portrait:
+    // default:
+        // nop
+    case DisplayOrientations::Landscape:
+        r = Vec2f( p.y, mWindowWidth - p.x);
+        break;
+    case DisplayOrientations::PortraitFlipped:
+        r = Vec2f( mWindowWidth - p.x, mWindowHeight - p.y);
+        break;
+    case DisplayOrientations::LandscapeFlipped:
+        r = Vec2f(mWindowHeight - p.y, p.x);
+        break;
+    }
+
+    // todo - handle zoom factor
+#if 0
+	if(zoomFactor > 0.0f) {
+		r.x /= zoomFactor;
+		r.y /= zoomFactor;
+	}
+#endif
+
+    // return-value optimization
+    return r;
+}
+
+
 void WindowImplWinRT::keyDown( const KeyEvent &event )
 {
 	KeyEvent localEvent( event );

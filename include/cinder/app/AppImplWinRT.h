@@ -150,6 +150,8 @@ class WindowImplWinRT {
 	void	handleMouseUp(Windows::UI::Core::PointerEventArgs^ args);
 	void	updateActiveTouches();
 
+    Vec2f   TransformToOrientation(Vec2f p) const;
+
 	AppImplWinRT			*mAppImpl;
 	WindowRef				mWindowRef;
   	DX_WINDOW_TYPE			mWnd;
