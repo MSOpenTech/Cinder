@@ -43,6 +43,7 @@
 #include <collection.h>
 #include <ppltasks.h>
 
+// #include "cinder/app/winrt/cdebug.h"
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #define min(a, b) (((a) < (b)) ? (a) : (b))
@@ -723,59 +724,33 @@ void WindowImplWinRT::handleMouseUp(PointerEventArgs^ args)
 Vec2f WindowImplWinRT::TransformToOrientation(Vec2f p) const
 {
     auto r = Vec2f( getScaledDPIValue(p.x), getScaledDPIValue(p.y) );
-    //  auto r = p;
+    auto m = DisplayProperties::CurrentOrientation;
+    float w = (float)mWindowWidth, h = (float)mWindowHeight;
+    SwapWindowDimensions( &w, &h );
 
-    // INCOMPLETE
-    // use new method CinderMain::GetOrientationTransform2D
+    // nb. we actually implement the inverse rotations to rotate from
+    // the input pointer physical to the untransformed render target virtual
 
-    //    auto rs = cinder::app::CinderMain::getInstance()->getDeviceResources().get();
-
-    // unlikely, but only you can prevent forest fires
-    //    if ( rs == nullptr ) return r;
-
-    return r;
-}
-
-#if 0
-    // 	Windows::Graphics::Display::DisplayOrientations orientation = DisplayProperties::CurrentOrientation;
-
-    auto m = cinder::app::CinderMain::getInstance()->ComputeDisplayRotation();
+    // nb. simulator and Surface 2 device may have differing behavior
 
     switch (m)
     {
-    case DXGI_MODE_ROTATION_IDENTITY:
-        //  case DisplayOrientations::Portrait:
+    case DisplayOrientations::Landscape:        // 1
     default:
         break;
-    case DXGI_MODE_ROTATION_ROTATE90:
-        //  case DisplayOrientations::Landscape:
-        r = Vec2f( mWindowHeight - p.y, p.x );
-//        r = Vec2f( p.y, mWindowWidth - p.x);
+    case DisplayOrientations::Portrait:         // 2 
+        r = Vec2f( r.y, w - r.x );
         break;
-    case DXGI_MODE_ROTATION_ROTATE180:
-        //  case DisplayOrientations::PortraitFlipped:
-        r = Vec2f( mWindowWidth - p.x, mWindowHeight - p.y );
+    case DisplayOrientations::LandscapeFlipped: // 4    x
+        r = Vec2f( w - r.x, h - r.y );
         break;
-    case DXGI_MODE_ROTATION_ROTATE270:
-        //  case DisplayOrientations::LandscapeFlipped:
-        r = Vec2f( 0.f, 0.f );
-//        r = Vec2f(mWindowHeight - p.y, p.x);
+    case DisplayOrientations::PortraitFlipped:  // 8
+        r = Vec2f( h - r.y, r.x );
         break;
     }
 
-    // zoom factor; probably already handled by getScaledDPIValue
-#if 0
-	if(zoomFactor > 0.0f) {
-		r.x /= zoomFactor;
-		r.y /= zoomFactor;
-	}
-#endif
-
-    // return-value optimization
     return r;
 }
-#endif
-
 
 void WindowImplWinRT::keyDown( const KeyEvent &event )
 {
