@@ -285,8 +285,6 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
 	// orientation, the dimensions must be reversed.
 	DXGI_MODE_ROTATION displayRotation = ComputeDisplayRotation();
 
-    // TC( displayRotation ); TCNL;
-
 	bool swapDimensions = displayRotation == DXGI_MODE_ROTATION_ROTATE90 || displayRotation == DXGI_MODE_ROTATION_ROTATE270;
 	m_d3dRenderTargetSize.Width = swapDimensions ? m_outputSize.Height : m_outputSize.Width;
 	m_d3dRenderTargetSize.Height = swapDimensions ? m_outputSize.Width : m_outputSize.Height;
