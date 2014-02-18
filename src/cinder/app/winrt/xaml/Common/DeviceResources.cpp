@@ -261,8 +261,6 @@ void DX::DeviceResources::CreateDeviceResources()
 // These resources need to be recreated every time the window size is changed.
 void DX::DeviceResources::CreateWindowSizeDependentResources() 
 {
-    // TCC( "DX::DeviceResources::CreateWindowSizeDependentResources\n" );
-
 	// Clear the previous window size specific context.
 	ID3D11RenderTargetView* nullViews[] = {nullptr};
 	m_d3dContext->OMSetRenderTargets(ARRAYSIZE(nullViews), nullViews, nullptr);
