@@ -276,6 +276,8 @@ WindowImplWinRT::WindowImplWinRT( const Window::Format &format, AppImplWinRT *ap
 		mWindowOffset = mWindowedPos = ( displaySize - mWindowedSize ) / 2;
 	}
 
+    initialOrientation = DisplayProperties::CurrentOrientation;
+
 	mRenderer->setup( mAppImpl->getApp(), mWnd);
 	// set WindowRef and its impl pointer to this
 	mWindowRef = Window::privateCreate__( this, mAppImpl->getApp() );
@@ -295,6 +297,8 @@ WindowImplWinRT::WindowImplWinRT( DX_WINDOW_TYPE hwnd, RendererRef renderer, App
 	mWindowHeight = static_cast<int>(height);
 
 	mDisplay = Display::getMainDisplay();
+
+    initialOrientation = DisplayProperties::CurrentOrientation;
 
 	mRenderer->setup( mAppImpl->getApp(), mWnd);
 
@@ -724,28 +728,34 @@ void WindowImplWinRT::handleMouseUp(PointerEventArgs^ args)
 Vec2f WindowImplWinRT::TransformToOrientation(Vec2f p) const
 {
     auto r = Vec2f( getScaledDPIValue(p.x), getScaledDPIValue(p.y) );
+
+    // WinRT 8.1 DisplayInformation throws exception here in vccorlib; cause unknown
+    // therefore: using deprecated method at this time
     auto m = DisplayProperties::CurrentOrientation;
+
     float w = (float)mWindowWidth, h = (float)mWindowHeight;
-    SwapWindowDimensions( &w, &h );
 
-    // nb. we actually implement the inverse rotations to rotate from
+    // action to be taken depends on the initial orientation of the device
+    if (initialOrientation == DisplayOrientations::Portrait ||
+        initialOrientation == DisplayOrientations::PortraitFlipped)
+        std::swap( w, h );
+
+    // nb. we implement the inverse rotations to rotate from
     // the input pointer physical to the untransformed render target virtual
-
-    // nb. simulator and Surface 2 device may have differing behavior
 
     switch (m)
     {
     case DisplayOrientations::Landscape:        // 1
     default:
         break;
-    case DisplayOrientations::Portrait:         // 2 
-        r = Vec2f( r.y, w - r.x );
+    case DisplayOrientations::Portrait:         // 2
+        r = Vec2f(r.y, h - r.x);
         break;
-    case DisplayOrientations::LandscapeFlipped: // 4    x
-        r = Vec2f( w - r.x, h - r.y );
+    case DisplayOrientations::LandscapeFlipped: // 4
+        r = Vec2f(w - r.x, h - r.y);
         break;
     case DisplayOrientations::PortraitFlipped:  // 8
-        r = Vec2f( h - r.y, r.x );
+        r = Vec2f(w - r.y, r.x);
         break;
     }
 
