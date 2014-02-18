@@ -170,6 +170,9 @@ class WindowImplWinRT {
 	std::vector<TouchEvent::Touch>	mActiveTouches;
 	DWORD						mTouchId;
 
+    // device orientation
+    Windows::Graphics::Display::DisplayOrientations initialOrientation;
+
 	std::string				mTitle;
 	friend AppImplWinRT;
 };
