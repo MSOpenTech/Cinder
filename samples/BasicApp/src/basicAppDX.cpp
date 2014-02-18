@@ -47,22 +47,6 @@ void BasicApp::draw()
 {
 	dx::clear(Color(0.1f, 0.1f, 0.15f));
 
-    // zv - triangles for orientation testing
-    dx::color( 0.0f, 1.0f, 0.0f );	
-	dx::begin( GL_LINE_STRIP );
-	dx::vertex( 50.0f, 50.0f );
-	dx::vertex( 150.0f, 50.0f );
-	dx::vertex( 100.0f, 100.0f );
-	dx::vertex( 50.0f, 50.0f );
-	dx::end();
-
-    dx::begin( GL_LINE_STRIP );
-	dx::vertex( 750.0f, 550.0f );
-	dx::vertex( 850.0f, 550.0f );
-	dx::vertex( 800.0f, 600.0f );
-	dx::vertex( 750.0f, 550.0f );
-	dx::end();
-
     dx::color( 1.0f, 0.5f, 0.25f );	
 	dx::begin( GL_LINE_STRIP );
 	for( auto pointIter = mPoints.begin(); pointIter != mPoints.end(); ++pointIter ) {
