@@ -20,13 +20,11 @@
 #include <vector>
 #include <utility>
 
-#include <collection.h>
 #include <ppltasks.h>
 #include <ppl.h>
+#include <agile.h>
 
 #include <mfobjects.h>
-
-using namespace concurrency;
 
 using namespace Platform;
 using namespace Platform::Collections;
@@ -36,6 +34,7 @@ using namespace Windows::Foundation::Collections;
 using namespace Windows::UI;
 using namespace Windows::UI::Core;
 using namespace Windows::Media::MediaProperties;
+using namespace Windows::Storage;
 using namespace Windows::Storage::Streams;
 using namespace Windows::System;
 // using namespace Windows::UI::Xaml::Media::Imaging;
@@ -43,14 +42,65 @@ using namespace Windows::System;
 using namespace Windows::Devices::Enumeration;
 using namespace Windows::Media;
 using namespace Windows::Media::Capture;
+
+using namespace Concurrency;
 using namespace std;
 
 namespace MediaWinRT
 {
-        // temp test to get the WinRT capture engine going
-        void MediaCaptureWinRT::test()
+    void MediaCaptureWinRT::start()
+    {
+        try
         {
+            create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture))
+                .then([this](task<DeviceInformationCollection^> findTask)
+            {
+                m_devInfoCollection = findTask.get();
+
+                if (m_devInfoCollection->Size == 0 ||
+                    m_selectedVideoDeviceIndex > m_devInfoCollection->Size) return;
+
+                // see http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.capture.mediacaptureinitializationsettings.aspx
+
+                auto settings = ref new Windows::Media::Capture::MediaCaptureInitializationSettings();
+                auto chosenDevInfo = m_devInfoCollection->GetAt(m_selectedVideoDeviceIndex);
+                auto name = chosenDevInfo->Name;
+                settings->VideoDeviceId = chosenDevInfo->Id;
+
+                create_task(m_mediaCaptureMgr->InitializeAsync(settings))
+                    .then([this](task<void> initTask)
+                {
+                    initTask.get();
+                    auto mediaCapture = m_mediaCaptureMgr.Get();
+                    mediaCapture->SetRecordRotation(Windows::Media::Capture::VideoRotation::None);
+
+                    String ^fileName;
+                    fileName = "cinder_video.mp4";
+
+                    create_task(KnownFolders::VideosLibrary->CreateFileAsync(fileName, Windows::Storage::CreationCollisionOption::GenerateUniqueName))
+                        .then([this](task<StorageFile^> fileTask)
+                    {
+                        this->m_recordStorageFile = fileTask.get();
+
+                        MediaEncodingProfile^ recordProfile = nullptr;
+                        recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
+
+                        return m_mediaCaptureMgr->StartRecordToStorageFileAsync(recordProfile, this->m_recordStorageFile);
+                    });
+                });
+            });
+        }
+        catch (Exception ^e)
+        {
+            // todo: handle exception
+            // in CaptureImplWinRT, see:
+            // throw CaptureExcInitFail();
+        }
+    }
+
+// custom sink attempt
 #if 0
+
             // notes
             create_task(m_mediaCaptureMgr->StartRecordToStorageFileAsync(recordProfile, 
                 this->m_recordStorageFile)).then([this](task<void> recordTask)
@@ -59,7 +109,8 @@ namespace MediaWinRT
                 MediaEncodingProfile^ encodingProfile,
                 IMediaExtension^ customMediaSink
                 );
-#endif
+
+
             // trial
             m_mediaCaptureMgr = ref new Windows::Media::Capture::MediaCapture();
 
@@ -88,7 +139,6 @@ namespace MediaWinRT
                     // won't compile:
                     // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps;
 
-#if 0
     // from CaptureReaderSharedState.cpp
     CHK(MakeAndInitialize<MediaSink>(&_mediaSink, audioPropsABI.Get(), videoPropsABI.Get(), audioSampleHandler, videoSampleHandler));
     _mediaExtension = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(_mediaSink.Get()));
@@ -100,9 +150,7 @@ namespace MediaWinRT
         CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
         CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get(), videoSampleHandler));
     }
-#endif
 
-#if 0
                     create_task( m_mediaCaptureMgr->StartRecordToCustomSinkAsync( recordProfile, customMediaSink ))
                         .then( [this]( task<void> recordTask )
                     {
@@ -113,7 +161,6 @@ namespace MediaWinRT
                             {
                             }
                     });
-#endif
 
                 }
                 catch (Exception ^e)
@@ -121,18 +168,22 @@ namespace MediaWinRT
                 }
             });
 
-            // WIP notes
-            // see CaptureReaderSharedState
-#if 0
-
-
 #endif
-        }
+
+    void MediaCaptureWinRT::stop()
+    {
+        create_task(m_mediaCaptureMgr->StopRecordAsync())
+            .then([this](task<void> recordTask)
+        {
+            create_task( m_recordStorageFile->DeleteAsync());
+        });
+    }
 
     MediaCaptureWinRT::MediaCaptureWinRT()
     {
-        // zv temp
-        selectedVideoDeviceIndex = 0;
+        m_selectedVideoDeviceIndex = 0;
+
+        m_mediaCaptureMgr = ref new Windows::Media::Capture::MediaCapture();
 
         // zv todo: Media Extension init
     }
@@ -171,8 +222,9 @@ namespace MediaWinRT
             }
             catch (Exception ^e)
             {
-                // TODO: how should we handle this exception
-                // currently we just return an empty array
+                // todo: handle exception
+                // in CaptureImplWinRT, see:
+                // throw CaptureExcInitFail();
             }
 
             delegate(devices);
@@ -180,55 +232,8 @@ namespace MediaWinRT
         });
     }
 
+// reference notes
 #if 0
-    // location front / back notes:
-
-    auto devInfo = m_devInfoCollection->GetAt(i);
-    auto location = devInfo->EnclosureLocation;
-
-    // debug output
-    OutputDebugStringW(L"name = ");
-    OutputDebugStringW(devInfo->Name->Data());
-    OutputDebugStringW(L"\n");
-
-    if (location != nullptr)
-    {
-        if (location->Panel == Windows::Devices::Enumeration::Panel::Front)
-        {
-            String ^s = devInfo->Name + "-Front";
-
-
-#endif
-
-    bool MediaCaptureWinRT::startCapture()
-    {
-        return false;
-    }
-
-    bool MediaCaptureWinRT::stopCapture()
-    {
-        return false;
-    }
-
-    void MediaCaptureWinRT::PrepareForVideoRecording()
-    {
-        try
-        {
-            Windows::Media::Capture::MediaCapture ^mediaCapture = m_mediaCaptureMgr.Get();
-            if (mediaCapture == nullptr)
-            {
-                return;
-            }
-
-            // nb. camera rotation not supported now
-            mediaCapture->SetRecordRotation(Windows::Media::Capture::VideoRotation::None);
-        }
-        catch (Exception ^e)
-        {
-            ShowExceptionMessage(e);
-        }
-    }
-
     bool MediaCaptureWinRT::startDevices(int webcam, int mic)
     {
         selectedVideoDeviceIndex = webcam;
@@ -283,7 +288,8 @@ namespace MediaWinRT
             }
         });
 
-
         return true;
     }
+#endif
+
 }

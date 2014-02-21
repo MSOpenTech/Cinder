@@ -78,30 +78,19 @@ namespace MediaWinRT
     ref class MediaCaptureWinRT sealed
     {
     public:
-        // temp test to get the WinRT capture engine going
-        void test();
 
         MediaCaptureWinRT();
 
-        // 1. enumerate webcams
         static void GetVideoCamerasAsync(GetMediaDevicesDelegate^ func);
-
-        // 2. select and start the devices to use
-        // ints are the indices from the lists obtained in step 1
-        bool startDevices(int webcam, int mic);
 
         // 3. create a target surface / texture TBD
         // create( width, height )
 
-        // 4. start/stop capture as needed
-        // data is sent to the surface via the media extension (a plug in)
-        // these methods return 0 (false) on success
-        bool startCapture();
-        bool stopCapture();
+        void start();
+        void stop();
 
         // methods to use while capturing:
         //
-        // isCapturing
         // getPixels
         // isFrameNew
 
@@ -111,10 +100,8 @@ namespace MediaWinRT
 
     private:
 
-        int selectedVideoDeviceIndex;
+        unsigned int m_selectedVideoDeviceIndex;
  
-        void PrepareForVideoRecording();
-
         // Media Extension communication via property set
         // must be private
         Windows::Foundation::Collections::PropertySet^ MEcomm;
@@ -124,11 +111,11 @@ namespace MediaWinRT
         Windows::Devices::Enumeration::DeviceInformationCollection^ m_devInfoCollection;
         Windows::Devices::Enumeration::DeviceInformationCollection^ m_microPhoneInfoCollection;
 
+        Windows::Storage::StorageFile^ m_recordStorageFile;
+
         // stubs - could be useful for debug
         void ShowStatusMessage(Platform::String^ text) {}
         void ShowExceptionMessage(Platform::Exception^ ex) {};
-
-
     };
 
 }
