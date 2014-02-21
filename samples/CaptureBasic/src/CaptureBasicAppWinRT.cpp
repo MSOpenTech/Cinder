@@ -46,9 +46,8 @@ void CaptureBasicApp::prepareSettings(Settings *settings)
 
 void CaptureBasicApp::setup()
 {
-    // test
     mCapture = Capture::create( 640, 480 );
-    mCapture->test();
+    mCapture->start();
 
 #if 0
 
@@ -82,6 +81,9 @@ void CaptureBasicApp::keyDown( KeyEvent event )
 	else if( event.getChar() == ' ' )
 		( mCapture && mCapture->isCapturing() ) ? mCapture->stop() : mCapture->start();
 #endif
+	if( event.getChar() == ' ' ) {
+		if ( mCapture && mCapture->isCapturing() ) mCapture->stop();
+    }
 }
 
 void CaptureBasicApp::update()
