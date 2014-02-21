@@ -234,13 +234,16 @@ CaptureImplWinRT::CaptureImplWinRT( int32_t width, int32_t height, const Capture
 
 CaptureImplWinRT::~CaptureImplWinRT()
 {
-    // zv
     // CaptureMgr::instanceVI()->stopDevice( mDeviceID );
+	if ( mIsCapturing ) m_MediaCaptureWinRT->stop();
 }
 
 void CaptureImplWinRT::start()
 {
-// zv from MSW impl
+	if ( mIsCapturing ) return;
+    m_MediaCaptureWinRT->start();
+    mIsCapturing = true;
+
 #if 0
 	if( mIsCapturing ) return;
 	
@@ -256,10 +259,9 @@ void CaptureImplWinRT::start()
 
 void CaptureImplWinRT::stop()
 {
-	if( ! mIsCapturing ) return;
-
-    // zv
-	// CaptureMgr::instanceVI()->stopDevice( mDeviceID );
+	if ( ! mIsCapturing ) return;
+    m_MediaCaptureWinRT->stop();
+    // CaptureMgr::instanceVI()->stopDevice( mDeviceID );
 	mIsCapturing = false;
 }
 
