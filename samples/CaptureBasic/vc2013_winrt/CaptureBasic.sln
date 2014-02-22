@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CaptureBasic", "CaptureBasi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cinder", "..\..\..\vc2013_winrt\cinder.vcxproj", "{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CaptureMediaExtension", "..\..\..\src\cinder\winrt\CaptureMediaExtension\CaptureMediaExtension.vcxproj", "{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -47,6 +49,18 @@ Global
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}.Release|Win32.Build.0 = Release|Win32
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}.Release|x64.ActiveCfg = Release|x64
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}.Release|x64.Build.0 = Release|x64
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|ARM.ActiveCfg = Debug|ARM
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|ARM.Build.0 = Debug|ARM
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|Win32.Build.0 = Debug|Win32
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|x64.ActiveCfg = Debug|x64
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|x64.Build.0 = Debug|x64
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|ARM.ActiveCfg = Release|ARM
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|ARM.Build.0 = Release|ARM
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|Win32.ActiveCfg = Release|Win32
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|Win32.Build.0 = Release|Win32
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|x64.ActiveCfg = Release|x64
+		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
