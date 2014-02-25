@@ -74,18 +74,30 @@ namespace MediaWinRT
                     auto mediaCapture = m_mediaCaptureMgr.Get();
                     mediaCapture->SetRecordRotation(Windows::Media::Capture::VideoRotation::None);
 
-                    String ^fileName;
-                    fileName = "cinder_video.mp4";
-
-                    create_task(KnownFolders::VideosLibrary->CreateFileAsync(fileName, Windows::Storage::CreationCollisionOption::GenerateUniqueName))
-                        .then([this](task<StorageFile^> fileTask)
+                    // pass in the Media Extension Communication object property set "MEcomm"
+                    //    create_task(m_mediaCaptureMgr->AddEffectAsync(Windows::Media::Capture::MediaStreamType::VideoPreview, "GrayscaleTransform.GrayscaleEffect", nullptr))
+                    // MEcomm
+                    create_task(mediaCapture->AddEffectAsync(
+                        Windows::Media::Capture::MediaStreamType::VideoRecord,
+                        "CaptureMediaExtensionPlugin.CaptureMediaExtensionEffect", nullptr))
+                        .then([this](task<void> effectTask)
                     {
-                        this->m_recordStorageFile = fileTask.get();
 
-                        MediaEncodingProfile^ recordProfile = nullptr;
-                        recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
+                        String ^fileName;
+                        fileName = "cinder_video.mp4";
 
-                        return m_mediaCaptureMgr->StartRecordToStorageFileAsync(recordProfile, this->m_recordStorageFile);
+                        create_task(KnownFolders::VideosLibrary->CreateFileAsync(fileName,
+                            Windows::Storage::CreationCollisionOption::GenerateUniqueName))
+                            .then([this](task<StorageFile^> fileTask)
+                        {
+                            this->m_recordStorageFile = fileTask.get();
+
+                            MediaEncodingProfile^ recordProfile = nullptr;
+                            recordProfile = MediaEncodingProfile::CreateMp4
+                                (Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
+
+                            return m_mediaCaptureMgr->StartRecordToStorageFileAsync(recordProfile, this->m_recordStorageFile);
+                        });
                     });
                 });
             });
