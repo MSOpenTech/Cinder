@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+# Visual Studio Express 2013 for Windows
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CaptureBasic", "CaptureBasic.vcxproj", "{A5470F89-8887-4507-AAEB-9026F9D00094}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cinder", "..\..\..\vc2013_winrt\cinder.vcxproj", "{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CaptureMediaExtension", "..\..\..\src\cinder\winrt\CaptureMediaExtension\CaptureMediaExtension.vcxproj", "{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CaptureMediaExtension", "..\..\..\src\cinder\winrt\CaptureMediaExtension\CaptureMediaExtension.vcxproj", "{2C805122-05EE-42EF-9148-C3999ADFE05F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,18 +49,18 @@ Global
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}.Release|Win32.Build.0 = Release|Win32
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}.Release|x64.ActiveCfg = Release|x64
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}.Release|x64.Build.0 = Release|x64
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|ARM.ActiveCfg = Debug|ARM
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|ARM.Build.0 = Debug|ARM
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|Win32.Build.0 = Debug|Win32
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|x64.ActiveCfg = Debug|x64
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Debug|x64.Build.0 = Debug|x64
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|ARM.ActiveCfg = Release|ARM
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|ARM.Build.0 = Release|ARM
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|Win32.ActiveCfg = Release|Win32
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|Win32.Build.0 = Release|Win32
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|x64.ActiveCfg = Release|x64
-		{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}.Release|x64.Build.0 = Release|x64
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|ARM.Build.0 = Debug|ARM
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|Win32.Build.0 = Debug|Win32
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|x64.ActiveCfg = Debug|x64
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|x64.Build.0 = Debug|x64
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|ARM.ActiveCfg = Release|ARM
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|ARM.Build.0 = Release|ARM
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|Win32.ActiveCfg = Release|Win32
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|Win32.Build.0 = Release|Win32
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|x64.ActiveCfg = Release|x64
+		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

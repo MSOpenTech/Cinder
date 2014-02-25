@@ -27,9 +27,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C61B2BA1-C80C-4FC4-9F04-8C7E70E02A12}</ProjectGuid>
+    <ProjectGuid>{2C805122-05EE-42EF-9148-C3999ADFE05F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GrayscaleTransform</RootNamespace>
+    <RootNamespace>CaptureMediaExtension</RootNamespace>
     <ProjectName>CaptureMediaExtension</ProjectName>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
