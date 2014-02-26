@@ -30,7 +30,7 @@
     <ProjectGuid>{2C805122-05EE-42EF-9148-C3999ADFE05F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>CaptureMediaExtension</RootNamespace>
-    <ProjectName>CaptureMediaExtension</ProjectName>
+    <ProjectName>CaptureTransform</ProjectName>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
@@ -130,7 +130,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>runtimeobject.lib;%(AdditionalDependencies);mf.lib;mfuuid.lib;mfplat.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>CaptureMediaExtension.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Capture.def</ModuleDefinitionFile>
     </Link>
     <CustomBuildStep>
       <Command>mdmerge -metadata_dir "$(WindowsSDK_MetadataPath)" -o "$(ProjectDir)$(Configuration)\$(MSBuildProjectName)" -i "$(MSBuildProjectDirectory)" -v -partial</Command>
@@ -153,7 +153,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>runtimeobject.lib;%(AdditionalDependencies);mf.lib;mfuuid.lib;mfplat.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>CaptureMediaExtension.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Capture.def</ModuleDefinitionFile>
     </Link>
     <CustomBuildStep>
       <Command>mdmerge -metadata_dir "$(WindowsSDK_MetadataPath)" -o "$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)" -i "$(MSBuildProjectDirectory)" -v -partial</Command>
@@ -176,7 +176,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>runtimeobject.lib;%(AdditionalDependencies);mf.lib;mfuuid.lib;mfplat.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>CaptureMediaExtension.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Capture.def</ModuleDefinitionFile>
     </Link>
     <CustomBuildStep>
       <Command>mdmerge -metadata_dir "$(WindowsSDK_MetadataPath)" -o "$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)" -i "$(MSBuildProjectDirectory)" -v -partial</Command>
@@ -199,7 +199,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>runtimeobject.lib;%(AdditionalDependencies);mf.lib;mfuuid.lib;mfplat.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>CaptureMediaExtension.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Capture.def</ModuleDefinitionFile>
     </Link>
     <CustomBuildStep>
       <Command>mdmerge -metadata_dir "$(WindowsSDK_MetadataPath)" -o "$(ProjectDir)$(Configuration)\$(MSBuildProjectName)" -i "$(MSBuildProjectDirectory)" -v -partial</Command>
@@ -222,7 +222,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>runtimeobject.lib;%(AdditionalDependencies);mf.lib;mfuuid.lib;mfplat.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>CaptureMediaExtension.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Capture.def</ModuleDefinitionFile>
     </Link>
     <CustomBuildStep>
       <Command>mdmerge -metadata_dir "$(WindowsSDK_MetadataPath)" -o "$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)" -i "$(MSBuildProjectDirectory)" -v -partial</Command>
@@ -245,7 +245,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>runtimeobject.lib;%(AdditionalDependencies);mf.lib;mfuuid.lib;mfplat.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>CaptureMediaExtension.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Capture.def</ModuleDefinitionFile>
     </Link>
     <CustomBuildStep>
       <Command>mdmerge -metadata_dir "$(WindowsSDK_MetadataPath)" -o "$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)" -i "$(MSBuildProjectDirectory)" -v -partial</Command>
@@ -253,7 +253,7 @@
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CaptureMediaExtension.h" />
+    <ClInclude Include="Capture.h" />
     <ClInclude Include="Common\AsyncCB.h" />
     <ClInclude Include="Common\BufferLock.h" />
     <ClInclude Include="Common\CritSec.h" />
@@ -262,13 +262,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="CaptureMediaExtension.cpp" />
+    <ClCompile Include="Capture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CaptureMediaExtension.def" />
+    <None Include="Capture.def" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="CaptureMediaExtensionPlugin.idl">
+    <Midl Include="CaptureTransform.idl">
       <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </MetadataFileName>
       <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

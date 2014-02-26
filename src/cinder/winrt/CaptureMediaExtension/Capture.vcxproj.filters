@@ -11,10 +11,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="CaptureMediaExtension.cpp" />
+    <ClCompile Include="Capture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CaptureMediaExtension.h" />
     <ClInclude Include="Common\AsyncCB.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -30,11 +29,12 @@
     <ClInclude Include="Common\OpQueue.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Capture.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="CaptureMediaExtensionPlugin.idl" />
+    <Midl Include="CaptureTransform.idl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CaptureMediaExtension.def" />
+    <None Include="Capture.def" />
   </ItemGroup>
 </Project>

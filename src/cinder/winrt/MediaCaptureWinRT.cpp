@@ -77,9 +77,12 @@ namespace MediaWinRT
                     // pass in the Media Extension Communication object property set "MEcomm"
                     //    create_task(m_mediaCaptureMgr->AddEffectAsync(Windows::Media::Capture::MediaStreamType::VideoPreview, "GrayscaleTransform.GrayscaleEffect", nullptr))
                     // MEcomm
+                    //
+                    // "CaptureTransform.CaptureEffect"
+                    //
                     create_task(mediaCapture->AddEffectAsync(
                         Windows::Media::Capture::MediaStreamType::VideoRecord,
-                        "CaptureMediaExtensionPlugin.CaptureMediaExtensionEffect", nullptr))
+                        "GrayscaleTransform.GrayscaleEffect", nullptr))
                         .then([this](task<void> effectTask)
                     {
 
@@ -187,7 +190,8 @@ namespace MediaWinRT
         create_task(m_mediaCaptureMgr->StopRecordAsync())
             .then([this](task<void> recordTask)
         {
-            create_task( m_recordStorageFile->DeleteAsync());
+            // zv off
+            // create_task( m_recordStorageFile->DeleteAsync());
         });
     }
 

@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CaptureBasic", "CaptureBasi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cinder", "..\..\..\vc2013_winrt\cinder.vcxproj", "{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CaptureMediaExtension", "..\..\..\src\cinder\winrt\CaptureMediaExtension\CaptureMediaExtension.vcxproj", "{2C805122-05EE-42EF-9148-C3999ADFE05F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GrayscaleTransform", "..\..\..\..\..\Visual Studio 2013\Projects\MediaCapXAML\C++\MediaExtensions\Grayscale\Grayscale.vcxproj", "{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,18 +49,18 @@ Global
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}.Release|Win32.Build.0 = Release|Win32
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}.Release|x64.ActiveCfg = Release|x64
 		{7419A85E-0924-4AFE-B5DB-4F85D05FE1AB}.Release|x64.Build.0 = Release|x64
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|ARM.ActiveCfg = Debug|ARM
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|ARM.Build.0 = Debug|ARM
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|Win32.Build.0 = Debug|Win32
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|x64.ActiveCfg = Debug|x64
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Debug|x64.Build.0 = Debug|x64
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|ARM.ActiveCfg = Release|ARM
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|ARM.Build.0 = Release|ARM
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|Win32.ActiveCfg = Release|Win32
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|Win32.Build.0 = Release|Win32
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|x64.ActiveCfg = Release|x64
-		{2C805122-05EE-42EF-9148-C3999ADFE05F}.Release|x64.Build.0 = Release|x64
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Debug|ARM.ActiveCfg = Debug|ARM
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Debug|ARM.Build.0 = Debug|ARM
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Debug|Win32.Build.0 = Debug|Win32
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Debug|x64.ActiveCfg = Debug|x64
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Debug|x64.Build.0 = Debug|x64
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Release|ARM.ActiveCfg = Release|ARM
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Release|ARM.Build.0 = Release|ARM
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Release|Win32.ActiveCfg = Release|Win32
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Release|Win32.Build.0 = Release|Win32
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Release|x64.ActiveCfg = Release|x64
+		{BA69218F-DA5C-4D14-A78D-21A9E4DEC669}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
