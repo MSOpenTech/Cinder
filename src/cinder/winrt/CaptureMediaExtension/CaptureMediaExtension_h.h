@@ -4,9 +4,9 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Fri Feb 21 17:03:05 2014
+/* at Wed Feb 26 18:11:42 2014
  */
-/* Compiler settings for C:\Users\DAVER_~1\AppData\Local\Temp\CaptureMediaExtensionPlugin.idl-fde870fb:
+/* Compiler settings for C:\Users\DAVER_~1\AppData\Local\Temp\CaptureMediaExtension.idl-db163034:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -32,8 +32,8 @@
 #endif // __RPCNDR_H_VERSION__
 
 
-#ifndef __CaptureMediaExtensionPlugin_h__
-#define __CaptureMediaExtensionPlugin_h__
+#ifndef __CaptureMediaExtension_h_h__
+#define __CaptureMediaExtension_h_h__
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1020)
 #pragma once
@@ -58,26 +58,35 @@ extern "C"{
 #endif 
 
 
-/* interface __MIDL_itf_CaptureMediaExtensionPlugin_0000_0000 */
+/* interface __MIDL_itf_CaptureMediaExtension_0000_0000 */
 /* [local] */ 
 
 #pragma warning(push)
 #pragma warning(disable:4001) 
 #pragma once
 #pragma warning(pop)
-#ifndef RUNTIMECLASS_CaptureMediaExtensionPlugin_CaptureMediaExtensionEffect_DEFINED
-#define RUNTIMECLASS_CaptureMediaExtensionPlugin_CaptureMediaExtensionEffect_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_CaptureMediaExtensionPlugin_CaptureMediaExtensionEffect[] = L"CaptureMediaExtensionPlugin.CaptureMediaExtensionEffect";
+#ifdef __cplusplus
+namespace ABI {
+namespace CaptureMediaExtension {
+class CaptureEffect;
+} /*CaptureMediaExtension*/
+}
+#endif
+
+#ifndef RUNTIMECLASS_CaptureMediaExtension_CaptureEffect_DEFINED
+#define RUNTIMECLASS_CaptureMediaExtension_CaptureEffect_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_CaptureMediaExtension_CaptureEffect[] = L"CaptureMediaExtension.CaptureEffect";
 #endif
 
 
-/* interface __MIDL_itf_CaptureMediaExtensionPlugin_0000_0000 */
+/* interface __MIDL_itf_CaptureMediaExtension_0000_0000 */
 /* [local] */ 
 
 
 
-extern RPC_IF_HANDLE __MIDL_itf_CaptureMediaExtensionPlugin_0000_0000_v0_0_c_ifspec;
-extern RPC_IF_HANDLE __MIDL_itf_CaptureMediaExtensionPlugin_0000_0000_v0_0_s_ifspec;
+
+extern RPC_IF_HANDLE __MIDL_itf_CaptureMediaExtension_0000_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_CaptureMediaExtension_0000_0000_v0_0_s_ifspec;
 
 /* Additional Prototypes for ALL interfaces */
 
