@@ -78,21 +78,14 @@ namespace MediaWinRT
                     //    create_task(m_mediaCaptureMgr->AddEffectAsync(Windows::Media::Capture::MediaStreamType::VideoPreview, "GrayscaleTransform.GrayscaleEffect", nullptr))
                     // MEcomm
                     //
-                    // "CaptureMediaExtension.CaptureEffect"
-                    //
                     // note: Extension will be needed in the appxmanifest, see
                     // http://msdn.microsoft.com/en-us/library/windows/apps/br211479.aspx
-                    //
-                    /*
-
-                    // temporarily off, using stand-alone test_app in winrt/CaptureMediaExtensions at this time
-
+                    //                   
                     create_task(mediaCapture->AddEffectAsync(
                         Windows::Media::Capture::MediaStreamType::VideoRecord,
-                        "GrayscaleTransform.GrayscaleEffect", nullptr))
+                        "CaptureMediaExtension.CaptureEffect", nullptr))
                         .then([this](task<void> effectTask)
-                    {
-                    */
+                    {                  
 
                         String ^fileName;
                         fileName = "cinder_video.mp4";
@@ -109,7 +102,7 @@ namespace MediaWinRT
 
                             return m_mediaCaptureMgr->StartRecordToStorageFileAsync(recordProfile, this->m_recordStorageFile);
                         });
-//                  });
+                  });
                 });
             });
         }
