@@ -7,8 +7,8 @@
     <ProjectGuid>{D93FD114-9457-4756-918D-BC998BDDF712}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MediaCapture</RootNamespace>
-    <AssemblyName>MediaCapture</AssemblyName>
+    <RootNamespace>test_app</RootNamespace>
+    <AssemblyName>test_app</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
@@ -102,13 +102,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\CaptureMediaExtension.vcxproj">
-      <Project>{aa9b1c19-745d-4524-bd16-850b8f1109ca}</Project>
-      <Name>CaptureMediaExtension</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -138,6 +131,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CaptureMediaExtension.vcxproj">
+      <Project>{aa9b1c19-745d-4524-bd16-850b8f1109ca}</Project>
+      <Name>CaptureMediaExtension</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
