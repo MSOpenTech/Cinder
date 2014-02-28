@@ -5,6 +5,8 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 
+#include "pch.h"
+
 #if 0
 // zv
 #include <windows.h>
@@ -97,21 +99,6 @@ NOTES ON THE MFT IMPLEMENTATION
    MFT_MESSAGE_NOTIFY_END_STREAMING message) and then restarted.
    
 */
-
-// zv new GUIDs 2/26/14
-#if 1
-// {C1F3CA40-25B4-43F3-B4F8-B6887F2D1D66}
-DEFINE_GUID(MFT_CAPTURE_DESTINATION_RECT,
-    0xc1f3ca40, 0x25b4, 0x43f3, 0xb4, 0xf8, 0xb6, 0x88, 0x7f, 0x2d, 0x1d, 0x66);
-
-// {CB9758AA-3C23-4213-AA5D-394B202A1B5B}
-DEFINE_GUID(MFT_CAPTURE_SATURATION,
-    0xcb9758aa, 0x3c23, 0x4213, 0xaa, 0x5d, 0x39, 0x4b, 0x20, 0x2a, 0x1b, 0x5b);
-
-// {B6FED1F8-A9FA-42C8-A796-127294ECF746}
-DEFINE_GUID(MFT_CAPTURE_CHROMA_ROTATION,
-    0xb6fed1f8, 0xa9fa, 0x42c8, 0xa7, 0x96, 0x12, 0x72, 0x94, 0xec, 0xf7, 0x46);
-#endif
 
 
 // Video FOURCC codes.
