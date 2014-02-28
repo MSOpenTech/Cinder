@@ -18,6 +18,11 @@ Notes:
 
 * nb. The outer namespace must match the name of the DLL (see the IDL)
 
+	see:
+	Creating Windows Runtime Components in C++
+	http://msdn.microsoft.com/en-us/library/windows/apps/hh441569.aspx
+
+
 * It may be necessary to add the following to the Package.appxmanifest file in a test or main app:
 	(was NOT needed in C# XAML test app, but WAS needed in C++ Cinder XAML test app)
 
