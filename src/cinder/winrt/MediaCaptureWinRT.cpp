@@ -78,6 +78,9 @@ namespace MediaWinRT
                     //    create_task(m_mediaCaptureMgr->AddEffectAsync(Windows::Media::Capture::MediaStreamType::VideoPreview, "GrayscaleTransform.GrayscaleEffect", nullptr))
                     // MEcomm
                     //
+                    // "CaptureMediaExtension.CaptureEffect"
+                    // "GrayscaleTransform.GrayscaleEffect"
+                    //
                     // note: Extension will be needed in the appxmanifest, see
                     // http://msdn.microsoft.com/en-us/library/windows/apps/br211479.aspx
                     //                   
@@ -191,7 +194,7 @@ namespace MediaWinRT
         create_task(m_mediaCaptureMgr->StopRecordAsync())
             .then([this](task<void> recordTask)
         {
-            // zv off
+            // zv off - so that the video can be played to verify that the effect is working
             // create_task( m_recordStorageFile->DeleteAsync());
         });
     }
