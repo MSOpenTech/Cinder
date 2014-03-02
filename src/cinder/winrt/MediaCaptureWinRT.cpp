@@ -48,6 +48,78 @@ using namespace std;
 
 namespace MediaWinRT
 {
+// incomplete capture using a custom media sink
+// status: frames are not grabbed in the sink, frames are not passed to Cinder
+#if 0
+    void MediaCaptureWinRT::start()
+    {
+        try
+        {
+            create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture))
+                .then([this](task<DeviceInformationCollection^> findTask)
+            {
+                m_devInfoCollection = findTask.get();
+
+                if (m_devInfoCollection->Size == 0 ||
+                    m_selectedVideoDeviceIndex > m_devInfoCollection->Size) return;
+
+                // see http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.capture.mediacaptureinitializationsettings.aspx
+
+                auto settings = ref new Windows::Media::Capture::MediaCaptureInitializationSettings();
+                auto chosenDevInfo = m_devInfoCollection->GetAt(m_selectedVideoDeviceIndex);
+                auto name = chosenDevInfo->Name;
+                settings->VideoDeviceId = chosenDevInfo->Id;
+
+                create_task(m_mediaCaptureMgr->InitializeAsync(settings))
+                    .then([this](task<void> initTask)
+                {
+                    initTask.get();
+                    auto mediaCapture = m_mediaCaptureMgr.Get();
+                    mediaCapture->SetRecordRotation(Windows::Media::Capture::VideoRotation::None);
+
+                    MediaEncodingProfile^ recordProfile = nullptr;
+                    recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
+
+                    IMediaExtension^ customMediaSink = nullptr;
+                    // Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
+
+                    /*
+                    // won't compile:
+                    // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps;
+
+                    // from CaptureReaderSharedState.cpp
+                    CHK(MakeAndInitialize<MediaSink>(&_mediaSink, audioPropsABI.Get(), videoPropsABI.Get(), audioSampleHandler, videoSampleHandler));
+                    _mediaExtension = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(_mediaSink.Get()));
+
+                    // from MediaSink.h
+                    Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
+                    if (videoProps != nullptr)
+                    {
+                    CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
+                    CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get(), videoSampleHandler));
+                    }
+
+                    */
+
+                    // see http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
+                    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+                });
+            });
+        }
+        catch (Exception ^e)
+        {
+            // todo: handle exception
+            // in CaptureImplWinRT, see:
+            // throw CaptureExcInitFail();
+        }
+    }
+
+#endif
+
+// NOT IN USE NOW:
+// working capture using an effect (based on grayscale)
+// status: frames are not grabbed in effect, frames are not passed to Cinder
+#if 1
     void MediaCaptureWinRT::start()
     {
         try
@@ -88,7 +160,7 @@ namespace MediaWinRT
                         Windows::Media::Capture::MediaStreamType::VideoRecord,
                         "CaptureMediaExtension.CaptureEffect", nullptr))
                         .then([this](task<void> effectTask)
-                    {                  
+                    {
 
                         String ^fileName;
                         fileName = "cinder_video.mp4";
@@ -105,7 +177,7 @@ namespace MediaWinRT
 
                             return m_mediaCaptureMgr->StartRecordToStorageFileAsync(recordProfile, this->m_recordStorageFile);
                         });
-                  });
+                    });
                 });
             });
         }
@@ -116,77 +188,6 @@ namespace MediaWinRT
             // throw CaptureExcInitFail();
         }
     }
-
-// custom sink attempt
-#if 0
-
-            // notes
-            create_task(m_mediaCaptureMgr->StartRecordToStorageFileAsync(recordProfile, 
-                this->m_recordStorageFile)).then([this](task<void> recordTask)
-
-                IAsyncAction^ StartRecordToCustomSinkAsync(
-                MediaEncodingProfile^ encodingProfile,
-                IMediaExtension^ customMediaSink
-                );
-
-
-            // trial
-            m_mediaCaptureMgr = ref new Windows::Media::Capture::MediaCapture();
-
-            create_task(m_mediaCaptureMgr->InitializeAsync())
-                .then([this]( task<void> initTask )
-            {
-                try
-                {
-                    initTask.get();
-
-                    if (m_mediaCaptureMgr->MediaCaptureSettings->VideoDeviceId == nullptr)
-                    {
-                        // usage ?
-                        // throw "cannot access capture device"
-                    }
-
-                    MediaEncodingProfile^ recordProfile = nullptr;
-                    recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
-
-                    // TODO: get the IMediaExtension, using COM and WRL
-                    //  also:   add the media extension to the project, and have it grab the frame buffers
-                    IMediaExtension^ customMediaSink = nullptr;
-
-                    Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
-
-                    // won't compile:
-                    // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps;
-
-    // from CaptureReaderSharedState.cpp
-    CHK(MakeAndInitialize<MediaSink>(&_mediaSink, audioPropsABI.Get(), videoPropsABI.Get(), audioSampleHandler, videoSampleHandler));
-    _mediaExtension = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(_mediaSink.Get()));
-
-    // from MediaSink.h
-    Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
-    if (videoProps != nullptr)
-    {
-        CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
-        CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get(), videoSampleHandler));
-    }
-
-                    create_task( m_mediaCaptureMgr->StartRecordToCustomSinkAsync( recordProfile, customMediaSink ))
-                        .then( [this]( task<void> recordTask )
-                    {
-                            try
-                            {
-                            }
-                            catch (Exception ^e)
-                            {
-                            }
-                    });
-
-                }
-                catch (Exception ^e)
-                {
-                }
-            });
-
 #endif
 
     void MediaCaptureWinRT::stop()
