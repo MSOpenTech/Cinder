@@ -1,0 +1,12 @@
+import "Windows.Media.idl";
+
+#include <sdkddkver.h>
+
+namespace CaptureMediaSink
+{
+    [version(NTDDI_WIN8), activatable(NTDDI_WIN8)]
+    runtimeclass CaptureSink
+    {
+        [default] interface Windows.Media.IMediaExtension;
+    }
+}
