@@ -50,7 +50,7 @@ namespace MediaWinRT
 {
 // incomplete capture using a custom media sink
 // status: frames are not grabbed in the sink, frames are not passed to Cinder
-#if 0
+#if 1
     void MediaCaptureWinRT::start()
     {
         try
@@ -81,9 +81,16 @@ namespace MediaWinRT
                     recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
 
                     IMediaExtension^ customMediaSink = nullptr;
+
+                    // todo:
+
+                    // Microsoft::WRL::ComPtr<CSink> sink;
+                    // MakeAndInitialize<...>( ... )
+
+                    /* reference:
+
                     // Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
 
-                    /*
                     // won't compile:
                     // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps;
 
@@ -114,12 +121,11 @@ namespace MediaWinRT
         }
     }
 
-#endif
+#else
 
-// NOT IN USE NOW:
 // working capture using an effect (based on grayscale)
 // status: frames are not grabbed in effect, frames are not passed to Cinder
-#if 1
+
     void MediaCaptureWinRT::start()
     {
         try
