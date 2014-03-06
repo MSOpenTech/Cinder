@@ -80,9 +80,14 @@ namespace MediaWinRT
                     MediaEncodingProfile^ recordProfile = nullptr;
                     recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
 
-                    IMediaExtension^ customMediaSink = nullptr;
+                    // IMediaExtension^ customMediaSink = nullptr;
 
-                    // todo:
+                    // see http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
+                    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, 
+                        "CaptureMediaSink.CaptureSink", nullptr));
+
+                    // todo ?
 
                     // Microsoft::WRL::ComPtr<CSink> sink;
                     // MakeAndInitialize<...>( ... )
@@ -108,8 +113,6 @@ namespace MediaWinRT
 
                     */
 
-                    // see http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
-                    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
                 });
             });
         }
