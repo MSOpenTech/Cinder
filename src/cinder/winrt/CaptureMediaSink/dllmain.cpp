@@ -1,13 +1,13 @@
 ﻿// dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 
-#include <initguid.h>
-// #include "Capture.h"
+// #include <initguid.h>
+#include "CaptureMediaSink.h"
 
 using namespace Microsoft::WRL;
 
 // namespace Microsoft { namespace Samples {
-// ActivatableClass(CCapture);
+ActivatableClass(CSink);
 // }}
 
 BOOL WINAPI DllMain( _In_ HINSTANCE hInstance, _In_ DWORD dwReason, _In_opt_ LPVOID lpReserved )
