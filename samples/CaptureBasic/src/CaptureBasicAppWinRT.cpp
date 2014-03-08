@@ -33,6 +33,8 @@ class CaptureBasicApp : public AppBasic {
 	void update();
 	void draw();
 
+    void test();
+
 	CaptureRef			mCapture;
 	dx::TextureRef		mTexture;
 };
@@ -44,11 +46,14 @@ void CaptureBasicApp::prepareSettings(Settings *settings)
 #endif
 }
 
+void CaptureBasicApp::test()
+{
+    mCapture = Capture::create(640, 480);
+    mCapture->start();
+}
+
 void CaptureBasicApp::setup()
 {
-    mCapture = Capture::create( 640, 480 );
-    mCapture->start();
-
 #if 0
 
     Capture::getDevicesAsync( true, [=]() {
@@ -81,8 +86,10 @@ void CaptureBasicApp::keyDown( KeyEvent event )
 	else if( event.getChar() == ' ' )
 		( mCapture && mCapture->isCapturing() ) ? mCapture->stop() : mCapture->start();
 #endif
-	if( event.getChar() == ' ' ) {
-		if ( mCapture && mCapture->isCapturing() ) mCapture->stop();
+    if (event.getChar() == 'T') {
+        if (!mCapture) test();
+    } else if (event.getChar() == ' ') {
+        if (mCapture && mCapture->isCapturing()) mCapture->stop();
     }
 }
 
