@@ -6,11 +6,14 @@
 // but wasn't in template for some reason
 #include "CaptureMediaSink_h.h"
 
+
 class CSink
     : public Microsoft::WRL::RuntimeClass<
     Microsoft::WRL::RuntimeClassFlags< Microsoft::WRL::RuntimeClassType::WinRtClassicComMix >,
     ABI::Windows::Media::IMediaExtension,
-    IMFTransform >
+    IMFMediaSink
+    // IMFTransform
+    >
 {
     InspectableClass(RuntimeClass_CaptureMediaSink_CaptureSink, BaseTrust)
 
@@ -31,6 +34,56 @@ public:
     {
         return S_OK;
     }
+
+    // IMFMediaSink interface implementation
+    STDMETHODIMP GetCharacteristics(DWORD *pdwCharacteristics)
+    {
+        return S_OK;
+    }
+
+    STDMETHODIMP AddStreamSink(DWORD dwStreamSinkIdentifier, IMFMediaType* pMediaType, IMFStreamSink** ppStreamSink)
+    {
+        return S_OK;
+    }
+
+    STDMETHODIMP RemoveStreamSink(DWORD dwStreamSinkIdentifier)
+    {
+        return S_OK;
+    }
+
+    STDMETHODIMP GetStreamSinkCount(DWORD* pcStreamSinkCount)
+    {
+        return S_OK;
+    }
+
+    STDMETHODIMP GetStreamSinkByIndex(DWORD dwIndex, IMFStreamSink** ppStreamSink)
+    {
+        return S_OK;
+    }
+
+    STDMETHODIMP GetStreamSinkById(DWORD dwStreamSinkIdentifier, IMFStreamSink** ppStreamSink)
+    {
+        return S_OK;
+    }
+
+    STDMETHODIMP SetPresentationClock(IMFPresentationClock* pPresentationClock)
+    {
+        return S_OK;
+    }
+
+    STDMETHODIMP GetPresentationClock(IMFPresentationClock** ppPresentationClock)
+    {
+        return S_OK;
+    }
+
+    STDMETHODIMP Shutdown(void)
+    {
+        return S_OK;
+    }
+
+
+
+#if 0
 
     // IMFTransform
     STDMETHODIMP GetStreamLimits(
@@ -219,6 +272,7 @@ public:
         return S_OK;
     }
 
+#endif
 
 
 };
