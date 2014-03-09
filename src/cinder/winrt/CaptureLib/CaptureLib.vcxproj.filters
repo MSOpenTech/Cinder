@@ -20,5 +20,6 @@
     <ClInclude Include="capture.h" />
     <ClInclude Include="device.h" />
     <ClInclude Include="Thumbnail.h" />
+    <ClInclude Include="capture_source.h" />
   </ItemGroup>
 </Project>

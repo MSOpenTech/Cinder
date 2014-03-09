@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="capture.h" />
     <ClInclude Include="CaptureLib.h" />
+    <ClInclude Include="capture_source.h" />
     <ClInclude Include="device.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
