@@ -8,18 +8,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CaptureLib.cpp" />
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="capture.cpp" />
-    <ClCompile Include="device.cpp" />
-    <ClCompile Include="Thumbnail.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CaptureLib.h" />
-    <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="capture.h" />
-    <ClInclude Include="device.h" />
-    <ClInclude Include="Thumbnail.h" />
     <ClInclude Include="capture_source.h" />
+    <ClInclude Include="CaptureLib.h" />
   </ItemGroup>
 </Project>
