@@ -16,6 +16,8 @@
 
 #include "MediaCaptureWinRT.h"
 
+// #include  "app/winrt/CaptureLib.h"
+
 #include <collection.h>
 #include <vector>
 #include <utility>
@@ -46,8 +48,20 @@ using namespace Windows::Media::Capture;
 using namespace Concurrency;
 using namespace std;
 
+
 namespace MediaWinRT
 {
+#if 0
+    // call CaptureLib - Media Foudnation using COM
+    // won't work because many COM interfaces are switched off for Windows Store Apps
+    // maybe some can be used, but we need to make top level calls from WinRT interfaces first
+    void MediaCaptureWinRT::start()
+    {
+        CaptureLib::start();
+    }
+
+#endif
+
 // incomplete capture using a custom media sink
 // status: frames are not grabbed in the sink, frames are not passed to Cinder
 #if 1
@@ -124,7 +138,9 @@ namespace MediaWinRT
         }
     }
 
-#else
+#endif
+
+#if 0
 
 // working capture using an effect (based on grayscale)
 // status: frames are not grabbed in effect, frames are not passed to Cinder
