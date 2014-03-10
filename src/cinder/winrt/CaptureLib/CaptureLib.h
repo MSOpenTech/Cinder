@@ -15,3 +15,13 @@
 
 #pragma once
 
+
+// todo:
+// improve the OO design, once some of the COM calls to MF are working at all
+class CaptureLib
+{
+public:
+    static void start();
+private:
+
+};

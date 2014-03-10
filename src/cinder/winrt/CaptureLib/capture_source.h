@@ -15,7 +15,7 @@ template <class T> void SafeRelease(T **ppT)
 }
 
 
-#if 1
+#if 0
 
 // todo:
 // 1. add supporting methods are written/migerated yet
