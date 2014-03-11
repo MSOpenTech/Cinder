@@ -11,44 +11,12 @@
 // Interface to MediaCapture on WinRT
 // conforms to WinRT ABI
 
-// related documentation links: (these links will open in the embedded viewer in visual studio)
-//
-// media sample: http://code.msdn.microsoft.com/windowsapps/Media-Capture-Sample-adf87622
-//
-// MediaCapture.StartRecordToCustomSinkAsync:
-// http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
-//
-//
-// Creating Windows Runtime Components in C++:
-// http://msdn.microsoft.com/en-US/library/windows/apps/hh441569.aspx
-//
-// type system and all types: http://msdn.microsoft.com/en-us/library/windows/apps/hh700103.aspx
-//
-// arrays: http://msdn.microsoft.com/en-us/library/windows/apps/hh700131.aspx
-//
-// tasks: http://msdn.microsoft.com/en-us/library/dd492427.aspx
-//
-// create_task:
-// http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k("ppltasks%2FConcurrency%3A%3Acreate_task");k("Concurrency%3A%3Acreate_task");k(create_task);k(DevLang-C%2B%2B);k(TargetOS-Windows);k(TargetFrameworkMoniker-MoCOM-CLR)&rd=true
-//
-// lambdas: http://msdn.microsoft.com/en-us/library/dd293603.aspx
-//
-// collections: http://msdn.microsoft.com/en-US/library/windows/apps/hh700103.aspx
-//
-// delegates: http://msdn.microsoft.com/library/windows/apps/hh755798.aspx
-//
-// boxing: http://msdn.microsoft.com/en-us/library/windows/apps/hh969554.aspx
-//
-// Alternatives to Windows APIs in Windows Store apps:
-// http://msdn.microsoft.com/en-us/library/windows/apps/hh464945.aspx
-//
-// why no using statements in header files
-// see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
 //
 // Media Foundation (top) 
 // http://msdn.microsoft.com/en-us/library/ms694197.aspx
 //
-// MF interfaces: http://msdn.microsoft.com/en-us/library/ms696268(v=vs.85).aspx
+// MF interfaces
+// http://msdn.microsoft.com/en-us/library/ms696268(v=vs.85).aspx
 //
 
 
@@ -109,7 +77,6 @@ namespace MediaWinRT
         Platform::Agile<Windows::Media::Capture::MediaCapture> m_mediaCaptureMgr;
 
         Windows::Devices::Enumeration::DeviceInformationCollection^ m_devInfoCollection;
-        Windows::Devices::Enumeration::DeviceInformationCollection^ m_microPhoneInfoCollection;
 
         Windows::Storage::StorageFile^ m_recordStorageFile;
 
