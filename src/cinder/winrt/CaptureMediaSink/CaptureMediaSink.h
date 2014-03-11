@@ -38,6 +38,7 @@ public:
     // IMFMediaSink interface implementation
     STDMETHODIMP GetCharacteristics(DWORD *pdwCharacteristics)
     {
+        *pdwCharacteristics = MEDIASINK_FIXED_STREAMS | MEDIASINK_RATELESS;
         return S_OK;
     }
 
@@ -53,11 +54,13 @@ public:
 
     STDMETHODIMP GetStreamSinkCount(DWORD* pcStreamSinkCount)
     {
+        *pcStreamSinkCount = 1;
         return S_OK;
     }
 
     STDMETHODIMP GetStreamSinkByIndex(DWORD dwIndex, IMFStreamSink** ppStreamSink)
     {
+        *ppStreamSink = nullptr;
         return S_OK;
     }
 
@@ -82,10 +85,9 @@ public:
     }
 
 
-
+    // IMFTransform
 #if 0
 
-    // IMFTransform
     STDMETHODIMP GetStreamLimits(
         DWORD   *pdwInputMinimum,
         DWORD   *pdwInputMaximum,
