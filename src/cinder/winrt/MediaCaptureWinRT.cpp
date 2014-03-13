@@ -1,12 +1,13 @@
-//*********************************************************
+//////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) Microsoft. All rights reserved.
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+// THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+// ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+// PARTICULAR PURPOSE.
 //
-//*********************************************************
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////
 
 // Interface to MediaCapture on WinRT
 // adapted from MediaCapture sample/AdvancedCapture.xaml.cpp
@@ -102,7 +103,6 @@ namespace MediaWinRT
                     MediaEncodingProfile^ recordProfile = nullptr;
                     recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
  
-// incomplete - need to use a composite class as Matthieu did
 #if 1 
                     IMediaExtension^ customMediaSink = nullptr;
 
@@ -120,8 +120,8 @@ namespace MediaWinRT
                     */
 #endif
                     // use other form where we create explicitly and can initialize
-                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, 
-                        "CaptureMediaSink.CaptureSink", nullptr));
+                    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, 
+                        // "CaptureMediaSink.CaptureSink", nullptr));
 
 // notes
 #if 0
