@@ -7,8 +7,9 @@
 using namespace Microsoft::WRL;
 
 // namespace Microsoft { namespace Samples {
-ActivatableClass(CSink);
-// }}
+namespace CaptureMediaSink {
+    ActivatableClass(CSink);
+}
 
 BOOL WINAPI DllMain( _In_ HINSTANCE hInstance, _In_ DWORD dwReason, _In_opt_ LPVOID lpReserved )
 {
