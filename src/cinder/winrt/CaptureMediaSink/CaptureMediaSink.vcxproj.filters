@@ -15,6 +15,8 @@
     <ClInclude Include="CaptureMediaSink.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Helpers.h" />
+    <ClInclude Include="CaptureMediaStreamSink.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
