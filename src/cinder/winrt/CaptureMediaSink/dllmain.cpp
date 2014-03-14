@@ -1,14 +1,21 @@
 ﻿// dllmain.cpp : Defines the entry point for the DLL application.
-#include "pch.h"
+// #include "pch.h"
 
 // #include <initguid.h>
+
+#include <wrl\implements.h>
+#include <wrl\module.h>
+
 #include "CaptureMediaSink.h"
+
+// #include "CaptureMediaSink_h.h"
 
 using namespace Microsoft::WRL;
 
 // namespace Microsoft { namespace Samples {
 namespace CaptureMediaSink {
-    ActivatableClass(CSink);
+    class CaptureSink;
+    ActivatableClass(CaptureSink);
 }
 
 BOOL WINAPI DllMain( _In_ HINSTANCE hInstance, _In_ DWORD dwReason, _In_opt_ LPVOID lpReserved )
@@ -20,6 +27,8 @@ BOOL WINAPI DllMain( _In_ HINSTANCE hInstance, _In_ DWORD dwReason, _In_opt_ LPV
         //
         DisableThreadLibraryCalls(hInstance);
 
+        // Microsoft::WRL::Module<Microsoft::WRL::InProc>::GetModule().Create();
+
         Module<InProc>::GetModule().Create();
     }
     else if (DLL_PROCESS_DETACH == dwReason)
@@ -30,6 +39,7 @@ BOOL WINAPI DllMain( _In_ HINSTANCE hInstance, _In_ DWORD dwReason, _In_opt_ LPV
     return TRUE;
 }
 
+#if 0
 HRESULT WINAPI DllGetActivationFactory(_In_ HSTRING activatibleClassId, _Outptr_ IActivationFactory** factory)
 {
     auto &module = Microsoft::WRL::Module< Microsoft::WRL::InProc >::GetModule();
@@ -47,7 +57,7 @@ STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID
     auto &module = Microsoft::WRL::Module<Microsoft::WRL::InProc>::GetModule();
     return module.GetClassObject(rclsid, riid, ppv);
 }
-
+#endif
 
 // initial code from DLL template
 #if 0
