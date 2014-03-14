@@ -14,6 +14,11 @@
 
 #pragma once
 
+#include <wrl.h>
+
+using namespace Microsoft::WRL;
+using namespace Windows::Foundation;
+
 #include "pch.h"
 
 // using namespace Platform;
@@ -35,11 +40,12 @@ namespace ABI {
 
         public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
 
-        class CStreamSink WrlSealed :
+        // WrlSealed
+        class CaptureMediaStreamSink :
             public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::ClassicCom>
-            /*,
-            IMFStreamSink,
+            /*
+            IMFStreamSink
             IMFMediaEventGenerator,
             IMFMediaTypeHandler
             */
@@ -47,11 +53,12 @@ namespace ABI {
         {
         public:
 
-            CStreamSink() {}
+            CaptureMediaStreamSink() {}
 
             HRESULT RuntimeClassInitialize(__in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt, CaptureMediaSink::SampleHandler^ sampleHandler);
 
 #if 0
+
             HRESULT InternalSetCurrentMediaType(__in IMFMediaType *mediaType);
 
             //
