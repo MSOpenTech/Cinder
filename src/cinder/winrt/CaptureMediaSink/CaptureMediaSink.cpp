@@ -13,4 +13,14 @@
 //
 
 #include "pch.h"
+#include "CaptureMediaSink_h.h"
 #include "CaptureMediaSink.h"
+
+namespace ABI
+{
+    namespace CaptureMediaSink {
+
+        ActivatableClass(CaptureSink);
+
+    }
+}
