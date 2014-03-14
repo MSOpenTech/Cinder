@@ -108,9 +108,6 @@ http://msdn.microsoft.com/library/windows/apps/hh441475.aspx
 Windows Phone 8 Code Sharing Pitfalls
 http://blog.markedup.com/2013/07/winrt-windows-phone-8-code-sharing-pitfalls/
 
-C++/CX Part 3 of [n]: Under Construction
-http://blogs.msdn.com/b/vcblog/archive/2012/10/05/cxxcxpart03underconstruction.aspx
-
 Visual C++ and WinRT/Metro - Some fundamentals
 http://www.codeproject.com/Articles/262151/Visual-Cplusplus-and-WinRT-Metro-Some-fundamentals
 
@@ -312,3 +309,12 @@ http://msdn.microsoft.com/en-us/library/windows/desktop/dd389281%28v=vs.85%29.as
 
 Visual C++ in Visual Studio 2013 (top)
 http://msdn.microsoft.com/en-us/library/60k1461a.aspx
+
+How to create a WinRT WRL C++ Component from scratch that can be consumed by .NET components
+http://blogs.interknowlogy.com/2012/04/11/how-to-create-a-winrt-wrl-c-component-from-scratch-that-can-be-consumed-by-net-components/
+
+C++/CX Part 3 of [n]: Under Construction
+http://blogs.msdn.com/b/vcblog/archive/2012/10/05/cxxcxpart03underconstruction.aspx
+
+Visual C++ Language Reference (C++/CX) (top)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh699871.aspx

@@ -6,3 +6,5 @@ see http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.imediaext
 * CaptureMediaExtension is currently switched off for builds; it is 
 in the solution for reference only at this time.
 
+* reworked based on specialized code
+
