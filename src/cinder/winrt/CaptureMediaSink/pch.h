@@ -7,6 +7,15 @@
 
 #include "targetver.h"
 
+#define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
+#include <windows.h>
+
+#include <mfapi.h>
+#include <mfidl.h>
+
+#if 0
+
+
 #include <new>
 #include <mfapi.h>
 #include <mftransform.h>
@@ -21,16 +30,4 @@
 #include <wrl\implements.h>
 #include <wrl\module.h>
 #include <windows.media.h>
-
-
-// initial from DLL template
-#if 0
-#include "targetver.h"
-
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
-#endif
-
-// Windows Header Files:
-#include <windows.h>
 #endif
