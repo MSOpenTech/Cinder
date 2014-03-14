@@ -310,11 +310,15 @@ http://msdn.microsoft.com/en-us/library/windows/desktop/dd389281%28v=vs.85%29.as
 Visual C++ in Visual Studio 2013 (top)
 http://msdn.microsoft.com/en-us/library/60k1461a.aspx
 
+Visual C++ Language Reference (C++/CX) (top)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh699871.aspx
+
 How to create a WinRT WRL C++ Component from scratch that can be consumed by .NET components
 http://blogs.interknowlogy.com/2012/04/11/how-to-create-a-winrt-wrl-c-component-from-scratch-that-can-be-consumed-by-net-components/
 
 C++/CX Part 3 of [n]: Under Construction
 http://blogs.msdn.com/b/vcblog/archive/2012/10/05/cxxcxpart03underconstruction.aspx
 
-Visual C++ Language Reference (C++/CX) (top)
-http://msdn.microsoft.com/en-us/library/windows/apps/hh699871.aspx
+C++/CX Part 0 of [n]: An Introduction
+http://blogs.msdn.com/b/vcblog/archive/2012/08/29/cxxcxpart00anintroduction.aspx
+
