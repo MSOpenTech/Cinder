@@ -1,22 +1,38 @@
-#if 1
+// adapted from MediaExtension sample
 
-// from MediaExtension sample
-
+// import "inspectable.idl";
 import "Windows.Media.idl";
+// import "Mfidl.idl";
 
 #include <sdkddkver.h>
 
 namespace CaptureMediaSink
 {
-//    [uuid(0A5284F4-B9B2-4450-89DF-0810206571DD)]
-
     [version(NTDDI_WIN8), activatable(NTDDI_WIN8)]
     runtimeclass CaptureSink
     {
         [default] interface Windows.Media.IMediaExtension;
     }
+
+    runtimeclass CaptureMediaStreamSink;
+
+    [exclusiveto(CaptureMediaStreamSink)]
+    [uuid(0A5284F4-B9B2-4450-89DF-0810206571DD)]
+    [version(1.0)]
+    interface ICaptureMediaStreamSink : IInspectable
+    {
+
+    };
+
+    [version(NTDDI_WIN8)]
+    // [activatable(NTDDI_WIN8)]
+    runtimeclass CaptureMediaStreamSink
+    {
+        [default] interface ICaptureMediaStreamSink;
+        // [default] interface IMFMediaSink;
+        // [default] interface Windows.Media.IMFStreamSink;
+    }
 }
-#endif
 
 
 #if 0
@@ -31,7 +47,7 @@ import "Windows.Media.idl";
 
 namespace CaptureMediaSink
 {
-//    [uuid(0A5284F4-B9B2-4450-89DF-0810206571DD)]    
+    //    [uuid(0A5284F4-B9B2-4450-89DF-0810206571DD)]    
     [version(COMPONENT_VERSION), activatable(COMPONENT_VERSION)]
     runtimeclass CaptureSink
     {
