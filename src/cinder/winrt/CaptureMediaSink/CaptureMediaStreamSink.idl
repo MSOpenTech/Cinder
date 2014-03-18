@@ -8,21 +8,23 @@ import "Windows.Media.idl";
 
 namespace CaptureMediaSink
 {
-    runtimeclass CaptureSink;
+    runtimeclass CaptureMediaStreamSink;
 
-    [exclusiveto(CaptureSink)]
-    [uuid(15A600CA-9490-4F3F-8B88-065837EB92E2)]
+    [exclusiveto(CaptureMediaStreamSink)]
+    [uuid(0A5284F4-B9B2-4450-89DF-0810206571DD)]
     [version(1.0)]
-    interface ICaptureSink : IInspectable
+    interface ICaptureMediaStreamSink : IInspectable
     {
 
     };
 
     [version(NTDDI_WIN8)]
-    [activatable(NTDDI_WIN8)]
-    runtimeclass CaptureSink
+    // [activatable(NTDDI_WIN8)]
+    runtimeclass CaptureMediaStreamSink
     {
-        [default] interface Windows.Media.IMediaExtension;
+        [default] interface ICaptureMediaStreamSink;
+        // [default] interface IMFMediaSink;
+        // [default] interface Windows.Media.IMFStreamSink;
     }
 }
 
