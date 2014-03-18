@@ -228,9 +228,11 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="CaptureMediaSink.idl" />
+    <Midl Include="CaptureMediaStreamSink.idl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CaptureMediaSink.cpp" />
+    <ClCompile Include="CaptureMediaStreamSink.cpp" />
     <ClCompile Include="module.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
