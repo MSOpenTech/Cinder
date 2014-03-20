@@ -1,5 +1,3 @@
-#if 1
-
 // from WRL sample (adapted)
 
 // import "inspectable.idl";
@@ -17,7 +15,6 @@ namespace CaptureMediaSink
         [default] interface Windows.Media.IMediaExtension;
     }
 }
-#endif
 
 
 #if 0
