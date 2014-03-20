@@ -16,11 +16,17 @@
 
 #include <wrl.h>
 
+#include <wrl\implements.h>
+#include <comutil.h>
+
 // wrl headers: async.h, client.h, corewrappers.h, event.h, ftm.h, implements.h, internal.h, module.h
 
 #include "pch.h"
 
 #include "CaptureMediaSink_h.h"
+
+using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Details;
 
 #if 0
 using namespace Microsoft::WRL;
@@ -55,13 +61,15 @@ using namespace Windows::Media::MediaProperties;
 
 #include "Helpers.h"
 
+#include "CaptureMediaStreamSink.h"
+
 namespace ABI
 {
     namespace CaptureMediaSink {
 
         // class CaptureMediaStreamSink;
-
         // zv added WrlSealed, IMFClockStateSink, FtmBase
+
         class CaptureSink
             : public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags< Microsoft::WRL::RuntimeClassType::WinRtClassicComMix >,
@@ -82,6 +90,8 @@ namespace ABI
             ~CaptureSink() {}       
 
             STDMETHOD(RuntimeClassInitialize)(
+                // Windows::Media::
+                // IInspectable *t
                     //IUnknown *props
                     //ABI::Windows::Media::ImageDisplayProperties::
                     //Windows::Media::MediaProperties::
@@ -91,6 +101,10 @@ namespace ABI
                     //MediaReaders::SampleHandler^ videoSampleHandler
                 )
             {
+
+                Microsoft::WRL::ComPtr<CaptureMediaStreamSink::CaptureStreamSink> mss;
+                MakeAndInitialize<CaptureMediaStreamSink::CaptureStreamSink>(&mss);
+
 //                Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
 //                MFCreateMediaTypeFromProperties( props, &videoMT);
 #if 0
