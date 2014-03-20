@@ -238,8 +238,8 @@
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\cinder\winrt\CaptureMediaSink\CaptureMediaSink.vcxproj">
-      <Project>{20c664f2-23b1-43f0-ac8b-cd2ef2a8a36d}</Project>
+    <ProjectReference Include="..\..\..\src\cinder\winrt\CustomMediaSink\CustomMediaSink.vcxproj">
+      <Project>{1f89aff7-8f20-4101-a9c7-120de9959322}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\vc2013_winrt\cinder.vcxproj">
       <Project>{7419a85e-0924-4afe-b5db-4f85d05fe1ab}</Project>
