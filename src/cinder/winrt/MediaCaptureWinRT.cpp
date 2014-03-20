@@ -27,12 +27,17 @@
 #include <ppl.h>
 #include <agile.h>
 
+#include <mfapi.h>
+#include <mfidl.h>
 #include <mfobjects.h>
 #include <mfreadwrite.h>
-// #include <mfidl.h>
 
 #include <wrl\implements.h>
 #include <comutil.h>
+
+// temp path until file is moved
+#include "../winrt/CaptureMediaSink/CaptureMediaSink.h"
+
 
 using namespace Platform;
 using namespace Platform::Collections;
@@ -60,7 +65,7 @@ using namespace Microsoft::WRL::Details;
 namespace MediaWinRT
 {
 #if 0
-    // call CaptureLib - Media Foudnation using COM
+    // call CaptureLib - Media Foundation using COM
     // won't work because many COM interfaces are switched off for Windows Store Apps
     // maybe some can be used, but we need to make top level calls from WinRT interfaces first
     void MediaCaptureWinRT::start()
@@ -103,14 +108,37 @@ namespace MediaWinRT
                     MediaEncodingProfile^ recordProfile = nullptr;
                     recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
  
-#if 1 
-                    IMediaExtension^ customMediaSink = nullptr;
+                    // use WRL to make and initialize the custom media sink
+                    Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CaptureSink> ms;
+                    MakeAndInitialize<ABI::CaptureMediaSink::CaptureSink>(&ms);
+                    
+                    // pass in mediaCapture instance so media sink can get info to create stream
+                    // MakeAndInitialize<ABI::CaptureMediaSink::CaptureSink>(&ms, mediaCapture);
 
-                    Microsoft::WRL::ComPtr<IMediaExtension> cpME;
-                    MakeAndInitialize<IMediaExtension>(&cpME);
+                    // get the interface for the WinRT call
+                    auto customMediaSink = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(ms.Get()));
+
+                    // record using the custom media sink
+                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+
+// notes
+#if 0
+
+                    // IMediaExtension^ customMediaSink = nullptr;
+
+                    // ms->QueryInterface()
+
+                    // test
+                    //Microsoft::WRL::ComPtr<IInspectable> cpII;
+                    // Make<IInspectable>(&cpII);
+
+                    /// Microsoft::WRL::ComPtr<IMediaExtension> cpME;
+                    // MakeAndInitialize<IMediaExtension>(&cpME);
+                    ///MakeAndInitialize<IMediaExtension>(&cpME, cpII.Get());
 
                     // see http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
-                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+                    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+                    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, ms ));
 
                     // Microsoft::WRL::ComPtr
                     /*
@@ -118,13 +146,11 @@ namespace MediaWinRT
 
                     auto _mediaExtension = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(_mediaSink.Get()));
                     */
-#endif
+
                     // use other form where we create explicitly and can initialize
                     // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, 
                         // "CaptureMediaSink.CaptureSink", nullptr));
 
-// notes
-#if 0
 // MediaCapture.StartRecordToStreamAsync | startRecordToStreamAsync method
 // http://msdn.microsoft.com/en-us/library/windows/apps/hh700868.aspx
 
