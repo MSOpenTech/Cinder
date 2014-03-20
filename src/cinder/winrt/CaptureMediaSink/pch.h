@@ -13,8 +13,15 @@
 #include <mfapi.h>
 #include <mfidl.h>
 
-#if 0
+#include <mfobjects.h>
+#include <mfreadwrite.h>
 
+#include <windows.media.h>
+
+// #include <mftransform.h>
+// #include <mferror.h>
+
+#if 0
 
 #include <new>
 #include <mfapi.h>
