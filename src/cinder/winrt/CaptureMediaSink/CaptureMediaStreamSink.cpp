@@ -24,7 +24,7 @@
 
 namespace CaptureMediaSink {
 
-    //    ActivatableClass(CaptureMediaStreamSink);
+    // ActivatableClass(CaptureMediaStreamSink);
     // CoCreateableClass(CaptureMediaStreamSink);
 
 }
