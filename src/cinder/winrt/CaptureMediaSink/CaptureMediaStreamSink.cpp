@@ -12,12 +12,19 @@
 // CaptureMediaSink.cpp : Defines the exported functions for the DLL application.
 //
 
+// #include "stdafx.h"
+
 #include "pch.h"
-#include "CaptureMediaStreamSink_h.h"
+
+// #include "CaptureMediaStreamSink_h.h"
+
+#include <wrl.h>
+
 #include "CaptureMediaStreamSink.h"
 
 namespace CaptureMediaSink {
 
-    ActivatableClass(CaptureMediaStreamSink);
+    //    ActivatableClass(CaptureMediaStreamSink);
+    // CoCreateableClass(CaptureMediaStreamSink);
 
 }

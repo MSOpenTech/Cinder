@@ -40,7 +40,7 @@ namespace CaptureMediaSink {
     public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
 
     // WrlSealed
-    class CaptureMediaStreamSink :
+    class DECLSPEC_UUID("0A5284F4-B9B2-4450-89DF-0810206571DD") CaptureMediaStreamSink :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::ClassicCom>
         /*
