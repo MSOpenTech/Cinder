@@ -322,3 +322,5 @@ http://blogs.msdn.com/b/vcblog/archive/2012/10/05/cxxcxpart03underconstruction.a
 C++/CX Part 0 of [n]: An Introduction
 http://blogs.msdn.com/b/vcblog/archive/2012/08/29/cxxcxpart00anintroduction.aspx
 
+__declspec (top)
+http://msdn.microsoft.com/en-us/library/dabb5z75.aspx
