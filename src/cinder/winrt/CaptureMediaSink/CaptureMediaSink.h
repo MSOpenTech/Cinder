@@ -16,20 +16,16 @@
 
 #include <wrl.h>
 
+// wrl headers: async.h, client.h, corewrappers.h, event.h, ftm.h, implements.h, internal.h, module.h
+
+#include "pch.h"
+
+#include "CaptureMediaSink_h.h"
+
+#if 0
 using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
 
-
-#if 0
-
-// #include "pch.h"
-
-// #include <mfapi.h>
-// #include <mfidl.h>
-// #include <mftransform.h>
-// #include <mferror.h>
-
-#include "CaptureMediaSink_h.h"
 
 // zv temporary
 using namespace std;
@@ -46,54 +42,59 @@ using namespace Microsoft::Windows::GraphicsCore::InteropServices;
 using namespace Platform;
 // using namespace Platform::Collections;
 using namespace Windows::Foundation;
+using namespace Windows::Foundation::Collections;
+
 using namespace Windows::Storage::Streams;
+
 using namespace Windows::Media;
 using namespace Windows::Media::Core;
 using namespace Windows::Media::Capture;
 using namespace Windows::Media::MediaProperties;
-using namespace Windows::Foundation::Collections;
+
 #endif
 
 #include "Helpers.h"
-
-// {6703D0C7-4B3F-4D49-9DE1-3B86519D9E80}
-DEFINE_GUID(CLSID_CaptureSink,
-    0x6703d0c7, 0x4b3f, 0x4d49, 0x9d, 0xe1, 0x3b, 0x86, 0x51, 0x9d, 0x9e, 0x80);
-
-#include "CaptureMediaStreamSink.h"
 
 namespace ABI
 {
     namespace CaptureMediaSink {
 
+        // class CaptureMediaStreamSink;
+
         // zv added WrlSealed, IMFClockStateSink, FtmBase
         class CaptureSink
             : public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags< Microsoft::WRL::RuntimeClassType::WinRtClassicComMix >,
-            ABI::Windows::Media::IMediaExtension
+            Windows::Media::IMediaExtension,
+            IMFMediaSink
             /*,
-            IMFMediaSink,
             IMFClockStateSink,
             Microsoft::WRL::FtmBase
             */
             >
         {
-            // zv _h.h is unused
             InspectableClass(RuntimeClass_CaptureMediaSink_CaptureSink, BaseTrust)
-                // InspectableClass(L"CaptureMediaSink.CaptureSink", BaseTrust)
+            // InspectableClass(L"CaptureMediaSink.CaptureSink", BaseTrust)
 
         public:
             CaptureSink() {}
 
-            ~CaptureSink() {}
+            ~CaptureSink() {}       
 
             STDMETHOD(RuntimeClassInitialize)(
-                //        __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps,
-                //        MediaReaders::SampleHandler^ videoSampleHandler
+                    //IUnknown *props
+                    //ABI::Windows::Media::ImageDisplayProperties::
+                    //Windows::Media::MediaProperties::
+                    //IMediaEncodingProperties ^props
+                    //__in_opt ABI::Windows::Media
+                    //* videoProps,
+                    //MediaReaders::SampleHandler^ videoSampleHandler
                 )
             {
+//                Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
+//                MFCreateMediaTypeFromProperties( props, &videoMT);
 #if 0
-                Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
+                // __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties*  Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
                 if (videoProps != nullptr)
                 {
                     CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
