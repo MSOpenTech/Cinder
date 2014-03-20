@@ -11,7 +11,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Helpers.h" />
-    <ClInclude Include="CaptureMediaStreamSink.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -19,12 +18,10 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="CaptureMediaSink.idl" />
-    <Midl Include="CaptureMediaStreamSink.idl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CaptureMediaSink.cpp" />
     <ClCompile Include="module.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="CaptureMediaStreamSink.cpp" />
   </ItemGroup>
 </Project>

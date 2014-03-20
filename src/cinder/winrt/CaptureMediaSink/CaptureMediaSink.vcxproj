@@ -121,7 +121,7 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
-      <PreprocessorDefinitions>_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAsManaged>
       </CompileAsManaged>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -217,7 +217,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CaptureMediaSink.h" />
-    <ClInclude Include="CaptureMediaStreamSink.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
@@ -228,11 +227,14 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="CaptureMediaSink.idl" />
-    <Midl Include="CaptureMediaStreamSink.idl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CaptureMediaSink.cpp" />
-    <ClCompile Include="CaptureMediaStreamSink.cpp" />
+    <ClCompile Include="CaptureMediaSink.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PreprocessToFile>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PreprocessKeepComments>
+    </ClCompile>
     <ClCompile Include="module.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
