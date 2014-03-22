@@ -43,8 +43,7 @@ inline unsigned char* GetData(Windows::Storage::Streams::IBuffer^ buffer)
 
 #endif // ifdef _ROBUFFER_H
 
-// zv not used
-#if 0
+#if 1
 
 #ifdef __MFAPI_H__ // include mfapi.h to enable
 
@@ -95,8 +94,6 @@ inline HRESULT OriginateError(__in HRESULT hr)
     return hr;
 }
 
-// #include <collection.h>
-
 inline void CopyProperties(
     Windows::Foundation::Collections::IMap<Platform::Guid, Platform::Object^>^ source,
     Windows::Foundation::Collections::IMap<Platform::Guid, Platform::Object^>^ destination
@@ -104,12 +101,19 @@ inline void CopyProperties(
 {
     destination->Clear();
 
-    // zv fix this
-    for (auto pair = source.begin(); pair < source.end(); source.next())
-    // for (auto pair : source)
+    // C++11
+    for (auto pair : source)
     {
         destination->Insert(pair->Key, pair->Value);
     }
+
+// STL form 
+#if 0
+    std::for_each(begin(source), end(source), [destination](IKeyValuePair<Platform::Guid, Platform::Object^>^ pair)
+    {
+        destination->Insert(pair->Key, pair->Value);
+    });
+#endif
 }
 #endif
 
