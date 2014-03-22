@@ -109,9 +109,10 @@ namespace MediaWinRT
                     recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
  
                     // use WRL to make and initialize the custom media sink
-                    Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CaptureSink> ms;
-                    MakeAndInitialize<ABI::CaptureMediaSink::CaptureSink>(&ms);
-                    
+                    Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
+                    MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms);
+
+                    // can't pass in Media::Capture intf?
                     // pass in mediaCapture instance so media sink can get info to create stream
                     // MakeAndInitialize<ABI::CaptureMediaSink::CaptureSink>(&ms, mediaCapture);
 
