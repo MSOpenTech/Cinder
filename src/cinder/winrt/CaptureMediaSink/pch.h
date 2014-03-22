@@ -15,11 +15,20 @@
 
 #include <mfobjects.h>
 #include <mfreadwrite.h>
+#include <mferror.h>
 
-#include <windows.media.h>
+#include <collection.h>
+
+// #include <roerrorapi.h>
+// #include <windows.media.h>
+
+// #include <algorithm>
+// #include <windows.foundation.h>
+// #include <collection.h>
+// using namespace Windows::Foundation::Collections;
+// using namespace Platform::Collections;
 
 // #include <mftransform.h>
-// #include <mferror.h>
 
 #if 0
 
