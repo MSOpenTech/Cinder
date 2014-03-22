@@ -7,6 +7,12 @@ MS Help Desk telephone: 866-539-4191
 
 (list is unsorted right now)
 
+MSDN Library (top)
+http://msdn.microsoft.com/en-us/library/ms123401.aspx
+
+Collections (C++/CX) (top)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh700103.aspx
+
 The Windows Runtime Library (WRL)
 http://channel9.msdn.com/Events/Windows-Camp/Developing-Windows-8-Metro-style-apps-in-Cpp/The-Windows-Runtime-Library-WRL-
 
@@ -33,8 +39,6 @@ http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
 
 Creating Windows Runtime Components in C++:
 http://msdn.microsoft.com/en-US/library/windows/apps/hh441569.aspx
-
-type system and all types: http://msdn.microsoft.com/en-us/library/windows/apps/hh700103.aspx
 
 arrays: http://msdn.microsoft.com/en-us/library/windows/apps/hh700131.aspx
 
