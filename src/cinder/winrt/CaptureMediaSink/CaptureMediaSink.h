@@ -15,7 +15,6 @@
 #pragma once
 
 #include <wrl.h>
-
 #include <wrl\implements.h>
 #include <comutil.h>
 
@@ -25,8 +24,11 @@
 
 #include "CaptureMediaSink_h.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Details;
+// #include "CaptureMediaStreamSink.h"
+
+// using namespace Microsoft::WRL;
+// using namespace Microsoft::WRL::Details;
+// using namespace Windows::Foundation::Diagnostics;
 
 #if 0
 using namespace Microsoft::WRL;
@@ -70,26 +72,26 @@ namespace ABI
         // class CaptureMediaStreamSink;
         // zv added WrlSealed, IMFClockStateSink, FtmBase
 
-        class CaptureSink
+        class CSink
             : public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags< Microsoft::WRL::RuntimeClassType::WinRtClassicComMix >,
             Windows::Media::IMediaExtension,
-            IMFMediaSink
-            /*,
+            IMFMediaSink,
             IMFClockStateSink,
             Microsoft::WRL::FtmBase
-            */
             >
         {
             InspectableClass(RuntimeClass_CaptureMediaSink_CaptureSink, BaseTrust)
             // InspectableClass(L"CaptureMediaSink.CaptureSink", BaseTrust)
 
         public:
-            CaptureSink() {}
+            CSink() {}
 
-            ~CaptureSink() {}       
+            ~CSink() {}       
 
-            STDMETHOD(RuntimeClassInitialize)(
+            STDMETHOD(RuntimeClassInitialize)( 
+                // Windows::Media::Capture::MediaCapture^ mc
+                // IMediaCapture mc
                 // Windows::Media::
                 // IInspectable *t
                     //IUnknown *props
@@ -102,8 +104,11 @@ namespace ABI
                 )
             {
 
-                Microsoft::WRL::ComPtr<CaptureMediaStreamSink::CaptureStreamSink> mss;
-                MakeAndInitialize<CaptureMediaStreamSink::CaptureStreamSink>(&mss);
+                Microsoft::WRL::ComPtr<CaptureMediaStreamSink::CStreamSink> mss;
+                Microsoft::WRL::Details::MakeAndInitialize<CaptureMediaStreamSink::CStreamSink>(&mss);
+
+                // save the video stream sink
+                videoStreamSink = mss;
 
 //                Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
 //                MFCreateMediaTypeFromProperties( props, &videoMT);
@@ -118,8 +123,6 @@ namespace ABI
                 return S_OK;
             }
 
-            // declare methods needed for each interface used by the CSink class:
-#if 1
             // IMediaExtension
             IFACEMETHODIMP SetProperties(ABI::Windows::Foundation::Collections::IPropertySet *pConfiguration)
             {
@@ -176,7 +179,71 @@ namespace ABI
             {
                 return S_OK;
             }
-#endif
+
+            //
+            // IMFClockStateSink methods
+            //
+
+            IFACEMETHOD(OnClockStart) (MFTIME /*hnsSystemTime*/, LONGLONG /*llClockStartOffset*/)
+            {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                return S_OK;
+            }
+
+            IFACEMETHOD(OnClockStop) (MFTIME /*hnsSystemTime*/)
+            {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                return S_OK;
+            }
+
+            IFACEMETHOD(OnClockPause) (MFTIME /*hnsSystemTime*/)
+            {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                return S_OK;
+            }
+
+            IFACEMETHOD(OnClockRestart) (MFTIME /*hnsSystemTime*/)
+            {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                return S_OK;
+            }
+
+            IFACEMETHOD(OnClockSetRate) (MFTIME /*hnsSystemTime*/, float /*flRate*/)
+            {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                return S_OK;
+            }
+
 
             // IMFTransform
 #if 0
@@ -374,11 +441,12 @@ namespace ABI
             bool _shutdown;
 
             // Microsoft::WRL::ComPtr<MediaStreamSink> _audioStreamSink;
-            // Microsoft::WRL::ComPtr<CaptureMediaSink::CStreamSink> _videoStreamSink;
+            
+            Microsoft::WRL::ComPtr<CaptureMediaStreamSink::CStreamSink> videoStreamSink;
 
-            // Microsoft::WRL::ComPtr<IMFPresentationClock> _clock;
+            Microsoft::WRL::ComPtr<IMFPresentationClock> _clock;
 
-            // Microsoft::WRL::Wrappers::SRWLock _lock;
+            Microsoft::WRL::Wrappers::SRWLock _lock;
 
         };
     }
