@@ -20,7 +20,7 @@ namespace ABI
 {
     namespace CaptureMediaSink {
 
-        ActivatableClass(CaptureSink);
+        ActivatableClass(CSink);
 
     }
 }

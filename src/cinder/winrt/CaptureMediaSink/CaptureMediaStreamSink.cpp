@@ -22,7 +22,7 @@
 
 #include "CaptureMediaStreamSink.h"
 
-namespace CaptureMediaSink {
+namespace CaptureMediaStreamSink {
 
     // ActivatableClass(CaptureMediaStreamSink);
     // CoCreateableClass(CaptureMediaStreamSink);
