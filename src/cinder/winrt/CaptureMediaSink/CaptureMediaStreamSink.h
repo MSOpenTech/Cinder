@@ -227,14 +227,18 @@ namespace CaptureMediaStreamSink {
         IFACEMETHODIMP SetCurrentMediaType(__in IMFMediaType *mediaType);
         IFACEMETHODIMP GetCurrentMediaType(__deref_out_opt IMFMediaType **mediaType);
         IFACEMETHODIMP GetMajorType(__out GUID *majorType);
+#endif
 
         //
         // Misc
         //
 
-        HRESULT RequestSample();
-        void Shutdown();
-#endif
+        HRESULT RequestSample() {
+            return S_OK;
+        }
+
+        void Shutdown() {}
+
     private:
 
         HRESULT _VerifyMediaType(__in IMFMediaType* mt) const;
