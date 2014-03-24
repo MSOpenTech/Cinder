@@ -149,34 +149,99 @@ namespace ABI
 
             IFACEMETHODIMP GetStreamSinkCount(DWORD* pcStreamSinkCount)
             {
-                *pcStreamSinkCount = 1;
+                *pcStreamSinkCount = videoStreamSink != nullptr;
                 return S_OK;
             }
 
             IFACEMETHODIMP GetStreamSinkByIndex(DWORD dwIndex, IMFStreamSink** ppStreamSink)
             {
-                //                 return _videoStreamSink.CopyTo(streamSink);
-                *ppStreamSink = nullptr;
-                return S_OK;
+                auto lock = _lock.LockExclusive();
+                if (videoStreamSink != nullptr)
+                    return videoStreamSink.CopyTo(ppStreamSink);
+                else
+                    return OriginateError(E_INVALIDARG, L"streamSink");
             }
 
             IFACEMETHODIMP GetStreamSinkById(DWORD dwStreamSinkIdentifier, IMFStreamSink** ppStreamSink)
             {
-                return S_OK;
+                auto lock = _lock.LockExclusive();
+                if (videoStreamSink != nullptr)
+                    return videoStreamSink.CopyTo(ppStreamSink);
+                else
+                    return OriginateError(E_INVALIDARG, L"identifier");
             }
 
             IFACEMETHODIMP SetPresentationClock(IMFPresentationClock* pPresentationClock)
             {
+                auto lock = _lock.LockExclusive();
+                HRESULT hr = S_OK;
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                if (_clock != nullptr)
+                {
+                    CHK_RETURN(_clock->RemoveClockStateSink(this));
+                    _clock = nullptr;
+                }
+
+                if (pPresentationClock != nullptr)
+                {
+                    CHK_RETURN(pPresentationClock->AddClockStateSink(this));
+                    _clock = pPresentationClock;
+                }
+
                 return S_OK;
             }
 
             IFACEMETHODIMP GetPresentationClock(IMFPresentationClock** ppPresentationClock)
             {
+                auto lock = _lock.LockExclusive();
+                HRESULT hr = S_OK;
+
+                if (ppPresentationClock == nullptr)
+                {
+                    return OriginateError(E_POINTER, L"clock");
+                }
+                *ppPresentationClock = nullptr;
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                if (_clock != nullptr)
+                {
+                    CHK_RETURN(_clock.CopyTo(ppPresentationClock))
+                }
+
                 return S_OK;
             }
 
             IFACEMETHODIMP Shutdown(void)
             {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return S_OK;
+                }
+                _shutdown = true;
+
+                if (videoStreamSink != nullptr)
+                {
+                    videoStreamSink->Shutdown();
+                    videoStreamSink = nullptr;
+                }
+
+                if (_clock != nullptr)
+                {
+                    (void)_clock->RemoveClockStateSink(this);
+                    _clock = nullptr;
+                }
+
                 return S_OK;
             }
 
