@@ -49,14 +49,11 @@ namespace CaptureMediaStreamSink {
     {
     public:
 
-        CStreamSink() {}
+        CStreamSink();
 
         ~CStreamSink() {}
 
-        HRESULT RuntimeClassInitialize()
-        {
-            return S_OK;
-        }
+        HRESULT RuntimeClassInitialize();
 
 //        HRESULT RuntimeClassInitialize(__in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt, CaptureMediaSink::SampleHandler^ sampleHandler);
 
@@ -87,42 +84,23 @@ namespace CaptureMediaStreamSink {
         //
 
         IFACEMETHODIMP STDMETHODCALLTYPE GetMediaSink(
-            /* [out] */ __RPC__deref_out_opt IMFMediaSink **ppMediaSink)
-        {
-            return S_OK;
-        }
+            /* [out] */ __RPC__deref_out_opt IMFMediaSink **ppMediaSink);
 
         IFACEMETHODIMP STDMETHODCALLTYPE GetIdentifier(
-            /* [out] */ __RPC__out DWORD *pdwIdentifier)
-        {
-            return S_OK;
-        }
+            /* [out] */ __RPC__out DWORD *pdwIdentifier);
 
         IFACEMETHODIMP STDMETHODCALLTYPE GetMediaTypeHandler(
-            /* [out] */ __RPC__deref_out_opt IMFMediaTypeHandler **ppHandler)
-        {
-            return S_OK;
-        }
+            /* [out] */ __RPC__deref_out_opt IMFMediaTypeHandler **ppHandler);
 
         IFACEMETHODIMP STDMETHODCALLTYPE ProcessSample(
-            /* [in] */ __RPC__in_opt IMFSample *pSample)
-        {
-            return S_OK;
-        }
+            /* [in] */ __RPC__in_opt IMFSample *pSample);
 
         IFACEMETHODIMP STDMETHODCALLTYPE PlaceMarker(
             /* [in] */ MFSTREAMSINK_MARKER_TYPE eMarkerType,
             /* [in] */ __RPC__in const PROPVARIANT *pvarMarkerValue,
-            /* [in] */ __RPC__in const PROPVARIANT *pvarContextValue)
-        {
-            return S_OK;
-        }
+            /* [in] */ __RPC__in const PROPVARIANT *pvarContextValue);
 
-        IFACEMETHODIMP STDMETHODCALLTYPE Flush(void)
-        {
-            return S_OK;
-        }
-
+        IFACEMETHODIMP STDMETHODCALLTYPE Flush(void);
 
         //
         // IMFMediaEventGenerator
@@ -130,68 +108,38 @@ namespace CaptureMediaStreamSink {
 
         IFACEMETHODIMP STDMETHODCALLTYPE GetEvent(
             /* [in] */ DWORD dwFlags,
-            /* [out] */ __RPC__deref_out_opt IMFMediaEvent **ppEvent)
-        {
-            return S_OK;
-        }
+            /* [out] */ __RPC__deref_out_opt IMFMediaEvent **ppEvent);
 
         IFACEMETHODIMP STDMETHODCALLTYPE BeginGetEvent(
             /* [in] */ IMFAsyncCallback *pCallback,
-            /* [in] */ IUnknown *punkState)
-        {
-            return S_OK;
-        }
+            /* [in] */ IUnknown *punkState);
 
         IFACEMETHODIMP STDMETHODCALLTYPE EndGetEvent(
             /* [in] */ IMFAsyncResult *pResult,
             /* [annotation][out] */
-            _Out_  IMFMediaEvent **ppEvent)
-        {
-            return S_OK;
-        }
+            _Out_  IMFMediaEvent **ppEvent);
 
         IFACEMETHODIMP STDMETHODCALLTYPE QueueEvent(
             /* [in] */ MediaEventType met,
             /* [in] */ __RPC__in REFGUID guidExtendedType,
             /* [in] */ HRESULT hrStatus,
-            /* [unique][in] */ __RPC__in_opt const PROPVARIANT *pvValue)
-        {
-            return S_OK;
-        }
+            /* [unique][in] */ __RPC__in_opt const PROPVARIANT *pvValue);
 
         //
         // IMFMediaTypeHandler
         //
 
-        IFACEMETHODIMP IsMediaTypeSupported(__in IMFMediaType *mediaType, __deref_out_opt  IMFMediaType **closestMediaType)
-        {
-            return S_OK;
-        }
+        IFACEMETHODIMP IsMediaTypeSupported(__in IMFMediaType *mediaType, __deref_out_opt  IMFMediaType **closestMediaType);
 
-        IFACEMETHODIMP GetMediaTypeCount(__out DWORD *typeCount)
-        {
-            return S_OK;
-        }
+        IFACEMETHODIMP GetMediaTypeCount(__out DWORD *typeCount);
 
-        IFACEMETHODIMP GetMediaTypeByIndex(__in DWORD index, __deref_out  IMFMediaType **mediaType)
-        {
-            return S_OK;
-        }
+        IFACEMETHODIMP GetMediaTypeByIndex(__in DWORD index, __deref_out  IMFMediaType **mediaType);
 
-        IFACEMETHODIMP SetCurrentMediaType(__in IMFMediaType *mediaType)
-        {
-            return S_OK;
-        }
+        IFACEMETHODIMP SetCurrentMediaType(__in IMFMediaType *mediaType);
 
-        IFACEMETHODIMP GetCurrentMediaType(__deref_out_opt IMFMediaType **mediaType)
-        {
-            return S_OK;
-        }
+        IFACEMETHODIMP GetCurrentMediaType(__deref_out_opt IMFMediaType **mediaType);
 
-        IFACEMETHODIMP GetMajorType(__out GUID *majorType)
-        {
-            return S_OK;
-        }
+        IFACEMETHODIMP GetMajorType(__out GUID *majorType);
 
 #if 0
 
@@ -233,11 +181,11 @@ namespace CaptureMediaStreamSink {
         // Misc
         //
 
-        HRESULT RequestSample() {
-            return S_OK;
-        }
+        HRESULT RequestSample();
 
-        void Shutdown() {}
+        HRESULT InternalSetCurrentMediaType(__in IMFMediaType *mediaType);
+
+        void Shutdown();
 
     private:
 
@@ -247,9 +195,9 @@ namespace CaptureMediaStreamSink {
         Microsoft::WRL::ComPtr<IMFMediaSink> _sink;
         Microsoft::WRL::ComPtr<IMFMediaType> _curMT;
 
-        // Microsoft::WRL::ComPtr<IMFMediaEventQueue> _eventQueue;
-        /// Microsoft::WRL::ComPtr<MediaCore::InteropServices::IMediaBufferNativeFactory> _factory;
-        /// MediaReaders::SampleHandler^ _sampleHandler;
+        Microsoft::WRL::ComPtr<IMFMediaEventQueue> _eventQueue;
+        // Microsoft::WRL::ComPtr<MediaCore::InteropServices::IMediaBufferNativeFactory> _factory;
+        // MediaReaders::SampleHandler^ _sampleHandler;
 
         GUID _majorType;
         GUID _subType;
