@@ -345,7 +345,6 @@
     <ClInclude Include="..\src\AntTweakBar\TwGraph.h" />
     <ClInclude Include="..\src\AntTweakBar\TwMgr.h" />
     <ClInclude Include="..\src\AntTweakBar\TwPrecomp.h" />
-    <ClInclude Include="..\src\cinder\winrt\MediaCaptureWinRT.h" />
     <ClInclude Include="..\src\libtess2\bucketalloc.h" />
     <ClInclude Include="..\src\libtess2\dict.h" />
     <ClInclude Include="..\src\libtess2\geom.h" />
@@ -447,7 +446,6 @@
     <ClCompile Include="..\src\cinder\dx\DxTexture.cpp" />
     <ClCompile Include="..\src\cinder\Exception.cpp" />
     <ClCompile Include="..\src\cinder\Rect.cpp" />
-    <ClCompile Include="..\src\cinder\winrt\MediaCaptureWinRT.cpp" />
     <ClCompile Include="..\src\cinder\Xml.cpp" />
     <ClCompile Include="..\src\freetype\autofit\autofit.c">
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
@@ -1036,6 +1034,11 @@
       <BufferSecurityCheck Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</BufferSecurityCheck>
       <BufferSecurityCheck Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</BufferSecurityCheck>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\cinder\winrt\CaptureMediaSink\CaptureMediaSink.vcxproj">
+      <Project>{20c664f2-23b1-43f0-ac8b-cd2ef2a8a36d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,6 +12,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="CaptureMediaStreamSink.h" />
+    <ClInclude Include="..\MediaCaptureWinRT.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -25,5 +26,6 @@
     <ClCompile Include="module.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="CaptureMediaStreamSink.cpp" />
+    <ClCompile Include="..\MediaCaptureWinRT.cpp" />
   </ItemGroup>
 </Project>

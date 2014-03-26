@@ -216,6 +216,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\MediaCaptureWinRT.h" />
     <ClInclude Include="CaptureMediaSink.h" />
     <ClInclude Include="CaptureMediaStreamSink.h" />
     <ClInclude Include="Helpers.h" />
@@ -230,6 +231,9 @@
     <Midl Include="CaptureMediaSink.idl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\MediaCaptureWinRT.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="CaptureMediaSink.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PreprocessToFile>
