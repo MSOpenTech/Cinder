@@ -53,6 +53,8 @@
 #include <ppltasks.h>
 #include <ppl.h>
 
+#include "winrt/MediaCaptureWinRT.h"
+
 using namespace Windows::Foundation::Collections;
 using namespace Platform;
 using namespace Windows::Foundation::Collections;
@@ -213,7 +215,7 @@ void CaptureImplWinRT::getDevicesAsync(bool forceRefresh, std::function<void()> 
 CaptureImplWinRT::CaptureImplWinRT( int32_t width, int32_t height, const Capture::DeviceRef device )
 	: mWidth( width ), mHeight( height ), mCurrentFrame( width, height, false, SurfaceChannelOrder::BGR ), mDeviceID( 0 )
 {
-    m_MediaCaptureWinRT = ref new MediaCaptureWinRT;
+    // m_MediaCaptureWinRT = ref new MediaCaptureWinRT;
 
 // zv from MSW impl
 #if 0
@@ -235,13 +237,13 @@ CaptureImplWinRT::CaptureImplWinRT( int32_t width, int32_t height, const Capture
 CaptureImplWinRT::~CaptureImplWinRT()
 {
     // CaptureMgr::instanceVI()->stopDevice( mDeviceID );
-	if ( mIsCapturing ) m_MediaCaptureWinRT->stop();
+	// if ( mIsCapturing ) m_MediaCaptureWinRT->stop();
 }
 
 void CaptureImplWinRT::start()
 {
 	if ( mIsCapturing ) return;
-    m_MediaCaptureWinRT->start();
+    // m_MediaCaptureWinRT->start();
     mIsCapturing = true;
 
 #if 0
@@ -260,7 +262,7 @@ void CaptureImplWinRT::start()
 void CaptureImplWinRT::stop()
 {
 	if ( ! mIsCapturing ) return;
-    m_MediaCaptureWinRT->stop();
+    // m_MediaCaptureWinRT->stop();
     // CaptureMgr::instanceVI()->stopDevice( mDeviceID );
 	mIsCapturing = false;
 }
