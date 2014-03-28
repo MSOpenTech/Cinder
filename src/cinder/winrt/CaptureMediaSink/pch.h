@@ -17,6 +17,7 @@
 #include <mfreadwrite.h>
 #include <mferror.h>
 
+#include <ppltasks.h>
 #include <collection.h>
 
 // #include <roerrorapi.h>
