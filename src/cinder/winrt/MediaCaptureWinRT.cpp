@@ -42,7 +42,7 @@
 // important - this has been removed - now using a creator function
 // temp path until file is moved
 // #include "../winrt/CaptureMediaSink/CaptureMediaSink.h"
-#include "CaptureMediaSink.h"
+// #include "CaptureMediaSink.h"
 
 using namespace Platform;
 using namespace Platform::Collections;
@@ -129,6 +129,9 @@ namespace MediaWinRT
                     auto customMediaSink = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
 #endif
 
+#if 0
+                    // moved to CAdapter
+
                     // use WRL to make and initialize the custom media sink
                     Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
                     Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms);
@@ -143,6 +146,7 @@ namespace MediaWinRT
 
                     // record using the custom media sink
                     /// create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+#endif
 
 // notes
 #if 0

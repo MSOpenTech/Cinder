@@ -40,7 +40,7 @@ namespace MediaWinRT
         property Platform::Boolean  isFrontFacing;
         property Platform::Boolean  isBackFacing;
     };
-    
+
     public delegate void GetMediaDevicesDelegate(const Platform::Array<VideoDeviceInfo^>^ devices);
 
     ref class MediaCaptureWinRT sealed
@@ -74,6 +74,7 @@ namespace MediaWinRT
         // must be private
         Windows::Foundation::Collections::PropertySet^ MEcomm;
 
+        // nb. interfaces do not get ^
         Platform::Agile<Windows::Media::Capture::MediaCapture> m_mediaCaptureMgr;
 
         Windows::Devices::Enumeration::DeviceInformationCollection^ m_devInfoCollection;
