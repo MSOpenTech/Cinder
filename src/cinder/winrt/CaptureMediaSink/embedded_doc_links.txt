@@ -13,17 +13,17 @@ http://msdn.microsoft.com/en-us/library/ms123401.aspx
 Collections (C++/CX) (top)
 http://msdn.microsoft.com/en-us/library/windows/apps/hh700103.aspx
 
-The Windows Runtime Library (WRL)
-http://channel9.msdn.com/Events/Windows-Camp/Developing-Windows-8-Metro-style-apps-in-Cpp/The-Windows-Runtime-Library-WRL-
-
-book: Essential COM (mostly online)
-http://books.google.com/books/about/Essential_COM.html?id=kfRWvKSePmAC
-
 Windows Runtime C++ Template Library (WRL) (top)
 http://msdn.microsoft.com/en-us/library/hh438466.aspx
 
 WRL Reference (top)
 http://msdn.microsoft.com/en-us/library/jj155853.aspx
+
+The Windows Runtime Library (WRL)
+http://channel9.msdn.com/Events/Windows-Camp/Developing-Windows-8-Metro-style-apps-in-Cpp/The-Windows-Runtime-Library-WRL-
+
+book: Essential COM (mostly online)
+http://books.google.com/books/about/Essential_COM.html?id=kfRWvKSePmAC
 
 VC 2012 Express (download)
 http://www.microsoft.com/en-us/download/details.aspx?id=34673
@@ -328,3 +328,10 @@ http://blogs.msdn.com/b/vcblog/archive/2012/08/29/cxxcxpart00anintroduction.aspx
 
 __declspec (top)
 http://msdn.microsoft.com/en-us/library/dabb5z75.aspx
+
+Creating a Windows Runtime DLL component with C++ sample
+http://code.msdn.microsoft.com/windowsapps/Creating-a-Windows-Runtime-6c399797
+
+Creating a Windows Runtime in-process component sample (C++/CX)
+http://code.msdn.microsoft.com/windowsapps/Creating-a-Windows-Runtime-460a535f
+
