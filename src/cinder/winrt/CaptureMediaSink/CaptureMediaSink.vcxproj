@@ -216,10 +216,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\MediaCaptureWinRT.h" />
     <ClInclude Include="CaptureMediaSink.h" />
     <ClInclude Include="CaptureMediaStreamSink.h" />
     <ClInclude Include="Helpers.h" />
+    <ClInclude Include="MediaAdapter.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -231,9 +231,6 @@
     <Midl Include="CaptureMediaSink.idl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\MediaCaptureWinRT.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="CaptureMediaSink.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PreprocessToFile>
@@ -241,6 +238,14 @@
       </PreprocessKeepComments>
     </ClCompile>
     <ClCompile Include="CaptureMediaStreamSink.cpp" />
+    <ClCompile Include="MediaAdapter.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PreprocessToFile>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PreprocessSuppressLineNumbers>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PreprocessKeepComments>
+    </ClCompile>
     <ClCompile Include="module.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -345,6 +345,7 @@
     <ClInclude Include="..\src\AntTweakBar\TwGraph.h" />
     <ClInclude Include="..\src\AntTweakBar\TwMgr.h" />
     <ClInclude Include="..\src\AntTweakBar\TwPrecomp.h" />
+    <ClInclude Include="..\src\cinder\winrt\MediaCaptureWinRT.h" />
     <ClInclude Include="..\src\libtess2\bucketalloc.h" />
     <ClInclude Include="..\src\libtess2\dict.h" />
     <ClInclude Include="..\src\libtess2\geom.h" />
@@ -446,6 +447,7 @@
     <ClCompile Include="..\src\cinder\dx\DxTexture.cpp" />
     <ClCompile Include="..\src\cinder\Exception.cpp" />
     <ClCompile Include="..\src\cinder\Rect.cpp" />
+    <ClCompile Include="..\src\cinder\winrt\MediaCaptureWinRT.cpp" />
     <ClCompile Include="..\src\cinder\Xml.cpp" />
     <ClCompile Include="..\src\freetype\autofit\autofit.c">
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>

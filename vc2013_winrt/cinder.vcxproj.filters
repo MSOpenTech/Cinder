@@ -370,6 +370,9 @@
     <ClInclude Include="..\include\cinder\app\winrt\cdebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\cinder\winrt\MediaCaptureWinRT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\cinder\app\App.cpp">
@@ -844,6 +847,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\cinder\CaptureImplWinRt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cinder\winrt\MediaCaptureWinRT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
