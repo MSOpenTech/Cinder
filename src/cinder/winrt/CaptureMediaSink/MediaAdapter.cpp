@@ -48,9 +48,12 @@ namespace ABI {
 
             // record using the custom media sink
 
-            // auto op = create_async([]{});
+            auto op = create_async([]{
+            });
+
             // COMPILATION FAILS
-            Windows::Foundation::IAsyncAction * act = create_async([]{});
+            // task<void> foo;
+            // Windows::Foundation::IAsyncAction * act = create_async([]{});
 
             //auto op = create_async([capture, profile, customMediaSink]{
             //    capture->StartRecordToCustomSinkAsync(profile, customMediaSink, &op );
@@ -59,7 +62,7 @@ namespace ABI {
 
             // create_task(
 
-            // capture->StartRecordToCustomSinkAsync(profile, customMediaSink, &act );
+            capture->StartRecordToCustomSinkAsync(profile, customMediaSink, op );
 
             // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
         }
