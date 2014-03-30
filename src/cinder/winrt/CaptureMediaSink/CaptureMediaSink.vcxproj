@@ -121,7 +121,7 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__WRL_DISABLE_STATIC_INITIALIZE__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAsManaged>
       </CompileAsManaged>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -219,7 +219,6 @@
     <ClInclude Include="CaptureMediaSink.h" />
     <ClInclude Include="CaptureMediaStreamSink.h" />
     <ClInclude Include="Helpers.h" />
-    <ClInclude Include="MediaAdapter.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -238,14 +237,6 @@
       </PreprocessKeepComments>
     </ClCompile>
     <ClCompile Include="CaptureMediaStreamSink.cpp" />
-    <ClCompile Include="MediaAdapter.cpp">
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PreprocessToFile>
-      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PreprocessSuppressLineNumbers>
-      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PreprocessKeepComments>
-    </ClCompile>
     <ClCompile Include="module.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
