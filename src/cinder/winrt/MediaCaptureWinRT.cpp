@@ -43,6 +43,9 @@
 // temp path until file is moved
 // #include "../winrt/CaptureMediaSink/CaptureMediaSink.h"
 // #include "CaptureMediaSink.h"
+//
+// failed due to link error
+// #include "../winrt/CaptureMediaSink/MediaAdapter.h"
 
 using namespace Platform;
 using namespace Platform::Collections;
@@ -118,15 +121,28 @@ namespace MediaWinRT
                     MediaEncodingProfile^ recordProfile = nullptr;
                     recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
 
-#if 0
-                    // We do not want to drag the definition of the media sink into WinRT,
-                    // so we use a creator function.  There may be a better way to do this
+                    // We cannot pull in the definition of the media sink into WinRT,
+                    // so we use a standalone creator function.  There may be a better way to do this
                     // using a custom interface and COM/WRL, or by using WRL module.h
                     ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
                     createMediaExtension( &pCustomMediaSink );
 
                     // get the interface for the WinRT call
                     auto customMediaSink = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
+
+                    // record using the custom media sink
+                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+
+#if 0
+
+                    ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
+                    ABI::MediaAdapter::CAdapter::createMediaExtension(&pCustomMediaSink);
+
+                    // get the interface for the WinRT call
+                    auto customMediaSink = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
+
+                    // record using the custom media sink
+                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
 #endif
 
 #if 0
