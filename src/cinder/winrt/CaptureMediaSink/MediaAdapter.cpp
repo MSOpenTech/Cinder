@@ -32,6 +32,21 @@ using namespace Concurrency;
 namespace ABI {
     namespace MediaAdapter {
 
+        void createMediaExtension(Windows::Media::IMediaExtension **ppMediaExtension)
+        {
+            // use WRL to make and initialize the custom media sink
+            Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
+            Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms);
+
+            // get the interface for the WinRT call            
+            // auto customMediaSink = reinterpret_cast<Windows::Media::IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(ms.Get()));
+            auto customMediaSink = static_cast<ABI::Windows::Media::IMediaExtension*>(ms.Get());
+
+            *ppMediaExtension = customMediaSink;
+        }
+
+// attempt to also start record - not used
+#if 0
         void CAdapter::start(
             Windows::Media::Capture::IMediaCapture *capture,
             Windows::Media::MediaProperties::IMediaEncodingProfile *profile
@@ -66,6 +81,7 @@ namespace ABI {
 
             // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
         }
+#endif
     }
 }
 
