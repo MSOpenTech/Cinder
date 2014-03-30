@@ -38,7 +38,7 @@
 // zv
 // #include "msw/videoInput/videoInput.h"
 
-// #include "winrt/MediaCaptureWinRT.h"
+#include "winrt/MediaCaptureWinRT.h"
 
 //namespace MediaWinRT {
 //    ref class  MediaCaptureWinRT;
@@ -119,7 +119,7 @@ namespace cinder {
         static std::vector<Capture::DeviceRef>	sDevices;
 
     private:
-        // MediaWinRT::MediaCaptureWinRT^      m_MediaCaptureWinRT;
+        MediaWinRT::MediaCaptureWinRT^      m_MediaCaptureWinRT;
     };
 
 } //namespace
