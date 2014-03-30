@@ -12,7 +12,6 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="CaptureMediaStreamSink.h" />
-    <ClInclude Include="MediaAdapter.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -26,6 +25,5 @@
     <ClCompile Include="module.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="CaptureMediaStreamSink.cpp" />
-    <ClCompile Include="MediaAdapter.cpp" />
   </ItemGroup>
 </Project>
