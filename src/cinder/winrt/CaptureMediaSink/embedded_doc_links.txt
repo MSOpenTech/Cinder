@@ -337,3 +337,10 @@ http://code.msdn.microsoft.com/windowsapps/Creating-a-Windows-Runtime-460a535f
 
 create_task Function
 http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k("ppltasks%2FConcurrency%3A%3Acreate_task");k("Concurrency%3A%3Acreate_task");k(create_task);k(DevLang-C%2B%2B);k(TargetOS-Windows);k(TargetFrameworkMoniker-MoCOM-CLR)&rd=true
+
+IID_PPV_ARGS macro
+http://msdn.microsoft.com/en-us/library/windows/desktop/ee330727(v=vs.85).aspx
+
+ActivatableClass Macros
+http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k("module%2FActivatableClassWithFactory");k(ActivatableClassWithFactory);k(DevLang-C%2B%2B);k(TargetOS-Windows);k(TargetFrameworkMoniker-MoCOM-CLR)&rd=true
+

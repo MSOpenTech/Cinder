@@ -61,12 +61,13 @@ Casting tips - relevant to WRL/COM:
 from http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
 
     ABI types live in headers in the Windows SDK. 
-    Conveniently, the headers are named after the namespaces�for example, windows.storage.h.
+    Conveniently, the headers are named after the namespaces; for example, windows.storage.h.
 
-    ABI types live in a special namespace ABI�for example, ABI::Windows::Storage::Streams::IBuffer*.
+    ABI types live in a special namespace ABI
+	for example, ABI::Windows::Storage::Streams::IBuffer*.
 
     Conversions between a Visual C++ component extensions interface type and its 
-    equivalent ABI type are always safe�that is, IBuffer^ to ABI::IBuffer*.
+    equivalent ABI type are always safe: that is, IBuffer^ to ABI::IBuffer*.
 
     A Visual C++ component extensions runtime class should always be converted to 
     IInspectable* or its default interface, if that is known.
