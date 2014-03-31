@@ -20,17 +20,24 @@ namespace ABI
 {
     namespace CaptureMediaSink {
 
-        ActivatableClass(CSink);
+        // ActivatableClass(CSink);
 
     }
 }
 
 __declspec(dllexport) void __cdecl
-createMediaExtension(ABI::Windows::Media::IMediaExtension** ppCustomMediaSink)
+createMediaExtension(
+    ABI::Windows::Media::IMediaExtension** ppCustomMediaSink, 
+    ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+    )
 {
+    // temp
+    //    __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+    // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps = nullptr;
+
     // use WRL to make and initialize the custom media sink
-    Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms, copy;
-    Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms);
+    Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
+    Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms, videoProps);
 
     // we cannot allow the newly created media sink to get destroyed
     // so copy it; this also does an addref internally
