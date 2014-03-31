@@ -45,8 +45,21 @@ namespace CaptureMediaStreamSink {
     {
     }
 
+    // zv   partial implementation
     HRESULT CStreamSink::RuntimeClassInitialize(
+        __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt
+        // Microsoft::Windows::MediaReaders::SampleHandler^ sampleHandler
         ) {
+        HRESULT hr = S_OK;
+
+        CHK_RETURN(MFCreateEventQueue(&_eventQueue));
+        CHK_RETURN(MFCreateMediaType(&_curMT));
+
+        _UpdateMediaType(mt);
+
+        _sink = sink;
+        _id = id;
+
         return S_OK;
     }
 

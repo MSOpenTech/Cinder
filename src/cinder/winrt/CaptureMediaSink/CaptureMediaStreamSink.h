@@ -53,7 +53,9 @@ namespace CaptureMediaStreamSink {
 
         ~CStreamSink() {}
 
-        HRESULT RuntimeClassInitialize();
+        HRESULT RuntimeClassInitialize(
+            __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt
+            );
 
 //        HRESULT RuntimeClassInitialize(__in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt, CaptureMediaSink::SampleHandler^ sampleHandler);
 
