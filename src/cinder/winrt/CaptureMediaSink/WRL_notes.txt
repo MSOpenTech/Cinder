@@ -1,6 +1,11 @@
 Some Insights on COM and WRL
 blame for this doc: Dave Remba
 
+the main difficulty in using WRL/COM etc., is that it requires you to 
+understand what you are doing - 
+and that requires *thinking*
+ - ow, my head hurts.
+
 (these statements are gross simplifications, but may help to understand what's going on)
 
 COM is built on the notion of treating a C++ abstract base class as
@@ -29,6 +34,24 @@ other languages, and also usable from WinRT calls as "extensions"
 (think of extensions as plug-ins).
 The compiler will happily inform you when you break
 a WinRT ABI rule as soon as it sees a ^
+
+Casting tips - relevant to WRL/COM:
+from http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
+
+    ABI types live in headers in the Windows SDK. 
+    Conveniently, the headers are named after the namespaces�for example, windows.storage.h.
+
+    ABI types live in a special namespace ABI�for example, ABI::Windows::Storage::Streams::IBuffer*.
+
+    Conversions between a Visual C++ component extensions interface type and its 
+    equivalent ABI type are always safe�that is, IBuffer^ to ABI::IBuffer*.
+
+    A Visual C++ component extensions runtime class should always be converted to 
+    IInspectable* or its default interface, if that is known.
+
+    After you convert to ABI types, you own the lifetime of the type and must 
+    follow the COM rules. 
+    We recommend that you use WRL::ComPtr to simplify lifetime management of ABI pointers.
 
 At runtime one of the problems the system has to deal with is
 locating the DLL for dynamic linking:
