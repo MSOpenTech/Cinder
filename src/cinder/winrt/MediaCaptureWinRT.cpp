@@ -71,9 +71,9 @@ using namespace Microsoft::WRL::Details;
 
 
 // createMediaExtension() is exported manually from the media sink DLL
+// maybe could have used: DllGetActivationFactory or DllGetClassObject instead?
 __declspec(dllimport) void __cdecl
 createMediaExtension(ABI::Windows::Media::IMediaExtension** ppCustomMediaSink);
-
 
 namespace MediaWinRT
 {
@@ -121,19 +121,33 @@ namespace MediaWinRT
                     MediaEncodingProfile^ recordProfile = nullptr;
                     recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
 
+                    // create the custom media sink
+                    ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
+                    createMediaExtension(&pCustomMediaSink);
+                    IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
+
+                    // record using the custom media sink
+                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, im));
+
+#if 0
                     // We cannot pull in the definition of the media sink into WinRT,
                     // so we use a standalone creator function.  There may be a better way to do this
                     // using a custom interface and COM/WRL, or by using WRL module.h
-                    ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
-                    createMediaExtension( &pCustomMediaSink );
+
+                    // IInspectable * pInterface = nullptr;
+
+                    // note: per
+                    // http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
+                    // Casting (C++/CX)
+                    //
+                    // Conversions between a Visual C++ component extensions interface type and its 
+                    // equivalent ABI type are always safe—that is, IBuffer^ to ABI::IBuffer*.
 
                     // get the interface for the WinRT call
-                    auto customMediaSink = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
+                    // auto intf = static_cast<ABI::Windows::Media::IMediaExtension*>(pInterface);
+                    // auto customMediaSink = reinterpret_cast<IMediaExtension^>(intf);
 
-                    // record using the custom media sink
-                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
-
-#if 0
+                    // auto intf = static_cast<ABI::Windows::Media::IMediaExtension*>(pCustomMediaSink);
 
                     ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
                     ABI::MediaAdapter::CAdapter::createMediaExtension(&pCustomMediaSink);
