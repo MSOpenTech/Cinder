@@ -1,15 +1,16 @@
-Some Insights on COM and WRL
-blame for this doc: Dave Remba
+Some Insights on COM and WRL from a C++ Viewpoint
+blame for errors in this doc: Dave Remba
 
-the main difficulty in using WRL/COM etc., is that it requires you to 
+The main difficulty in using WRL/COM etc., 
+is that it requires you to 
 understand what you are doing - 
 and that requires *thinking*
  - ow, my head hurts.
 
-(these statements are gross simplifications, but may help to understand what's going on)
+(the information below may be gross simplifications, but may help to understand what's going on)
 
 COM is built on the notion of treating a C++ abstract base class as
-an interface.  To implement a COM interface, you just
+an interface.  To implement a COM interface, you 
 inherit from the abstract base class (the interface).  
 The base classes at the root level, are "IUnknown" for Win32, 
 and "IInspectable" for WinRT - EVERYTHING inherits from these.
@@ -21,19 +22,40 @@ class instance (cast as the interface base class), and a definition
 of the interface base class.  Then calls are made in the usual C syntax:
 ptr->method();
 
-Usually the interface implementations are put into DLLs,
-that are linked at runtime to the Win32 exe or WinRT app.
-A GUID uniquely identifies the name & version of a DLL
-and the interface in both OS flavors.
 Most of the time you will generate a DLL for components.
 A Media Foundation Extension is created when your class inherits
 from IMediaExtension.
 
-If you also follow the WinRT ABI rules, then your class becomes a component usable from
-other languages, and also usable from WinRT calls as "extensions"
-(think of extensions as plug-ins).
-The compiler will happily inform you when you break
-a WinRT ABI rule as soon as it sees a ^
+You can create COM components that are usable from WinRT
+using a template library called WRL; for example:
+
+       class CSink
+            : public Microsoft::WRL::RuntimeClass<
+            Microsoft::WRL::RuntimeClassFlags< Microsoft::WRL::RuntimeClassType::WinRtClassicComMix >,
+            Windows::Media::IMediaExtension,
+            IMFMediaSink,
+            IMFClockStateSink,
+            Microsoft::WRL::FtmBase
+            >
+
+As noted above, the base classes like IMediaExtension, each inherit from IInspectable.
+You also have to provide the RuntimeClassType into the RuntimeClassFlags template.
+
+Here the derived concrete class CSink inherits from several base classes which
+are abstract (they are interfaces): IMediaExtension, ... FtmBase
+Since these are all pure virtuals in the base abstract classes,
+you must implement them, for example:
+
+            // IMediaExtension
+            IFACEMETHODIMP SetProperties(ABI::Windows::Foundation::Collections::IPropertySet *pConfiguration)
+            {
+				...
+
+Usually the interface implementations are put into DLLs
+that are linked at runtime to the Win32 exe or WinRT app.
+A GUID uniquely identifies the name & version of a DLL
+and the interface in both OS flavors, but with WRL
+you won't need to deal much with GUIDs.
 
 Casting tips - relevant to WRL/COM:
 from http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
@@ -67,13 +89,14 @@ We don't need to call QI if we are using WRL, since
 WRL provides smart COM pointers, as ComPtr<YourInterfaceclass>
 that do this, AddRef, Release, and new/delete for you.
 
-IDL was used to generate a header file for the abstract base class, 
-and also the GUID in a generated .cpp file and optionally remote call
+IDL can be used to generate a header file for the interface (recall that's an abstract base class), 
+and also the GUID in a generated .cpp file, and optionally remote call
 information for client/server uses in another C++ file.
-The idea with IDL is that besides C/C++ other languages and
+
+The idea with IDL, is that besides C/C++, other languages and
 runtime systems (like .NET) could read the IDL at runtime and
 generate language bindings; e.g. Java to C++.  If we didn't
-care about other languages we could force the everyone to
+care about other languages, we could force the everyone to
 use C/C++ header files only.
 
 With WRL, you can mostly forget and ignore IDL, except for when you create 
@@ -100,6 +123,9 @@ namespace and must be unique.  Also, WinRT requires a base
 namespace of "ABI", so you have ABI::YourNamespace::YourInterfaceClass.
 For non-WinRT COM the ABI base namespace is not needed.
 
+If you get the error, "module is already initialized" at runtime,
+try recompiling with this cpp defined: __WRL_DISABLE_STATIC_INITIALIZE_
+
 To use a COM or WinRT component with WRL, you include the header
 file for the interface, either from the system <>, or from your
 own code.  Then using WRL, you obtain a smart
@@ -107,8 +133,13 @@ pointer to the interface ComPtr<InterfaceClass>,
 and then call a macro "MakeAndInitialize<InterfaceClass>"
 
 MakeAndInitialize<myClass> will call myClass::RuntimeClassInitialize()
-Args passed in MakeAndInitialize will be passed into RuntimeClassInitialize, 
-but the args have to be interfaces, and there may be more restrictions.
+Args passed in MakeAndInitialize will be passed into RuntimeClassInitialize.
+
+If you also follow the WinRT ABI rules, then your class becomes a component usable from
+other languages, and also usable from WinRT calls as "extensions"
+(think of extensions as plug-ins).
+The compiler will happily inform you when you break
+a WinRT ABI rule as soon as it sees a ^
 
 There is a lot of template metaprogramming in WRL, so to debug,
 read the errors on the compiler output carefully, and
