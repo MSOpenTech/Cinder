@@ -37,6 +37,8 @@
 #include <comutil.h>
 
 #include <windows.media.h>
+#include <windows.media.mediaproperties.h>
+
 
 // removal did not work due to WRL error - module already instantiated
 // important - this has been removed - now using a creator function
@@ -72,8 +74,13 @@ using namespace Microsoft::WRL::Details;
 
 // createMediaExtension() is exported manually from the media sink DLL
 // maybe could have used: DllGetActivationFactory or DllGetClassObject instead?
-__declspec(dllimport) void __cdecl
-createMediaExtension(ABI::Windows::Media::IMediaExtension** ppCustomMediaSink);
+__declspec(dllexport) void __cdecl
+createMediaExtension(
+    ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
+    ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+);
+//__declspec(dllimport) void __cdecl
+//createMediaExtension(ABI::Windows::Media::IMediaExtension** ppCustomMediaSink);
 
 namespace MediaWinRT
 {
@@ -121,18 +128,39 @@ namespace MediaWinRT
                     MediaEncodingProfile^ recordProfile = nullptr;
                     recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
 
-                    // create the custom media sink
+                    // get the videoprops in WRL form
+                    auto streamprops = mediaCapture->VideoDeviceController->GetMediaStreamProperties(
+                        Windows::Media::Capture::MediaStreamType::VideoRecord);
+                    auto videoprops = safe_cast<VideoEncodingProperties^>(streamprops);
+                    auto ivideoprops = safe_cast<IVideoEncodingProperties^>(videoprops);
+                    // legal per: http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
+                    auto ivideopropsABI = reinterpret_cast
+                        <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(ivideoprops);
+
+                    // prefer not to use WRL here?
+                    // ComPtr<ABI::Windows::Media::MediaProperties::IVideoEncodingProperties> videoPropsABI;
+                    // CHK(((IUnknown*)videoProps)->QueryInterface(IID_PPV_ARGS(&videoPropsABI)));
+
+                    // create the custom media sink:/
+                    //
+                    // we cannot pull in the definition of the media sink into WinRT,
+                    // (i.e. cannot #include "CaptureMediaSink.h" in this file, because
+                    // MakeAndInitialize requires a full class definition, and then the linker will
+                    // complain because the methods are not defined in the app, but in the Capture DLL)
+                    //
+                    // so we use a standalone creator function in the DLL
+                    // There may be a better way to do this using an ActivationFactory in WRL
+                    //
+                    // note that we pass in the video properties interface from above
+
                     ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
-                    createMediaExtension(&pCustomMediaSink);
+                    createMediaExtension(&pCustomMediaSink, ivideopropsABI);
                     IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
 
                     // record using the custom media sink
                     create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, im));
 
 #if 0
-                    // We cannot pull in the definition of the media sink into WinRT,
-                    // so we use a standalone creator function.  There may be a better way to do this
-                    // using a custom interface and COM/WRL, or by using WRL module.h
 
                     // IInspectable * pInterface = nullptr;
 
