@@ -125,7 +125,8 @@ namespace of "ABI", so you have ABI::YourNamespace::YourInterfaceClass.
 For non-WinRT COM the ABI base namespace is not needed.
 
 If you get the error, "module is already initialized" at runtime,
-try recompiling with this cpp defined: __WRL_DISABLE_STATIC_INITIALIZE_
+try recompiling with this cpp defined:
+__WRL_DISABLE_STATIC_INITIALIZE__
 
 To use a COM or WinRT component with WRL, you include the header
 file for the interface, either from the system <>, or from your
