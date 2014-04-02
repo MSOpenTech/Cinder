@@ -39,6 +39,8 @@
 #include <windows.media.h>
 #include <windows.media.mediaproperties.h>
 
+// zv
+#include "../../../include/cinder/app/winrt/cdebug.h"
 
 // removal did not work due to WRL error - module already instantiated
 // important - this has been removed - now using a creator function
@@ -73,222 +75,140 @@ using namespace Microsoft::WRL::Details;
 
 
 // createMediaExtension() is exported manually from the media sink DLL
-// maybe could have used: DllGetActivationFactory or DllGetClassObject instead?
+//  maybe could have used: DllGetActivationFactory or DllGetClassObject instead?
 __declspec(dllexport) void __cdecl
 createMediaExtension(
-    ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
-    ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
+ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
+ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
 );
-//__declspec(dllimport) void __cdecl
-//createMediaExtension(ABI::Windows::Media::IMediaExtension** ppCustomMediaSink);
 
 namespace MediaWinRT
 {
-#if 0
-    // call CaptureLib - Media Foundation using COM
-    // won't work because many COM interfaces are switched off for Windows Store Apps
-    // maybe some can be used, but we need to make top level calls from WinRT interfaces first
     void MediaCaptureWinRT::start()
     {
-        CaptureLib::start();
-    }
+        try {
 
-#endif
+            // see http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.capture.mediacaptureinitializationsettings.aspx
 
-// incomplete capture using a custom media sink
-// status: frames are not grabbed in the sink, frames are not passed to Cinder
-#if 1
-    void MediaCaptureWinRT::start()
-    {
-        try
-        {
+            /*  on test system, enumeration results:
+
+                video devices :
+                i = 0  d->Name->Data() = 'Logitech HD Pro Webcam C920'
+
+                audio devices :
+                i = 0  d->Name->Data() = 'Digital Audio (S/PDIF) (Cirrus Logic CS4206B (AB 35))'
+                i = 1  d->Name->Data() = 'Microphone (HD Pro Webcam C920)'
+            */
+
+            // get video device and store into m_settings
             create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture))
                 .then([this](task<DeviceInformationCollection^> findTask)
             {
-                m_devInfoCollection = findTask.get();
+                auto devInfo = findTask.get();
+                if (devInfo->Size == 0 || m_selectedVideoDeviceIndex > devInfo->Size) return;
 
-                if (m_devInfoCollection->Size == 0 ||
-                    m_selectedVideoDeviceIndex > m_devInfoCollection->Size) return;
-
-                // see http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.capture.mediacaptureinitializationsettings.aspx
-
-                auto settings = ref new Windows::Media::Capture::MediaCaptureInitializationSettings();
-                auto chosenDevInfo = m_devInfoCollection->GetAt(m_selectedVideoDeviceIndex);
-                auto name = chosenDevInfo->Name;
-                settings->VideoDeviceId = chosenDevInfo->Id;
-                settings->StreamingCaptureMode = Windows::Media::Capture::StreamingCaptureMode::Video;
-                
-                create_task(m_mediaCaptureMgr->InitializeAsync(settings))
-                    .then([this](task<void> initTask)
+                TCC("video devices:"); TCNL;
+                for (size_t i = 0; i < devInfo->Size; i++)
                 {
-                    initTask.get();
-                    auto mediaCapture = m_mediaCaptureMgr.Get();
-                    mediaCapture->SetRecordRotation(Windows::Media::Capture::VideoRotation::None);
+                    auto d = devInfo->GetAt(i);
+                    TC(i);  TCSW(d->Name->Data());  TCNL;
+                }
 
-                    MediaEncodingProfile^ recordProfile = nullptr;
-                    recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
+                // auto settings = ref new Windows::Media::Capture::MediaCaptureInitializationSettings();
+                auto chosenDevInfo = devInfo->GetAt(m_selectedVideoDeviceIndex);
+                auto name = chosenDevInfo->Name;
+                m_settings->VideoDeviceId = chosenDevInfo->Id;
 
-                    // get the videoprops in WRL form
-                    auto streamprops = mediaCapture->VideoDeviceController->GetMediaStreamProperties(
-                        Windows::Media::Capture::MediaStreamType::VideoRecord);
-                    auto videoprops = safe_cast<VideoEncodingProperties^>(streamprops);
-                    auto ivideoprops = safe_cast<IVideoEncodingProperties^>(videoprops);
-                    // legal per: http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
-                    auto ivideopropsABI = reinterpret_cast
-                        <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(ivideoprops);
+                // get audio device and store into m_settings
+                create_task(DeviceInformation::FindAllAsync(DeviceClass::AudioCapture))
+                    .then([this](task<DeviceInformationCollection^> findTask)
+                {
+                    auto devInfo = findTask.get();
+                    if (devInfo->Size == 0 || m_selectedAudioDeviceIndex > devInfo->Size) return;
 
-                    // prefer not to use WRL here?
-                    // ComPtr<ABI::Windows::Media::MediaProperties::IVideoEncodingProperties> videoPropsABI;
-                    // CHK(((IUnknown*)videoProps)->QueryInterface(IID_PPV_ARGS(&videoPropsABI)));
+                    TCC("audio devices:"); TCNL;
+                    for (size_t i = 0; i < devInfo->Size; i++)
+                    {
+                        auto d = devInfo->GetAt(i);
+                        TC(i);  TCSW( d->Name->Data() );    TCNL;
+                    }
 
-                    // create the custom media sink:/
-                    //
-                    // we cannot pull in the definition of the media sink into WinRT,
-                    // (i.e. cannot #include "CaptureMediaSink.h" in this file, because
-                    // MakeAndInitialize requires a full class definition, and then the linker will
-                    // complain because the methods are not defined in the app, but in the Capture DLL)
-                    //
-                    // so we use a standalone creator function in the DLL
-                    // There may be a better way to do this using an ActivationFactory in WRL
-                    //
-                    // note that we pass in the video properties interface from above
+                    // auto settings = ref new Windows::Media::Capture::MediaCaptureInitializationSettings();
+                    auto chosenDevInfo = devInfo->GetAt(m_selectedAudioDeviceIndex);
+                    auto name = chosenDevInfo->Name;
+                    m_settings->AudioDeviceId = chosenDevInfo->Id;
 
-                    ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
-                    createMediaExtension(&pCustomMediaSink, ivideopropsABI);
-                    IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
+                    // initialize for capture
+                    m_settings->StreamingCaptureMode = Windows::Media::Capture::StreamingCaptureMode::AudioAndVideo;
+                    create_task(m_mediaCaptureMgr->InitializeAsync(m_settings))
+                        .then([this](task<void> initTask)
+                    {
+                        initTask.get();
+                        auto mediaCapture = m_mediaCaptureMgr.Get();
+                        mediaCapture->SetRecordRotation(Windows::Media::Capture::VideoRotation::None);
 
-                    // record using the custom media sink
-                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, im));
+                        // set recording profile (the capture size; e.g. vga, hd, etc)
+                        MediaEncodingProfile^ recordProfile = nullptr;
+                        recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Qvga);
+
+                        // get audio stream properties in WRL form
+                        // cast from Type^ to ABI::IType* is legal, see:
+                        // http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
+                        auto audioProps = mediaCapture->AudioDeviceController->GetMediaStreamProperties(
+                            Windows::Media::Capture::MediaStreamType::Audio);
+                        auto iaudioprops = safe_cast<IAudioEncodingProperties^>(audioProps);
+                        auto iaudiopropsABI = reinterpret_cast
+                            <ABI::Windows::Media::MediaProperties::IAudioEncodingProperties *>(iaudioprops);
+
+                        // get video stream properties in WRL form
+                        auto videoProps = mediaCapture->VideoDeviceController->GetMediaStreamProperties(
+                            Windows::Media::Capture::MediaStreamType::VideoRecord);
+                        auto ivideoprops = safe_cast<IVideoEncodingProperties^>(videoProps);
+                        auto ivideopropsABI = reinterpret_cast
+                            <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(ivideoprops);
+
+                        // delete: if above test passes
+                        //auto videoprops = safe_cast<VideoEncodingProperties^>(streamprops);
+                        //auto ivideoprops = safe_cast<IVideoEncodingProperties^>(videoprops);
+
+                        // create the custom media sink:/
+                        //
+                        // we cannot pull in the definition of the media sink into WinRT,
+                        // (i.e. cannot #include "CaptureMediaSink.h" in this file, because
+                        // MakeAndInitialize requires a full class definition, and then the linker will
+                        // complain because the methods are not defined in the app, but in the Capture DLL)
+                        //
+                        // so we use a standalone creator function in the DLL
+                        // There may be a better way to do this using an ActivationFactory in WRL
+                        //
+                        // note that we pass in the video properties interface from above
+                        //
+                        ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
+                        createMediaExtension(&pCustomMediaSink, iaudiopropsABI, ivideopropsABI);
+                        IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
+
+                        // record using the custom media sink
+                        create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, im));
 
 #if 0
+                        // test - record to file
+                        String ^fileName;
+                        fileName = "cinder_video.mp4";
 
-                    // IInspectable * pInterface = nullptr;
+                        create_task(KnownFolders::VideosLibrary->CreateFileAsync(fileName,
+                            Windows::Storage::CreationCollisionOption::GenerateUniqueName))
+                            .then([this, recordProfile](task<StorageFile^> fileTask)
+                        {
+                            this->m_recordStorageFile = fileTask.get();
 
-                    // note: per
-                    // http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
-                    // Casting (C++/CX)
-                    //
-                    // Conversions between a Visual C++ component extensions interface type and its 
-                    // equivalent ABI type are always safe—that is, IBuffer^ to ABI::IBuffer*.
-
-                    // get the interface for the WinRT call
-                    // auto intf = static_cast<ABI::Windows::Media::IMediaExtension*>(pInterface);
-                    // auto customMediaSink = reinterpret_cast<IMediaExtension^>(intf);
-
-                    // auto intf = static_cast<ABI::Windows::Media::IMediaExtension*>(pCustomMediaSink);
-
-                    ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
-                    ABI::MediaAdapter::CAdapter::createMediaExtension(&pCustomMediaSink);
-
-                    // get the interface for the WinRT call
-                    auto customMediaSink = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
-
-                    // record using the custom media sink
-                    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+                            return m_mediaCaptureMgr->StartRecordToStorageFileAsync(recordProfile,
+                                this->m_recordStorageFile);
+                        });
+                        // end test
 #endif
 
-#if 0
-                    // moved to CAdapter
-
-                    // use WRL to make and initialize the custom media sink
-                    Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
-                    Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms);
-
-                    // can't pass in Media::Capture intf?
-                    // pass in mediaCapture instance so media sink can get info to create stream
-                    // MakeAndInitialize<ABI::CaptureMediaSink::CaptureSink>(&ms, mediaCapture);
-
-                    // get the interface for the WinRT call            
-                    // auto customMediaSink = reinterpret_cast<Windows::Media::IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(ms.Get()));
-                    auto customMediaSink = static_cast<ABI::Windows::Media::IMediaExtension*>(ms.Get());
-
-                    // record using the custom media sink
-                    /// create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
-#endif
-
-// notes
-#if 0
-
-                    // IMediaExtension^ customMediaSink = nullptr;
-
-                    // ms->QueryInterface()
-
-                    // test
-                    //Microsoft::WRL::ComPtr<IInspectable> cpII;
-                    // Make<IInspectable>(&cpII);
-
-                    /// Microsoft::WRL::ComPtr<IMediaExtension> cpME;
-                    // MakeAndInitialize<IMediaExtension>(&cpME);
-                    ///MakeAndInitialize<IMediaExtension>(&cpME, cpII.Get());
-
-                    // see http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
-                    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
-                    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, ms ));
-
-                    // Microsoft::WRL::ComPtr
-                    /*
-                    MakeAndInitialize<MediaSink>(&_mediaSink, audioPropsABI.Get(), videoPropsABI.Get(), audioSampleHandler, videoSampleHandler);
-
-                    auto _mediaExtension = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(_mediaSink.Get()));
-                    */
-
-                    // use other form where we create explicitly and can initialize
-                    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, 
-                        // "CaptureMediaSink.CaptureSink", nullptr));
-
-// MediaCapture.StartRecordToStreamAsync | startRecordToStreamAsync method
-// http://msdn.microsoft.com/en-us/library/windows/apps/hh700868.aspx
-
-// BitmapEncoder.CreateAsync(Guid, IRandomAccessStream) | createAsync(Guid, IRandomAccessStream) method
-// http://msdn.microsoft.com/en-us/library/windows/apps/br226212.aspx
-
-// auto stream = ref new IRandomAccessStream();
-
-create_task(m_mediaCaptureMgr->StartRecordToStreamAsync(
-    recordProfile, stream
-    ));
-
-// try using a bytestream
-// see http://social.msdn.microsoft.com/Forums/windowsapps/en-US/49bffa74-4e84-4fd6-9d67-42e8385611b8/video-sinkwriter-in-metro-app?forum=winappswithnativecode
-
-// MFCreateSinkWriterFromURL
-// http://msdn.microsoft.com/en-us/library/windows/desktop/dd388105(v=vs.85).aspx                    
-
-// MFCreateSourceReaderFromMediaSource
-// http://msdn.microsoft.com/en-us/library/windows/desktop/dd388108(v=vs.85).aspx
-
-// MFCreateSinkWriterFromURL(nullptr, &bstream, &attr, &sinkwriter);
-
-// IMFByteStream interface
-// http://msdn.microsoft.com/en-us/library/windows/desktop/ms698720(v=vs.85).aspx
-
-
-// todo ?
-
-// Microsoft::WRL::ComPtr<CSink> sink;
-// MakeAndInitialize<...>( ... )
-
-reference:
-
-// Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
-
-// won't compile:
-// ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps;
-
-// from CaptureReaderSharedState.cpp
-CHK(MakeAndInitialize<MediaSink>(&_mediaSink, audioPropsABI.Get(), videoPropsABI.Get(), audioSampleHandler, videoSampleHandler));
-_mediaExtension = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(_mediaSink.Get()));
-
-// from MediaSink.h
-Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
-if (videoProps != nullptr)
-{
-CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
-CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get(), videoSampleHandler));
-}
-
-#endif
-
+                    });
                 });
             });
         }
@@ -300,12 +220,143 @@ CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoSt
         }
     }
 
-#endif
-
+    // reference
 #if 0
 
-// working capture using an effect (based on grayscale)
-// status: frames are not grabbed in effect, frames are not passed to Cinder
+    // call CaptureLib - Media Foundation using COM
+    // won't work because many COM interfaces are switched off for Windows Store Apps
+    // maybe some can be used, but we need to make top level calls from WinRT interfaces first
+    void MediaCaptureWinRT::start()
+    {
+        CaptureLib::start();
+    }
+
+    // IInspectable * pInterface = nullptr;
+
+    // note: per
+    // http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
+    // Casting (C++/CX)
+    //
+    // Conversions between a Visual C++ component extensions interface type and its 
+    // equivalent ABI type are always safe—that is, IBuffer^ to ABI::IBuffer*.
+
+    // get the interface for the WinRT call
+    // auto intf = static_cast<ABI::Windows::Media::IMediaExtension*>(pInterface);
+    // auto customMediaSink = reinterpret_cast<IMediaExtension^>(intf);
+
+    // auto intf = static_cast<ABI::Windows::Media::IMediaExtension*>(pCustomMediaSink);
+
+    ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
+    ABI::MediaAdapter::CAdapter::createMediaExtension(&pCustomMediaSink);
+
+    // get the interface for the WinRT call
+    auto customMediaSink = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
+
+    // record using the custom media sink
+    create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+
+
+    // moved to CAdapter
+
+    // use WRL to make and initialize the custom media sink
+    Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
+    Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms);
+
+    // can't pass in Media::Capture intf?
+    // pass in mediaCapture instance so media sink can get info to create stream
+    // MakeAndInitialize<ABI::CaptureMediaSink::CaptureSink>(&ms, mediaCapture);
+
+    // get the interface for the WinRT call            
+    // auto customMediaSink = reinterpret_cast<Windows::Media::IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(ms.Get()));
+    auto customMediaSink = static_cast<ABI::Windows::Media::IMediaExtension*>(ms.Get());
+
+    // record using the custom media sink
+    /// create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+
+
+    // notes
+
+    // IMediaExtension^ customMediaSink = nullptr;
+
+    // ms->QueryInterface()
+
+    // test
+    //Microsoft::WRL::ComPtr<IInspectable> cpII;
+    // Make<IInspectable>(&cpII);
+
+    /// Microsoft::WRL::ComPtr<IMediaExtension> cpME;
+    // MakeAndInitialize<IMediaExtension>(&cpME);
+    ///MakeAndInitialize<IMediaExtension>(&cpME, cpII.Get());
+
+    // see http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
+    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, customMediaSink));
+    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, ms ));
+
+    // Microsoft::WRL::ComPtr
+    /*
+    MakeAndInitialize<MediaSink>(&_mediaSink, audioPropsABI.Get(), videoPropsABI.Get(), audioSampleHandler, videoSampleHandler);
+
+    auto _mediaExtension = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(_mediaSink.Get()));
+    */
+
+    // use other form where we create explicitly and can initialize
+    // create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, 
+    // "CaptureMediaSink.CaptureSink", nullptr));
+
+    // MediaCapture.StartRecordToStreamAsync | startRecordToStreamAsync method
+    // http://msdn.microsoft.com/en-us/library/windows/apps/hh700868.aspx
+
+    // BitmapEncoder.CreateAsync(Guid, IRandomAccessStream) | createAsync(Guid, IRandomAccessStream) method
+    // http://msdn.microsoft.com/en-us/library/windows/apps/br226212.aspx
+
+    // auto stream = ref new IRandomAccessStream();
+
+    create_task(m_mediaCaptureMgr->StartRecordToStreamAsync(
+        recordProfile, stream
+        ));
+
+    // try using a bytestream
+    // see http://social.msdn.microsoft.com/Forums/windowsapps/en-US/49bffa74-4e84-4fd6-9d67-42e8385611b8/video-sinkwriter-in-metro-app?forum=winappswithnativecode
+
+    // MFCreateSinkWriterFromURL
+    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd388105(v=vs.85).aspx                    
+
+    // MFCreateSourceReaderFromMediaSource
+    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd388108(v=vs.85).aspx
+
+    // MFCreateSinkWriterFromURL(nullptr, &bstream, &attr, &sinkwriter);
+
+    // IMFByteStream interface
+    // http://msdn.microsoft.com/en-us/library/windows/desktop/ms698720(v=vs.85).aspx
+
+
+    // todo ?
+
+    // Microsoft::WRL::ComPtr<CSink> sink;
+    // MakeAndInitialize<...>( ... )
+
+reference:
+
+    // Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
+
+    // won't compile:
+    // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps;
+
+    // from CaptureReaderSharedState.cpp
+    CHK(MakeAndInitialize<MediaSink>(&_mediaSink, audioPropsABI.Get(), videoPropsABI.Get(), audioSampleHandler, videoSampleHandler));
+    _mediaExtension = reinterpret_cast<IMediaExtension^>(static_cast<ABI::Windows::Media::IMediaExtension*>(_mediaSink.Get()));
+
+    // from MediaSink.h
+    Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
+    if (videoProps != nullptr)
+    {
+        CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
+        CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get(), videoSampleHandler));
+    }
+
+
+    // working capture using an effect (based on grayscale)
+    // status: frames are not grabbed in effect, frames are not passed to Cinder
 
     void MediaCaptureWinRT::start()
     {
@@ -389,11 +440,13 @@ CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoSt
 
     MediaCaptureWinRT::MediaCaptureWinRT()
     {
+        // for testing only - needs to be set from device enumeration
         m_selectedVideoDeviceIndex = 0;
+        m_selectedAudioDeviceIndex = 1;
 
         m_mediaCaptureMgr = ref new Windows::Media::Capture::MediaCapture();
 
-        // zv todo: Media Extension init
+        m_settings = ref new Windows::Media::Capture::MediaCaptureInitializationSettings();
     }
 
     void MediaCaptureWinRT::GetVideoCamerasAsync(GetMediaDevicesDelegate^ func)
@@ -414,15 +467,15 @@ CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoSt
                     auto location = devInfo->EnclosureLocation;
                     bool isFrontFacing = false;
                     bool isBackFacing = false;
-                    if ( location != nullptr ) 
+                    if (location != nullptr)
                     {
                         isFrontFacing = (location->Panel == Windows::Devices::Enumeration::Panel::Front);
                         isBackFacing = (location->Panel == Windows::Devices::Enumeration::Panel::Back);
-                    }   
+                    }
 
                     // allocate VideoDeviceInfo object before use
                     devices[i] = ref new VideoDeviceInfo();
-					
+
                     devices[i]->devName = devInfo->Name;
                     devices[i]->isFrontFacing = isFrontFacing;
                     devices[i]->isBackFacing = isBackFacing;
@@ -440,12 +493,12 @@ CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoSt
         });
     }
 
-// reference notes
+    // reference notes
 #if 0
     bool MediaCaptureWinRT::startDevices(int webcam, int mic)
     {
         selectedVideoDeviceIndex = webcam;
-//        selectedMicrophoneDeviceIndex = mic;
+        //        selectedMicrophoneDeviceIndex = mic;
 
         auto mediaCapture = ref new Windows::Media::Capture::MediaCapture();
         m_mediaCaptureMgr = mediaCapture;
@@ -455,8 +508,8 @@ CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoSt
         auto chosenDevInfo = m_devInfoCollection->GetAt(selectedVideoDeviceIndex);
         settings->VideoDeviceId = chosenDevInfo->Id;
 
-//        auto chosenMicrophoneInfo = m_microPhoneInfoCollection->GetAt(selectedMicrophoneDeviceIndex);
-//        settings->AudioDeviceId = chosenMicrophoneInfo->Id;
+        //        auto chosenMicrophoneInfo = m_microPhoneInfoCollection->GetAt(selectedMicrophoneDeviceIndex);
+        //        settings->AudioDeviceId = chosenMicrophoneInfo->Id;
 
         // task 1 InitializeAsync
         create_task(mediaCapture->InitializeAsync(settings))

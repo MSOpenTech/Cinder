@@ -68,7 +68,7 @@ namespace MediaWinRT
 
     private:
 
-        unsigned int m_selectedVideoDeviceIndex;
+        unsigned int m_selectedVideoDeviceIndex, m_selectedAudioDeviceIndex;
  
         // Media Extension communication via property set
         // must be private
@@ -77,7 +77,9 @@ namespace MediaWinRT
         // nb. interfaces do not get ^
         Platform::Agile<Windows::Media::Capture::MediaCapture> m_mediaCaptureMgr;
 
-        Windows::Devices::Enumeration::DeviceInformationCollection^ m_devInfoCollection;
+        // Windows::Devices::Enumeration::DeviceInformationCollection^ m_deviceInfoCollection;
+
+        Windows::Media::Capture::MediaCaptureInitializationSettings^ m_settings;
 
         Windows::Storage::StorageFile^ m_recordStorageFile;
 
