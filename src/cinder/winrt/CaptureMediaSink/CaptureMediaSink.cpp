@@ -13,34 +13,39 @@
 //
 
 #include "pch.h"
-#include "CaptureMediaSink_h.h"
+// #include "CaptureMediaSink_h.h"
 #include "CaptureMediaSink.h"
 
-namespace ABI
-{
-    namespace CaptureMediaSink {
+#include <windows.media.h>
 
-        // ActivatableClass(CSink);
+//namespace ABI
 
-    }
-}
+//namespace CaptureMediaSink {
+    // ActivatableClass(CSink);
+//}
+
 
 __declspec(dllexport) void __cdecl
 createMediaExtension(
-    ABI::Windows::Media::IMediaExtension** ppCustomMediaSink, 
-    ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
-    )
+ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
+ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
+ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+)
 {
     // temp
     //    __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
     // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps = nullptr;
 
     // use WRL to make and initialize the custom media sink
+    // 
+    // note that ABI:: is required to avoid this error:
+    // a native type cannot derive from a WinRT type 'Windows::Media::IMediaExtension'
+    //
     Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
-    Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms, videoProps);
+    Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms, audioProps, videoProps);
 
-    // we cannot allow the newly created media sink to get destroyed
-    // so copy it; this also does an addref internally
+    // we cannot allow the newly created media sink to get destroyed,
+    // so copy it; this also does an AddRef internally
     ms.CopyTo(ppCustomMediaSink);
 
 #if 0
