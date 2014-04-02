@@ -227,9 +227,6 @@
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="CaptureMediaSink.idl" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="CaptureMediaSink.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PreprocessToFile>

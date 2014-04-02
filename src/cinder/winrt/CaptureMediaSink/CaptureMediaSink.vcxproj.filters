@@ -18,9 +18,6 @@
     <Text Include="embedded_doc_links.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="CaptureMediaSink.idl" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="CaptureMediaSink.cpp" />
     <ClCompile Include="module.cpp" />
     <ClCompile Include="pch.cpp" />
