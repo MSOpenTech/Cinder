@@ -48,6 +48,7 @@
 #include <strstream>
 #include <iostream>
 #include <iomanip>
+#include <string>
 
 
 #define	DBG1	\
@@ -56,6 +57,10 @@ _dbgofstr << std::setprecision(3); _dbgofstr.setf( std::ios::fixed );
 #define DBG2        _dbgofstr << _x; OutputDebugStringA( _dbgofstr.str() );
 #define TC(a);      {   DBG1; _dbgofstr << #a << " = " << (a) << "  "; DBG2; }
 #define TCS(a);      {   DBG1; _dbgofstr << #a << " = '" << (a) << "'  "; DBG2; }
+
+#define TCSW(a);      {   DBG1; std::wstring _wstr(a); std::string _str( _wstr.begin(), _wstr.end() ); \
+        _dbgofstr << #a << " = '" << _str << "'  "; DBG2; }
+
 #define TCC(a);     {   DBG1; _dbgofstr << (a); DBG2; }
 // #define TCC(a);     {   DBG1; _dbgofstr << (a) << "  "; DBG2; }
 #define TCW(w,a);   {   DBG1; _dbgofstr << #a << " = " << std::setw(w) << (a) << "  "; DBG2; }
