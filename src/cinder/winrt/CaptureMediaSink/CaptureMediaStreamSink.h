@@ -35,180 +35,185 @@ namespace Microsoft {
 }
 #endif
 
-namespace CaptureMediaStreamSink {
+// namespace CaptureMediaStreamSink {
 
-    /// public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
+namespace ABI
+{
+    namespace CaptureMediaSink {
 
-    class CStreamSink :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::ClassicCom>,
-        IMFStreamSink,
-        IMFMediaEventGenerator,
-        IMFMediaTypeHandler
-        >
-    {
-    public:
+        /// public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
 
-        CStreamSink();
+        class CStreamSink :
+            public Microsoft::WRL::RuntimeClass<
+            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::ClassicCom>,
+            IMFStreamSink,
+            IMFMediaEventGenerator,
+            IMFMediaTypeHandler
+            >
+        {
+        public:
 
-        ~CStreamSink() {}
+            CStreamSink();
 
-        HRESULT RuntimeClassInitialize(
-            __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt
-            );
+            ~CStreamSink() {}
 
-//        HRESULT RuntimeClassInitialize(__in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt, CaptureMediaSink::SampleHandler^ sampleHandler);
+            HRESULT RuntimeClassInitialize(
+                __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt
+                );
 
-        // IInspectable (test)
+            //        HRESULT RuntimeClassInitialize(__in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt, CaptureMediaSink::SampleHandler^ sampleHandler);
+
+            // IInspectable (test)
 #if 0
-        virtual HRESULT STDMETHODCALLTYPE GetIids(
-            /* [out] */ __RPC__out ULONG *iidCount,
-            /* [size_is][size_is][out] */ __RPC__deref_out_ecount_full_opt(*iidCount) IID **iids)
-        {
-            return S_OK;
-        }
+            virtual HRESULT STDMETHODCALLTYPE GetIids(
+                /* [out] */ __RPC__out ULONG *iidCount,
+                /* [size_is][size_is][out] */ __RPC__deref_out_ecount_full_opt(*iidCount) IID **iids)
+            {
+                return S_OK;
+            }
 
-        virtual HRESULT STDMETHODCALLTYPE GetRuntimeClassName(
-            /* [out] */ __RPC__deref_out_opt HSTRING *className)
-        {
-            return S_OK;
-        }
+            virtual HRESULT STDMETHODCALLTYPE GetRuntimeClassName(
+                /* [out] */ __RPC__deref_out_opt HSTRING *className)
+            {
+                return S_OK;
+            }
 
-        virtual HRESULT STDMETHODCALLTYPE GetTrustLevel(
-            /* [out] */ __RPC__out TrustLevel *trustLevel)
-        {
-            return S_OK;
-        }
+            virtual HRESULT STDMETHODCALLTYPE GetTrustLevel(
+                /* [out] */ __RPC__out TrustLevel *trustLevel)
+            {
+                return S_OK;
+            }
 #endif
 
-        //
-        // IMFStreamSink
-        //
+            //
+            // IMFStreamSink
+            //
 
-        IFACEMETHODIMP STDMETHODCALLTYPE GetMediaSink(
-            /* [out] */ __RPC__deref_out_opt IMFMediaSink **ppMediaSink);
+            IFACEMETHODIMP STDMETHODCALLTYPE GetMediaSink(
+                /* [out] */ __RPC__deref_out_opt IMFMediaSink **ppMediaSink);
 
-        IFACEMETHODIMP STDMETHODCALLTYPE GetIdentifier(
-            /* [out] */ __RPC__out DWORD *pdwIdentifier);
+            IFACEMETHODIMP STDMETHODCALLTYPE GetIdentifier(
+                /* [out] */ __RPC__out DWORD *pdwIdentifier);
 
-        IFACEMETHODIMP STDMETHODCALLTYPE GetMediaTypeHandler(
-            /* [out] */ __RPC__deref_out_opt IMFMediaTypeHandler **ppHandler);
+            IFACEMETHODIMP STDMETHODCALLTYPE GetMediaTypeHandler(
+                /* [out] */ __RPC__deref_out_opt IMFMediaTypeHandler **ppHandler);
 
-        IFACEMETHODIMP STDMETHODCALLTYPE ProcessSample(
-            /* [in] */ __RPC__in_opt IMFSample *pSample);
+            IFACEMETHODIMP STDMETHODCALLTYPE ProcessSample(
+                /* [in] */ __RPC__in_opt IMFSample *pSample);
 
-        IFACEMETHODIMP STDMETHODCALLTYPE PlaceMarker(
-            /* [in] */ MFSTREAMSINK_MARKER_TYPE eMarkerType,
-            /* [in] */ __RPC__in const PROPVARIANT *pvarMarkerValue,
-            /* [in] */ __RPC__in const PROPVARIANT *pvarContextValue);
+            IFACEMETHODIMP STDMETHODCALLTYPE PlaceMarker(
+                /* [in] */ MFSTREAMSINK_MARKER_TYPE eMarkerType,
+                /* [in] */ __RPC__in const PROPVARIANT *pvarMarkerValue,
+                /* [in] */ __RPC__in const PROPVARIANT *pvarContextValue);
 
-        IFACEMETHODIMP STDMETHODCALLTYPE Flush(void);
+            IFACEMETHODIMP STDMETHODCALLTYPE Flush(void);
 
-        //
-        // IMFMediaEventGenerator
-        //
+            //
+            // IMFMediaEventGenerator
+            //
 
-        IFACEMETHODIMP STDMETHODCALLTYPE GetEvent(
-            /* [in] */ DWORD dwFlags,
-            /* [out] */ __RPC__deref_out_opt IMFMediaEvent **ppEvent);
+            IFACEMETHODIMP STDMETHODCALLTYPE GetEvent(
+                /* [in] */ DWORD dwFlags,
+                /* [out] */ __RPC__deref_out_opt IMFMediaEvent **ppEvent);
 
-        IFACEMETHODIMP STDMETHODCALLTYPE BeginGetEvent(
-            /* [in] */ IMFAsyncCallback *pCallback,
-            /* [in] */ IUnknown *punkState);
+            IFACEMETHODIMP STDMETHODCALLTYPE BeginGetEvent(
+                /* [in] */ IMFAsyncCallback *pCallback,
+                /* [in] */ IUnknown *punkState);
 
-        IFACEMETHODIMP STDMETHODCALLTYPE EndGetEvent(
-            /* [in] */ IMFAsyncResult *pResult,
-            /* [annotation][out] */
-            _Out_  IMFMediaEvent **ppEvent);
+            IFACEMETHODIMP STDMETHODCALLTYPE EndGetEvent(
+                /* [in] */ IMFAsyncResult *pResult,
+                /* [annotation][out] */
+                _Out_  IMFMediaEvent **ppEvent);
 
-        IFACEMETHODIMP STDMETHODCALLTYPE QueueEvent(
-            /* [in] */ MediaEventType met,
-            /* [in] */ __RPC__in REFGUID guidExtendedType,
-            /* [in] */ HRESULT hrStatus,
-            /* [unique][in] */ __RPC__in_opt const PROPVARIANT *pvValue);
+            IFACEMETHODIMP STDMETHODCALLTYPE QueueEvent(
+                /* [in] */ MediaEventType met,
+                /* [in] */ __RPC__in REFGUID guidExtendedType,
+                /* [in] */ HRESULT hrStatus,
+                /* [unique][in] */ __RPC__in_opt const PROPVARIANT *pvValue);
 
-        //
-        // IMFMediaTypeHandler
-        //
+            //
+            // IMFMediaTypeHandler
+            //
 
-        IFACEMETHODIMP IsMediaTypeSupported(__in IMFMediaType *mediaType, __deref_out_opt  IMFMediaType **closestMediaType);
+            IFACEMETHODIMP IsMediaTypeSupported(__in IMFMediaType *mediaType, __deref_out_opt  IMFMediaType **closestMediaType);
 
-        IFACEMETHODIMP GetMediaTypeCount(__out DWORD *typeCount);
+            IFACEMETHODIMP GetMediaTypeCount(__out DWORD *typeCount);
 
-        IFACEMETHODIMP GetMediaTypeByIndex(__in DWORD index, __deref_out  IMFMediaType **mediaType);
+            IFACEMETHODIMP GetMediaTypeByIndex(__in DWORD index, __deref_out  IMFMediaType **mediaType);
 
-        IFACEMETHODIMP SetCurrentMediaType(__in IMFMediaType *mediaType);
+            IFACEMETHODIMP SetCurrentMediaType(__in IMFMediaType *mediaType);
 
-        IFACEMETHODIMP GetCurrentMediaType(__deref_out_opt IMFMediaType **mediaType);
+            IFACEMETHODIMP GetCurrentMediaType(__deref_out_opt IMFMediaType **mediaType);
 
-        IFACEMETHODIMP GetMajorType(__out GUID *majorType);
+            IFACEMETHODIMP GetMajorType(__out GUID *majorType);
 
 #if 0
 
-        HRESULT InternalSetCurrentMediaType(__in IMFMediaType *mediaType);
+            HRESULT InternalSetCurrentMediaType(__in IMFMediaType *mediaType);
 
-        //
-        // IMFStreamSink
-        //
+            //
+            // IMFStreamSink
+            //
 
-        IFACEMETHODIMP GetMediaSink(__deref_out IMFMediaSink **sink) { return S_OK; }
-        IFACEMETHODIMP GetIdentifier(__out DWORD *identifier) { return S_OK; }
-        IFACEMETHODIMP GetMediaTypeHandler(__deref_out IMFMediaTypeHandler **handler) { return S_OK; }
-        IFACEMETHODIMP ProcessSample(__in_opt IMFSample *sample) { return S_OK; }
-        IFACEMETHODIMP PlaceMarker(__in MFSTREAMSINK_MARKER_TYPE markerType, __in const PROPVARIANT * markerValue, __in const PROPVARIANT * contextValue) { return S_OK; }
-        IFACEMETHODIMP Flush() { return S_OK; }
+            IFACEMETHODIMP GetMediaSink(__deref_out IMFMediaSink **sink) { return S_OK; }
+            IFACEMETHODIMP GetIdentifier(__out DWORD *identifier) { return S_OK; }
+            IFACEMETHODIMP GetMediaTypeHandler(__deref_out IMFMediaTypeHandler **handler) { return S_OK; }
+            IFACEMETHODIMP ProcessSample(__in_opt IMFSample *sample) { return S_OK; }
+            IFACEMETHODIMP PlaceMarker(__in MFSTREAMSINK_MARKER_TYPE markerType, __in const PROPVARIANT * markerValue, __in const PROPVARIANT * contextValue) { return S_OK; }
+            IFACEMETHODIMP Flush() { return S_OK; }
 
-        //
-        // IMFMediaEventGenerator
-        //
+            //
+            // IMFMediaEventGenerator
+            //
 
-        IFACEMETHODIMP GetEvent(__in DWORD flags, __deref_out IMFMediaEvent **event);
-        IFACEMETHODIMP BeginGetEvent(__in IMFAsyncCallback *callback, __in_opt IUnknown *state);
-        IFACEMETHODIMP EndGetEvent(__in IMFAsyncResult *result, __deref_out IMFMediaEvent **event);
-        IFACEMETHODIMP QueueEvent(__in MediaEventType met, __in REFGUID extendedType, __in HRESULT status, __in_opt const PROPVARIANT *value);
+            IFACEMETHODIMP GetEvent(__in DWORD flags, __deref_out IMFMediaEvent **event);
+            IFACEMETHODIMP BeginGetEvent(__in IMFAsyncCallback *callback, __in_opt IUnknown *state);
+            IFACEMETHODIMP EndGetEvent(__in IMFAsyncResult *result, __deref_out IMFMediaEvent **event);
+            IFACEMETHODIMP QueueEvent(__in MediaEventType met, __in REFGUID extendedType, __in HRESULT status, __in_opt const PROPVARIANT *value);
 
-        //
-        // IMFMediaTypeHandler
-        //
+            //
+            // IMFMediaTypeHandler
+            //
 
-        IFACEMETHODIMP IsMediaTypeSupported(__in IMFMediaType *mediaType, __deref_out_opt  IMFMediaType **closestMediaType);
-        IFACEMETHODIMP GetMediaTypeCount(__out DWORD *typeCount);
-        IFACEMETHODIMP GetMediaTypeByIndex(__in DWORD index, __deref_out  IMFMediaType **mediaType);
-        IFACEMETHODIMP SetCurrentMediaType(__in IMFMediaType *mediaType);
-        IFACEMETHODIMP GetCurrentMediaType(__deref_out_opt IMFMediaType **mediaType);
-        IFACEMETHODIMP GetMajorType(__out GUID *majorType);
+            IFACEMETHODIMP IsMediaTypeSupported(__in IMFMediaType *mediaType, __deref_out_opt  IMFMediaType **closestMediaType);
+            IFACEMETHODIMP GetMediaTypeCount(__out DWORD *typeCount);
+            IFACEMETHODIMP GetMediaTypeByIndex(__in DWORD index, __deref_out  IMFMediaType **mediaType);
+            IFACEMETHODIMP SetCurrentMediaType(__in IMFMediaType *mediaType);
+            IFACEMETHODIMP GetCurrentMediaType(__deref_out_opt IMFMediaType **mediaType);
+            IFACEMETHODIMP GetMajorType(__out GUID *majorType);
 #endif
 
-        //
-        // Misc
-        //
+            //
+            // Misc
+            //
 
-        HRESULT RequestSample();
+            HRESULT RequestSample();
 
-        HRESULT InternalSetCurrentMediaType(__in IMFMediaType *mediaType);
+            HRESULT InternalSetCurrentMediaType(__in IMFMediaType *mediaType);
 
-        void Shutdown();
+            void Shutdown();
 
-    private:
+        private:
 
-        HRESULT _VerifyMediaType(__in IMFMediaType* mt) const;
-        HRESULT _UpdateMediaType(__in IMFMediaType* mt);
+            HRESULT _VerifyMediaType(__in IMFMediaType* mt) const;
+            HRESULT _UpdateMediaType(__in IMFMediaType* mt);
 
-        Microsoft::WRL::ComPtr<IMFMediaSink> _sink;
-        Microsoft::WRL::ComPtr<IMFMediaType> _curMT;
+            Microsoft::WRL::ComPtr<IMFMediaSink> _sink;
+            Microsoft::WRL::ComPtr<IMFMediaType> _curMT;
 
-        Microsoft::WRL::ComPtr<IMFMediaEventQueue> _eventQueue;
-        // Microsoft::WRL::ComPtr<MediaCore::InteropServices::IMediaBufferNativeFactory> _factory;
-        // MediaReaders::SampleHandler^ _sampleHandler;
+            Microsoft::WRL::ComPtr<IMFMediaEventQueue> _eventQueue;
+            // Microsoft::WRL::ComPtr<MediaCore::InteropServices::IMediaBufferNativeFactory> _factory;
+            // MediaReaders::SampleHandler^ _sampleHandler;
 
-        GUID _majorType;
-        GUID _subType;
-        unsigned int _width;
-        unsigned int _height;
-        DWORD _id;
-        bool _shutdown;
+            GUID _majorType;
+            GUID _subType;
+            unsigned int _width;
+            unsigned int _height;
+            DWORD _id;
+            bool _shutdown;
 
-        Microsoft::WRL::Wrappers::SRWLock _lock;
-    };
+            Microsoft::WRL::Wrappers::SRWLock _lock;
+        };
+    }
 }
 
