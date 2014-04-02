@@ -108,10 +108,18 @@ generate language bindings; e.g. Java to C++.  If we didn't
 care about other languages, we could force the everyone to
 use C/C++ header files only.
 
-With WRL, you can mostly forget and ignore IDL, except for when you create 
-a system extension, like a Media Extension.  Then you just
-need to declare that it is a "runtimeclass" and uses a system
-extension interface, like this:
+With WRL, you can mostly forget and ignore IDL;
+ignore some of the samples and:
+use this form:
+            InspectableClass(L"CaptureMediaSink.CSink", BaseTrust)
+not this form:
+            // InspectableClass(RuntimeClass_CaptureMediaSink_CaptureSink, BaseTrust)
+Then you won't need an IDL file.
+
+But if you find that you do need an IDL file:
+To declare a system extension, like a Media Extension,
+that is a "runtimeclass" and uses a system
+extension interface, write an IDL file like this:
 
 import "Windows.Media.idl";
 
