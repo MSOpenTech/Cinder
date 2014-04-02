@@ -84,6 +84,14 @@ and no file system search at runtime is needed.
 If there is a reference to the DLL project, then you do not have to add the extension to the
 app package manifest.
 
+also from the docs:
+"A .winmd file must have the same name that the root namespace has. 
+For example, a class that's named A.B.C.MyClass can be instantiated only 
+if it's defined in a metadata file that's named A.winmd or A.B.winmd or A.B.C.winmd. 
+The name of the executable is not required to match the .winmd file name."
+and:
+"The WinMD file name must match or be a prefix of the root namespace in the source code."
+
 QueryInterface instantiates the class, and verifies that the class instance does
 indeed provide the requested interface using GUID for verification.
 We don't need to call QI if we are using WRL, since
