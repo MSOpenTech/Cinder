@@ -10,7 +10,8 @@ namespace CaptureMediaSink
 {
     //    [uuid(0A5284F4-B9B2-4450-89DF-0810206571DD)]    
     [version(COMPONENT_VERSION), activatable(COMPONENT_VERSION)]
-    runtimeclass CaptureSink
+//    runtimeclass CaptureSink
+    runtimeclass CSink
     {
         [default] interface Windows.Media.IMediaExtension;
     }
