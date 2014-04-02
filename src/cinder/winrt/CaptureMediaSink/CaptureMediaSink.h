@@ -22,7 +22,7 @@
 
 #include "pch.h"
 
-#include "CaptureMediaSink_h.h"
+// #include "CaptureMediaSink_h.h"
 
 // #include "CaptureMediaStreamSink.h"
 
@@ -65,14 +65,15 @@ using namespace Windows::Media::MediaProperties;
 
 #include "CaptureMediaStreamSink.h"
 
+#include <windows.media.h>
 #include <windows.media.mediaproperties.h>
 
 namespace ABI
 {
     namespace CaptureMediaSink {
 
-        // class CaptureMediaStreamSink;
-        // zv added WrlSealed, IMFClockStateSink, FtmBase
+        const unsigned int c_audioStreamSinkId = 0;
+        const unsigned int c_videoStreamSinkId = 1;
 
         class CSink
             : public Microsoft::WRL::RuntimeClass<
@@ -83,15 +84,15 @@ namespace ABI
             Microsoft::WRL::FtmBase
             >
         {
-            InspectableClass(RuntimeClass_CaptureMediaSink_CaptureSink, BaseTrust)
-            // InspectableClass(L"CaptureMediaSink.CaptureSink", BaseTrust)
+            // InspectableClass(RuntimeClass_CaptureMediaSink_CaptureSink, BaseTrust)
+            InspectableClass(L"CaptureMediaSink.CSink", BaseTrust)
 
         public:
             CSink() : _shutdown(false) {}
 
-            ~CSink() {}       
+            ~CSink() {}
 
-// notes
+            // notes
 #if 0
             // Windows::Media::Capture::MediaCapture^ mc
             // IMediaCapture mc
@@ -107,14 +108,42 @@ namespace ABI
 #endif
 
             HRESULT RuntimeClassInitialize(
+                __in_opt ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
                 __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
                 )
             {
+                HRESULT hr = S_OK;
 
-                // get media type from properties
+                Microsoft::WRL::ComPtr<IMFMediaType> audioMT;
+                if (audioProps != nullptr)
+                {
+                    CHK_RETURN(MFCreateMediaTypeFromProperties(audioProps, &audioMT));
+                    CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<CStreamSink>
+                    (&_audioStreamSink, this, c_audioStreamSinkId, audioMT.Get()
+                        // audioSampleHandler
+                        ));
+                }
+
+                Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
+                if (videoProps != nullptr)
+                {
+                    CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
+                    CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<CStreamSink>
+                        (&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get()
+                        // videoSampleHandler
+                        ));
+                }
+
+                return S_OK;
+
+#if 0
+                // get media types from properties
+                Microsoft::WRL::ComPtr<IMFMediaType> audioMT;
+                MFCreateMediaTypeFromProperties(videoProps, &audioMT);
                 Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
                 MFCreateMediaTypeFromProperties(videoProps, &videoMT);
 
+                // create stream sinks
                 Microsoft::WRL::ComPtr<CaptureMediaStreamSink::CStreamSink> mss;
                 //  __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt
                 Microsoft::WRL::Details::MakeAndInitialize<CaptureMediaStreamSink::CStreamSink>(&mss,
@@ -122,7 +151,7 @@ namespace ABI
 
                 // save the video stream sink
                 videoStreamSink = mss;
-
+#endif
 #if 0
                 // __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties*  Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
                 if (videoProps != nullptr)
@@ -134,52 +163,177 @@ namespace ABI
                 return S_OK;
             }
 
+            // "payload" methods
+            // the reason for all this code...
+
+            HRESULT RequestAudioSample()
+            {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                return _audioStreamSink->RequestSample();
+            }
+
+            HRESULT RequestVideoSample()
+            {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                return _videoStreamSink->RequestSample();
+            }
+
+            HRESULT SetCurrentAudioMediaType(IMFMediaType* mt)
+            {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                return _audioStreamSink->InternalSetCurrentMediaType(mt);
+            }
+
+            HRESULT SetCurrentVideoMediaType(IMFMediaType* mt)
+            {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                return _videoStreamSink->InternalSetCurrentMediaType(mt);
+            }
+
             // IMediaExtension
+
             IFACEMETHODIMP SetProperties(ABI::Windows::Foundation::Collections::IPropertySet *pConfiguration)
             {
+                auto lock = _lock.LockExclusive();
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
                 return S_OK;
             }
 
             // IMFMediaSink interface implementation
+
             IFACEMETHODIMP GetCharacteristics(DWORD *pdwCharacteristics)
             {
+                if (pdwCharacteristics == nullptr)
+                {
+                    return OriginateError(E_POINTER, L"characteristics");
+                }
                 *pdwCharacteristics = MEDIASINK_FIXED_STREAMS | MEDIASINK_RATELESS;
                 return S_OK;
             }
 
             IFACEMETHODIMP AddStreamSink(DWORD dwStreamSinkIdentifier, IMFMediaType* pMediaType, IMFStreamSink** ppStreamSink)
             {
+                if (ppStreamSink == nullptr)
+                {
+                    return OriginateError(E_POINTER, L"ppStreamSink");
+                }
                 *ppStreamSink = nullptr;
-                return S_OK;
+                return OriginateError(MF_E_STREAMSINKS_FIXED);
             }
 
             IFACEMETHODIMP RemoveStreamSink(DWORD dwStreamSinkIdentifier)
             {
+                return OriginateError(MF_E_STREAMSINKS_FIXED);
+            }
+
+            IFACEMETHODIMP GetStreamSinkCount(DWORD* streamSinkCount)
+            {
+                if (streamSinkCount == nullptr)
+                {
+                    return OriginateError(E_POINTER, L"streamSinkCount");
+                }
+
+                *streamSinkCount = (_audioStreamSink != nullptr) + (_videoStreamSink != nullptr);
+
                 return S_OK;
             }
 
-            IFACEMETHODIMP GetStreamSinkCount(DWORD* pcStreamSinkCount)
-            {
-                *pcStreamSinkCount = videoStreamSink != nullptr;
-                return S_OK;
-            }
-
-            IFACEMETHODIMP GetStreamSinkByIndex(DWORD dwIndex, IMFStreamSink** ppStreamSink)
+            IFACEMETHOD(GetStreamSinkByIndex) (DWORD index, _Outptr_ IMFStreamSink **streamSink)
             {
                 auto lock = _lock.LockExclusive();
-                if (videoStreamSink != nullptr)
-                    return videoStreamSink.CopyTo(ppStreamSink);
-                else
-                    return OriginateError(E_INVALIDARG, L"streamSink");
+
+                if (streamSink == nullptr)
+                {
+                    return OriginateError(E_POINTER, L"streamSink");
+                }
+                *streamSink = nullptr;
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                switch (index)
+                {
+                case 0:
+                    if (_audioStreamSink != nullptr)
+                    {
+                        return _audioStreamSink.CopyTo(streamSink);
+                    }
+                    else
+                    {
+                        return _videoStreamSink.CopyTo(streamSink);
+                    }
+                case 1:
+                    if ((_audioStreamSink != nullptr) && (_videoStreamSink != nullptr))
+                    {
+                        return _videoStreamSink.CopyTo(streamSink);
+                    }
+                    else
+                    {
+                        return OriginateError(E_INVALIDARG, L"index");
+                    }
+                default:
+                    return OriginateError(E_INVALIDARG, L"index");
+                }
             }
 
-            IFACEMETHODIMP GetStreamSinkById(DWORD dwStreamSinkIdentifier, IMFStreamSink** ppStreamSink)
+            IFACEMETHOD(GetStreamSinkById) (DWORD identifier, IMFStreamSink **streamSink)
             {
                 auto lock = _lock.LockExclusive();
-                if (videoStreamSink != nullptr)
-                    return videoStreamSink.CopyTo(ppStreamSink);
+
+                if (streamSink == nullptr)
+                {
+                    return OriginateError(E_POINTER, L"ppStreamSink");
+                }
+                *streamSink = nullptr;
+
+                if (_shutdown)
+                {
+                    return OriginateError(MF_E_SHUTDOWN);
+                }
+
+                if ((identifier == 0) && (_audioStreamSink != nullptr))
+                {
+                    return _audioStreamSink.CopyTo(streamSink);
+                }
+                else if ((identifier == 1) && (_videoStreamSink != nullptr))
+                {
+                    return _videoStreamSink.CopyTo(streamSink);
+                }
                 else
+                {
                     return OriginateError(E_INVALIDARG, L"identifier");
+                }
             }
 
             IFACEMETHODIMP SetPresentationClock(IMFPresentationClock* pPresentationClock)
@@ -231,7 +385,7 @@ namespace ABI
                 return S_OK;
             }
 
-            IFACEMETHODIMP Shutdown(void)
+            IFACEMETHOD(Shutdown) ()
             {
                 auto lock = _lock.LockExclusive();
 
@@ -241,10 +395,16 @@ namespace ABI
                 }
                 _shutdown = true;
 
-                if (videoStreamSink != nullptr)
+                if (_audioStreamSink != nullptr)
                 {
-                    videoStreamSink->Shutdown();
-                    videoStreamSink = nullptr;
+                    _audioStreamSink->Shutdown();
+                    _audioStreamSink = nullptr;
+                }
+
+                if (_videoStreamSink != nullptr)
+                {
+                    _videoStreamSink->Shutdown();
+                    _videoStreamSink = nullptr;
                 }
 
                 if (_clock != nullptr)
@@ -321,7 +481,7 @@ namespace ABI
             }
 
 
-            // IMFTransform
+            // IMFTransform - not used in the Sink
 #if 0
 
             STDMETHODIMP GetStreamLimits(
@@ -517,8 +677,10 @@ namespace ABI
             bool _shutdown;
 
             // Microsoft::WRL::ComPtr<MediaStreamSink> _audioStreamSink;
-            
-            Microsoft::WRL::ComPtr<CaptureMediaStreamSink::CStreamSink> videoStreamSink;
+            //Microsoft::WRL::ComPtr<CaptureMediaStreamSink::CStreamSink> _audioStreamSink;
+
+            Microsoft::WRL::ComPtr<CStreamSink> _audioStreamSink;
+            Microsoft::WRL::ComPtr<CStreamSink> _videoStreamSink;
 
             Microsoft::WRL::ComPtr<IMFPresentationClock> _clock;
 
