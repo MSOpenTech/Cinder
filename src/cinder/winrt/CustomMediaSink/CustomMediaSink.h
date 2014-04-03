@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿// from OpenCV
+// used for reference only
+
+#pragma once
 
 #define HAVE_WINRT
 
