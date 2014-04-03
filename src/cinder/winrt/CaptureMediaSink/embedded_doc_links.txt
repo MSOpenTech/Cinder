@@ -346,3 +346,7 @@ http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k("module
 
 Casting (C++/CX)
 http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
+
+VideoEncodingProperties.CreateUncompressed | createUncompressed method
+http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperties.videoencodingproperties.createuncompressed.aspx?cs-save-lang=1&cs-lang=cpp#code-snippet-1
+

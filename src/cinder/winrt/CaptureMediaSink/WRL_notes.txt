@@ -98,6 +98,21 @@ We don't need to call QI if we are using WRL, since
 WRL provides smart COM pointers, as ComPtr<YourInterfaceclass>
 that do this, AddRef, Release, and new/delete for you.
 
+A concrete class can implement several interfaces.
+When using WRL, you don't have to write this, but QI works like this:
+
+HRESULT CVideoSink::QueryInterface(REFIID iid, void** ppv)
+{
+    if (iid == IID_IUnknown)
+    {
+        *ppv = static_cast<IUnknown*>(static_cast<IMFMediaSink*>(this));
+    }
+    else if (iid == __uuidof(IMFMediaSink))
+    {
+        *ppv = static_cast<IMFMediaSink*>(this);
+    }
+	...
+
 IDL can be used to generate a header file for the interface (recall that's an abstract base class), 
 and also the GUID in a generated .cpp file, and optionally remote call
 information for client/server uses in another C++ file.
