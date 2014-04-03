@@ -569,6 +569,9 @@ namespace ABI
             if (_majorType == MFMediaType_Video)
             {
                 CHK_RETURN(MFGetAttributeSize(mt, MF_MT_FRAME_SIZE, &_width, &_height));
+
+                // debug
+                TC(_width); TC(_height); TCNL;
             }
 
             CHK_RETURN(mt->CopyAllItems(_curMT.Get()));

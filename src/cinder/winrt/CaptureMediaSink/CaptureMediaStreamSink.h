@@ -21,6 +21,9 @@
 
 #include "pch.h"
 
+// temp debug
+#include "../../../../include/cinder/app/winrt/cdebug.h"
+
 // using namespace Platform;
 
 #if 0
