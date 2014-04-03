@@ -148,48 +148,98 @@ namespace MediaWinRT
                         auto mediaCapture = m_mediaCaptureMgr.Get();
                         mediaCapture->SetRecordRotation(Windows::Media::Capture::VideoRotation::None);
 
+                        // preset recording profiles:
+                        // we have to create our own (cannot use)
+                        //
+                        // not used: (reference for record to file)
                         // set recording profile (the capture size; e.g. vga, hd, etc)
-                        MediaEncodingProfile^ recordProfile = nullptr;
-                        recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Qvga);
+                        // MediaEncodingProfile^ recordProfile = nullptr;
+                        // recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Qvga);
+                        // recordProfile = MediaEncodingProfile::CreateAvi                            (Windows::Media::MediaProperties::VideoEncodingQuality::Vga);
+                            //::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Qvga);
 
-                        // get audio stream properties in WRL form
+                        // get audio stream properties
                         // cast from Type^ to ABI::IType* is legal, see:
                         // http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
-                        auto audioProps = mediaCapture->AudioDeviceController->GetMediaStreamProperties(
-                            Windows::Media::Capture::MediaStreamType::Audio);
-                        auto iaudioprops = safe_cast<IAudioEncodingProperties^>(audioProps);
-                        auto iaudiopropsABI = reinterpret_cast
-                            <ABI::Windows::Media::MediaProperties::IAudioEncodingProperties *>(iaudioprops);
+                        auto audioProps = safe_cast<IAudioEncodingProperties^>(
+                            mediaCapture->AudioDeviceController->GetMediaStreamProperties(
+                            Windows::Media::Capture::MediaStreamType::Audio)
+                            );
+                            // auto iaudioprops = safe_cast<IAudioEncodingProperties^>(audioProps);
 
-                        // get video stream properties in WRL form
-                        auto videoProps = mediaCapture->VideoDeviceController->GetMediaStreamProperties(
-                            Windows::Media::Capture::MediaStreamType::VideoRecord);
-                        auto ivideoprops = safe_cast<IVideoEncodingProperties^>(videoProps);
-                        auto ivideopropsABI = reinterpret_cast
-                            <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(ivideoprops);
+                        // get video stream properties
+                        auto videoProps = safe_cast<VideoEncodingProperties^>(
+                            mediaCapture->VideoDeviceController->GetMediaStreamProperties(
+                            Windows::Media::Capture::MediaStreamType::VideoRecord)
+                            );
+                            // auto ivideoprops = safe_cast<IVideoEncodingProperties^>(videoProps);
 
-                        // delete: if above test passes
-                        //auto videoprops = safe_cast<VideoEncodingProperties^>(streamprops);
-                        //auto ivideoprops = safe_cast<IVideoEncodingProperties^>(videoprops);
+                        // clear any existing properties
+                        // see:
+                        // http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperties.videoencodingproperties.type.aspx
+                        videoProps->Properties->Clear();
 
-                        // create the custom media sink:/
+                        // set video stream properties
+                        videoProps->CreateUncompressed(MediaEncodingSubtypes::Argb32, 720, 480);
+                        
+                        // debug
+                        TCC("video properties:");   TCNL;
+                        TCSW(videoProps->Type->Data()); TCNL;
+                        TCSW(videoProps->Subtype->Data()); TCNL;
+                        TC(videoProps->Bitrate); TCNL;
+                        TC(videoProps->Height); TCNL;
+                        TC(videoProps->Width); TCNL;
+                        /*
+                            console output seen:
+
+                            video properties:
+                            videoProps->Type->Data() = 'Video'
+                            videoProps->Subtype->Data() = 'MJPG'
+                            videoProps->Bitrate = 221184000
+                            videoProps->Height = 480
+                            videoProps->Width = 640  ??
+
+                            with clear() call added:
+
+                            video properties:
+                            videoProps->Type->Data() = 'Video'
+                            videoProps->Subtype->Data() = ''
+                            videoProps->Bitrate = 0
+                            videoProps->Height = 0
+                            videoProps->Width = 0
+                        */
+
+                        // create encoding profile from the stream properties
+                        auto encodingProfile = ref new MediaEncodingProfile();
+                        encodingProfile->Audio = safe_cast<AudioEncodingProperties^>(audioProps);
+                        encodingProfile->Video = safe_cast<VideoEncodingProperties^>(videoProps);
+
+
+                        // create the custom media sink:
                         //
                         // we cannot pull in the definition of the media sink into WinRT,
                         // (i.e. cannot #include "CaptureMediaSink.h" in this file, because
                         // MakeAndInitialize requires a full class definition, and then the linker will
                         // complain because the methods are not defined in the app, but in the Capture DLL)
                         //
-                        // so we use a standalone creator function in the DLL
-                        // There may be a better way to do this using an ActivationFactory in WRL
+                        // so we use a standalone factory function in the DLL
+                        // there may be a better way to do this using an ActivationFactory in WRL
                         //
-                        // note that we pass in the video properties interface from above
+                        // get stream properties in ABI form
+                        auto iaudiopropsABI = reinterpret_cast
+                            <ABI::Windows::Media::MediaProperties::IAudioEncodingProperties *>(audioProps);
+                        auto ivideopropsABI = reinterpret_cast
+                            <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(videoProps);
                         //
+                        // create the custom media sink using factory
                         ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
                         createMediaExtension(&pCustomMediaSink, iaudiopropsABI, ivideopropsABI);
+
+                        // treat custom media sink as an extension
                         IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
 
                         // record using the custom media sink
-                        create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(recordProfile, im));
+                        create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(encodingProfile, im));
 
 #if 0
                         // test - record to file
@@ -238,7 +288,7 @@ namespace MediaWinRT
     // Casting (C++/CX)
     //
     // Conversions between a Visual C++ component extensions interface type and its 
-    // equivalent ABI type are always safe—that is, IBuffer^ to ABI::IBuffer*.
+    // equivalent ABI type are always safeï¿½that is, IBuffer^ to ABI::IBuffer*.
 
     // get the interface for the WinRT call
     // auto intf = static_cast<ABI::Windows::Media::IMediaExtension*>(pInterface);
