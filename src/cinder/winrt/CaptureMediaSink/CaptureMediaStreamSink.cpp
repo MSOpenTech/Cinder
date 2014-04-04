@@ -64,6 +64,8 @@ namespace ABI
             _sink = sink;
             _id = id;
 
+            TCC("CStreamSink::RuntimeClassInitialize"); TC(id);  TCNL;
+
             return S_OK;
         }
 
@@ -488,6 +490,7 @@ namespace ABI
 
             ComPtr<IMFMediaType> mt;
             CHK_RETURN(MFCreateMediaType(&mt));
+            TCC("MFCreateMediaType passed"); TCNL;
             CHK_RETURN(_curMT->CopyAllItems(mt.Get()));
             *mediaType = mt.Detach();
 
@@ -548,10 +551,12 @@ namespace ABI
                 (majorType == _majorType) &&
                 (subType == _subType))
             {
+                TCC("_VerifyMediaType passed"); TCNL;
                 return S_OK;
             }
             else
             {
+                TCC("_VerifyMediaType FAILED"); TCNL;
                 CHK_RETURN(OriginateError(MF_E_INVALIDMEDIATYPE));
             }
 
@@ -571,7 +576,7 @@ namespace ABI
                 CHK_RETURN(MFGetAttributeSize(mt, MF_MT_FRAME_SIZE, &_width, &_height));
 
                 // debug
-                TC(_width); TC(_height); TCNL;
+                TCC("_UpdateMediaType passed: "); TC(_width); TC(_height); TCNL;
             }
 
             CHK_RETURN(mt->CopyAllItems(_curMT.Get()));
