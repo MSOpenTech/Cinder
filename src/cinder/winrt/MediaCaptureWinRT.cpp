@@ -167,26 +167,35 @@ namespace MediaWinRT
                             mediaCapture->AudioDeviceController->GetMediaStreamProperties(
                             Windows::Media::Capture::MediaStreamType::Audio)
                             );
-                            // auto iaudioprops = safe_cast<IAudioEncodingProperties^>(audioProps);
 
                         // get video stream properties
                         auto videoProps = safe_cast<VideoEncodingProperties^>(
                             mediaCapture->VideoDeviceController->GetMediaStreamProperties(
                             Windows::Media::Capture::MediaStreamType::VideoRecord)
                             );
-                            // auto ivideoprops = safe_cast<IVideoEncodingProperties^>(videoProps);
 
+                        // NOT USED
                         // clear any existing properties
                         // see:
                         // http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperties.videoencodingproperties.type.aspx
                         // videoProps->Properties->Clear();
 
                         // set video stream properties
-                        videoProps->CreateUncompressed(MediaEncodingSubtypes::Mjpg, 640, 480);
+                        videoProps->CreateUncompressed(MediaEncodingSubtypes::Argb32, 640, 480);
+                        // videoProps->SetFormatUserData
 
                         // create encoding profile from the stream properties
+                        // "... if you know the exact encoding settings that you want, 
+                        // you can create a new MediaProperties.MediaEncodingProfile object 
+                        // and fill in ALL of the profile details."
+                        // see:
+                        // http://msdn.microsoft.com/en-us/library/windows/apps/hh452791.aspx
+                        //
                         auto encodingProfile = ref new MediaEncodingProfile();
                         // note: cannot set the encodingProfile->Container->Type and SubType directly
+
+                        // nb. AVI supports uncompressed codec - fails on WinRT, invalid parm
+                        // auto encodingProfile  = MediaEncodingProfile::CreateAvi                            (Windows::Media::MediaProperties::VideoEncodingQuality::Auto);
 
                         // encodingProfile->Container->Subtype = ContainerEncodingProperties::
                         encodingProfile->Audio = safe_cast<AudioEncodingProperties^>(audioProps);
@@ -204,8 +213,12 @@ namespace MediaWinRT
                         TCSW(videoProps->Type->Data()); TCNL;
                         TCSW(videoProps->Subtype->Data()); TCNL;
                         TC(videoProps->Bitrate); TCNL;
-                        TC(videoProps->Height); TCNL;
                         TC(videoProps->Width); TCNL;
+                        TC(videoProps->Height); TCNL;
+                        TCC("audio properties:");   TCNL;
+                        TCSW(audioProps->Type->Data()); TCNL;
+                        TCSW(audioProps->Subtype->Data()); TCNL;
+                        TC(audioProps->Bitrate); TCNL;
                         TCNL;
 
                         // create the custom media sink:
@@ -231,8 +244,16 @@ namespace MediaWinRT
                         // treat custom media sink as an extension
                         IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
 
-                        // record using the custom media sink
-                        create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(encodingProfile, im));
+                        // set the capture properties to match the custom media sink
+                        // runtime error here: "WinRT information: No such interface supported"
+                        auto imediaEncodingProps = safe_cast<IMediaEncodingProperties^>(encodingProfile);
+                        create_task( mediaCapture->SetEncodingPropertiesAsync(MediaStreamType::VideoRecord,
+                            imediaEncodingProps, nullptr)).then([this,encodingProfile,im](){
+
+                            // record using the custom media sink
+                            create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(encodingProfile, im));
+
+                        });
 
 #if 0
                         // test - record to file
