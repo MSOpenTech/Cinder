@@ -139,6 +139,8 @@ namespace MediaWinRT
                     auto name = chosenDevInfo->Name;
                     m_settings->AudioDeviceId = chosenDevInfo->Id;
 
+                    // m_settings->MediaCategory = MediaCategory::
+
                     // initialize for capture
                     m_settings->StreamingCaptureMode = Windows::Media::Capture::StreamingCaptureMode::AudioAndVideo;
                     create_task(m_mediaCaptureMgr->InitializeAsync(m_settings))
@@ -177,43 +179,34 @@ namespace MediaWinRT
                         // clear any existing properties
                         // see:
                         // http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperties.videoencodingproperties.type.aspx
-                        videoProps->Properties->Clear();
+                        // videoProps->Properties->Clear();
 
                         // set video stream properties
-                        videoProps->CreateUncompressed(MediaEncodingSubtypes::Argb32, 720, 480);
-                        
+                        videoProps->CreateUncompressed(MediaEncodingSubtypes::Mjpg, 640, 480);
+
+                        // create encoding profile from the stream properties
+                        auto encodingProfile = ref new MediaEncodingProfile();
+                        // note: cannot set the encodingProfile->Container->Type and SubType directly
+
+                        // encodingProfile->Container->Subtype = ContainerEncodingProperties::
+                        encodingProfile->Audio = safe_cast<AudioEncodingProperties^>(audioProps);
+                        encodingProfile->Video = safe_cast<VideoEncodingProperties^>(videoProps);
+
                         // debug
+                        auto a1 = encodingProfile->Container->GetType()->FullName;
+                        auto a2 = encodingProfile->Container->Subtype;
+
+                        TCNL;
+                        TCC("encoding properties:");   TCNL;
+                        TC(encodingProfile->Container->GetType()->FullName->Data()); TCNL;
+                        TC(encodingProfile->Container->Subtype->Data());    TCNL;
                         TCC("video properties:");   TCNL;
                         TCSW(videoProps->Type->Data()); TCNL;
                         TCSW(videoProps->Subtype->Data()); TCNL;
                         TC(videoProps->Bitrate); TCNL;
                         TC(videoProps->Height); TCNL;
                         TC(videoProps->Width); TCNL;
-                        /*
-                            console output seen:
-
-                            video properties:
-                            videoProps->Type->Data() = 'Video'
-                            videoProps->Subtype->Data() = 'MJPG'
-                            videoProps->Bitrate = 221184000
-                            videoProps->Height = 480
-                            videoProps->Width = 640  ??
-
-                            with clear() call added:
-
-                            video properties:
-                            videoProps->Type->Data() = 'Video'
-                            videoProps->Subtype->Data() = ''
-                            videoProps->Bitrate = 0
-                            videoProps->Height = 0
-                            videoProps->Width = 0
-                        */
-
-                        // create encoding profile from the stream properties
-                        auto encodingProfile = ref new MediaEncodingProfile();
-                        encodingProfile->Audio = safe_cast<AudioEncodingProperties^>(audioProps);
-                        encodingProfile->Video = safe_cast<VideoEncodingProperties^>(videoProps);
-
+                        TCNL;
 
                         // create the custom media sink:
                         //
