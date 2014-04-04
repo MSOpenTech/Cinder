@@ -352,3 +352,9 @@ http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperti
 
 MediaEncodingSubtypes class
 http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperties.mediaencodingsubtypes.aspx
+
+Quickstart: capturing video using the MediaCapture API
+http://msdn.microsoft.com/en-us/library/windows/apps/hh452791.aspx
+
+Supported audio and video formats (Windows Store apps)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh986969.aspx
