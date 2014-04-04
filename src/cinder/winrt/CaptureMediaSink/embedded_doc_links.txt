@@ -350,3 +350,5 @@ http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
 VideoEncodingProperties.CreateUncompressed | createUncompressed method
 http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperties.videoencodingproperties.createuncompressed.aspx?cs-save-lang=1&cs-lang=cpp#code-snippet-1
 
+MediaEncodingSubtypes class
+http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperties.mediaencodingsubtypes.aspx
