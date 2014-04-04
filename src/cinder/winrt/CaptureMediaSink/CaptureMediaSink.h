@@ -92,27 +92,17 @@ namespace ABI
 
             ~CSink() {}
 
-            // notes
-#if 0
-            // Windows::Media::Capture::MediaCapture^ mc
-            // IMediaCapture mc
-            // Windows::Media::
-            // IInspectable *t
-            //IUnknown *props
-            //ABI::Windows::Media::ImageDisplayProperties::
-            //Windows::Media::MediaProperties::
-            //IMediaEncodingProperties ^props
-            //__in_opt ABI::Windows::Media
-            //* videoProps,
-            //MediaReaders::SampleHandler^ videoSampleHandler
-#endif
-
             HRESULT RuntimeClassInitialize(
                 __in_opt ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
                 __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+                // MediaReaders::SampleHandler^ audioSampleHandler
+                // MediaReaders::SampleHandler^ videoSampleHandler
                 )
             {
                 HRESULT hr = S_OK;
+
+                // get media types from properties
+                // and create stream sinks
 
                 Microsoft::WRL::ComPtr<IMFMediaType> audioMT;
                 if (audioProps != nullptr)
@@ -134,32 +124,6 @@ namespace ABI
                         ));
                 }
 
-                return S_OK;
-
-#if 0
-                // get media types from properties
-                Microsoft::WRL::ComPtr<IMFMediaType> audioMT;
-                MFCreateMediaTypeFromProperties(videoProps, &audioMT);
-                Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
-                MFCreateMediaTypeFromProperties(videoProps, &videoMT);
-
-                // create stream sinks
-                Microsoft::WRL::ComPtr<CaptureMediaStreamSink::CStreamSink> mss;
-                //  __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt
-                Microsoft::WRL::Details::MakeAndInitialize<CaptureMediaStreamSink::CStreamSink>(&mss,
-                    this, 1, videoMT.Get());
-
-                // save the video stream sink
-                videoStreamSink = mss;
-#endif
-#if 0
-                // __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties*  Microsoft::WRL::ComPtr<IMFMediaType> videoMT;
-                if (videoProps != nullptr)
-                {
-                    CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
-                    CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<MediaStreamSink>(&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get(), videoSampleHandler));
-                }
-#endif
                 return S_OK;
             }
 
