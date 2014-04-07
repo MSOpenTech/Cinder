@@ -557,7 +557,8 @@ namespace ABI
             else
             {
                 TCC("_VerifyMediaType FAILED"); TCNL;
-                CHK_RETURN(OriginateError(MF_E_INVALIDMEDIATYPE));
+//                 CHK_RETURN(OriginateError(MF_E_INVALIDMEDIATYPE));
+                return S_OK;
             }
 
             return S_OK;
