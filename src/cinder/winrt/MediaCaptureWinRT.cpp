@@ -201,6 +201,9 @@ namespace MediaWinRT
                         encodingProfile->Audio = safe_cast<AudioEncodingProperties^>(audioProps);
                         encodingProfile->Video = safe_cast<VideoEncodingProperties^>(videoProps);
 
+                        // set container subtype
+                        encodingProfile->Container->Subtype = "AVI";
+
                         // debug
                         auto a1 = encodingProfile->Container->GetType()->FullName;
                         auto a2 = encodingProfile->Container->Subtype;
@@ -244,6 +247,9 @@ namespace MediaWinRT
                         // treat custom media sink as an extension
                         IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
 
+                        // record using the custom media sink
+                        create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(encodingProfile, im));
+#if 0
                         // set the capture properties to match the custom media sink
                         // runtime error here: "WinRT information: No such interface supported"
                         auto imediaEncodingProps = safe_cast<IMediaEncodingProperties^>(encodingProfile);
@@ -254,6 +260,7 @@ namespace MediaWinRT
                             create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(encodingProfile, im));
 
                         });
+#endif
 
 #if 0
                         // test - record to file
