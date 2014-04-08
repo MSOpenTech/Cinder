@@ -68,6 +68,9 @@ namespace MediaWinRT
 
     private:
 
+        void ProcessAudioSample( /* BufferCore::IMediaBufferReference^ sample */ );
+        void ProcessVideoSample( /* BufferCore::IMediaBufferReference^ sample */ );
+
         unsigned int m_selectedVideoDeviceIndex, m_selectedAudioDeviceIndex;
  
         // Media Extension communication via property set

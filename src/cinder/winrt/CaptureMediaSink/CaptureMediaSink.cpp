@@ -36,6 +36,8 @@ ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
     //    __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
     // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps = nullptr;
 
+//    auto videoSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler( &ProcessVideoSample );
+
     // use WRL to make and initialize the custom media sink
     // 
     // note that ABI:: is required to avoid this error:

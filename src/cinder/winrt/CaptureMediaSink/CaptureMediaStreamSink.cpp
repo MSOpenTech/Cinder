@@ -51,8 +51,8 @@ namespace ABI
 
         // zv   partial implementation
         HRESULT CStreamSink::RuntimeClassInitialize(
-            __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt
-            // Microsoft::Windows::MediaReaders::SampleHandler^ sampleHandler
+            __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt,
+            SampleHandler^ sampleHandler
             ) {
             HRESULT hr = S_OK;
 
@@ -63,6 +63,7 @@ namespace ABI
 
             _sink = sink;
             _id = id;
+            _sampleHandler = sampleHandler;
 
             TCC("CStreamSink::RuntimeClassInitialize"); TC(id);  TCNL;
 
@@ -217,15 +218,18 @@ namespace ABI
             ComPtr<IMF2DBuffer2> buffer2D;
             if ((_width != 0) && (_height != 0) && SUCCEEDED(buffer1D.As(&buffer2D)))
             {
+                // TODO
                 // CHK_RETURN(_factory->CreateMediaBuffer2DReference(buffer2D.Get(), _subType.Data1, _width, _height, time, duration, &mediaBuffer));
             }
             else
             {
+                // TODO
                 // CHK_RETURN(_factory->CreateMediaBuffer1DReference(buffer1D.Get(), time, duration, &mediaBuffer));
             }
 
             try
             {
+                // TODO
                 /// auto sample = safe_cast<IMediaBufferReference^>(reinterpret_cast<Object^>(mediaBuffer.Get()));
 
                 // delegate call

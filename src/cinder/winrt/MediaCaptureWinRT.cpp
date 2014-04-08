@@ -74,6 +74,8 @@ using namespace std;
 using namespace Microsoft::WRL::Details;
 
 
+// for CaptureMediaSink version
+//
 // createMediaExtension() is exported manually from the media sink DLL
 //  maybe could have used: DllGetActivationFactory or DllGetClassObject instead?
 __declspec(dllexport) void __cdecl
@@ -83,11 +85,57 @@ ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
 ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
 );
 
+
+
 namespace MediaWinRT
 {
+// version using MFSourceReader
+#if 0
+    // see Using the Source Reader to Process Media Data
+    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd389281(v=vs.85).aspx
     void MediaCaptureWinRT::start()
     {
         try {
+            HRESULT hr;
+
+            MFStartup(MF_API_VERSION, MFSTARTUP_LITE);
+
+            // nb.  MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING needed
+            // (as mentioned in IMFSourceReader::SetCurrentMediaType method). 
+            // RGB conversion doesn't happen otherwise.
+
+            // STOP
+            // these needed attribute GUIDs are not supported for WinRT:
+            //      MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE
+            //      MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID
+            // cannot enumerate webcams
+
+            // see Enumerating Video Capture Devices
+            // http://msdn.microsoft.com/en-us/library/windows/desktop/dd940326(v=vs.85).aspx
+            IMFAttributes *attr = nullptr;
+
+            IMFMediaSource *ms = nullptr;
+            IMFSourceReader *rdr = nullptr;
+            // MFCreateSourceReaderFromMediaSource(  ms, attr, &rdr );
+
+        }
+        catch (Exception ^e)
+        {
+            // todo: handle exception
+            // in CaptureImplWinRT, see:
+            // throw CaptureExcInitFail();
+        }
+    }
+#endif
+
+
+    // version using CaptureMediaSink
+#if 1
+
+    void MediaCaptureWinRT::start()
+    {
+        try {
+
 
             // see http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.capture.mediacaptureinitializationsettings.aspx
 
@@ -99,7 +147,7 @@ namespace MediaWinRT
                 audio devices :
                 i = 0  d->Name->Data() = 'Digital Audio (S/PDIF) (Cirrus Logic CS4206B (AB 35))'
                 i = 1  d->Name->Data() = 'Microphone (HD Pro Webcam C920)'
-            */
+                */
 
             // get video device and store into m_settings
             create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture))
@@ -158,7 +206,7 @@ namespace MediaWinRT
                         // MediaEncodingProfile^ recordProfile = nullptr;
                         // recordProfile = MediaEncodingProfile::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Qvga);
                         // recordProfile = MediaEncodingProfile::CreateAvi                            (Windows::Media::MediaProperties::VideoEncodingQuality::Vga);
-                            //::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Qvga);
+                        //::CreateMp4(Windows::Media::MediaProperties::VideoEncodingQuality::Qvga);
 
                         // get audio stream properties
                         // cast from Type^ to ABI::IType* is legal, see:
@@ -239,6 +287,12 @@ namespace MediaWinRT
                             <ABI::Windows::Media::MediaProperties::IAudioEncodingProperties *>(audioProps);
                         auto ivideopropsABI = reinterpret_cast
                             <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(videoProps);
+
+                        // pass in sample handlers
+                        auto audioSampleHandler = ref new SampleHandler(this, &ProcessAudioSample);
+                        auto videoSampleHandler = ref new SampleHandler(this, &ProcessVideoSample);
+
+
                         //
                         // create the custom media sink using factory
                         ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
@@ -249,6 +303,10 @@ namespace MediaWinRT
 
                         // record using the custom media sink
                         create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(encodingProfile, im));
+
+                        // try to get a frame
+
+
 #if 0
                         // set the capture properties to match the custom media sink
                         // runtime error here: "WinRT information: No such interface supported"
@@ -290,6 +348,7 @@ namespace MediaWinRT
             // throw CaptureExcInitFail();
         }
     }
+#endif
 
     // reference
 #if 0
@@ -563,6 +622,67 @@ reference:
 
         });
     }
+
+    void MediaCaptureWinRT::ProcessAudioSample( 
+        // Microsoft::Windows::BufferCore::IMediaBufferReference^ sample
+        )
+    {
+        // TODO
+#if 0
+        auto lock = _lock.LockExclusive();
+        TraceScopeCx(this);
+
+        Trace("@%p IMediaBufferReference @%p", (void*)this, (void*)sample);
+
+        try
+        {
+            auto result = ref new MediaReaderReadResult(S_OK, (MF_SOURCE_READER_FLAG)0, sample->Timestamp.Duration, sample);
+
+            _audioSampleRequestQueue.front().set(result);
+        }
+        catch (Exception^ e)
+        {
+            _audioSampleRequestQueue.front().set_exception(e);
+        }
+        catch (std::exception e)
+        {
+            _audioSampleRequestQueue.front().set_exception(e);
+        }
+
+        _audioSampleRequestQueue.pop();
+#endif
+    }
+
+    void MediaCaptureWinRT::ProcessVideoSample(
+        // Microsoft::Windows::BufferCore::IMediaBufferReference^ sample
+        )
+    {
+        // TODO
+#if 0
+        auto lock = _lock.LockExclusive();
+        TraceScopeCx(this);
+
+        Trace("@%p IMediaBufferReference @%p", (void*)this, (void*)sample);
+
+        try
+        {
+            auto result = ref new MediaReaderReadResult(S_OK, (MF_SOURCE_READER_FLAG)0, sample->Timestamp.Duration, sample);
+
+            _videoSampleRequestQueue.front().set(result);
+        }
+        catch (Exception^ e)
+        {
+            _videoSampleRequestQueue.front().set_exception(e);
+        }
+        catch (std::exception e)
+        {
+            _videoSampleRequestQueue.front().set_exception(e);
+        }
+
+        _videoSampleRequestQueue.pop();
+#endif
+    }
+
 
     // reference notes
 #if 0
