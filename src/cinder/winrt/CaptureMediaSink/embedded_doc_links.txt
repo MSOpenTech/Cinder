@@ -358,3 +358,15 @@ http://msdn.microsoft.com/en-us/library/windows/apps/hh452791.aspx
 
 Supported audio and video formats (Windows Store apps)
 http://msdn.microsoft.com/en-us/library/windows/apps/hh986969.aspx
+
+MFCreateSourceReaderFromMediaSource function
+http://msdn.microsoft.com/en-us/library/windows/desktop/dd388108(v=vs.85).aspx
+
+IMFSourceReader::ReadSample method
+http://msdn.microsoft.com/en-us/library/dd374665(v=vs.85).aspx
+
+Source Reader (top)
+http://msdn.microsoft.com/en-us/library/dd940436(v=vs.85).aspx
+
+Using the Source Reader to Process Media Data
+http://msdn.microsoft.com/en-us/library/windows/desktop/dd389281(v=vs.85).aspx
