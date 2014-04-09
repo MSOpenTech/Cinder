@@ -65,6 +65,8 @@ using namespace Windows::Media::MediaProperties;
 
 #include "CaptureMediaStreamSink.h"
 
+#include "IFrameGrabber.h"
+
 #include <windows.media.h>
 #include <windows.media.mediaproperties.h>
 
@@ -83,6 +85,7 @@ namespace ABI
             Windows::Media::IMediaExtension,
             IMFMediaSink,
             IMFClockStateSink,
+            IFrameGrabber,
             Microsoft::WRL::FtmBase
             >
         {
@@ -178,6 +181,14 @@ namespace ABI
                 }
 
                 return _videoStreamSink->InternalSetCurrentMediaType(mt);
+            }
+
+            // IFrameGrabber
+
+            IFACEMETHODIMP GetFrameCount( DWORD *pCount )
+            {
+                *pCount = 1;
+                return S_OK;
             }
 
             // IMediaExtension
