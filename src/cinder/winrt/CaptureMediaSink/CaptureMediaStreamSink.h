@@ -72,6 +72,7 @@ namespace ABI
                 // SampleHandler^ sampleHandler
                 );
 
+            HRESULT CStreamSink::GetSampleCounter(DWORD *pSampleCounter);
 
             // IInspectable (test)
 #if 0
@@ -223,6 +224,8 @@ namespace ABI
             unsigned int _height;
             DWORD _id;
             bool _shutdown;
+
+            DWORD sampleCounter;
 
             Microsoft::WRL::Wrappers::SRWLock _lock;
         };

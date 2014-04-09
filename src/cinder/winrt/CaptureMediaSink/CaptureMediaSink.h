@@ -132,10 +132,15 @@ namespace ABI
                 return S_OK;
             }
 
-            // "payload" methods
-            // the reason for all this code...
+            // IFrameGrabber
 
-            HRESULT RequestAudioSample()
+            IFACEMETHODIMP GetFrameCount(DWORD *pCount)
+            {
+                _videoStreamSink->GetSampleCounter( pCount );
+                return S_OK;
+            }
+
+            IFACEMETHODIMP RequestAudioSample()
             {
                 auto lock = _lock.LockExclusive();
 
@@ -147,9 +152,11 @@ namespace ABI
                 return _audioStreamSink->RequestSample();
             }
 
-            HRESULT RequestVideoSample()
+            IFACEMETHODIMP RequestVideoSample()
             {
                 auto lock = _lock.LockExclusive();
+
+                TCC("RequestVideoSample"); TCNL;
 
                 if (_shutdown)
                 {
@@ -159,7 +166,9 @@ namespace ABI
                 return _videoStreamSink->RequestSample();
             }
 
-            HRESULT SetCurrentAudioMediaType(IMFMediaType* mt)
+            // not added to intf yet:
+
+            IFACEMETHODIMP SetCurrentAudioMediaType(IMFMediaType* mt)
             {
                 auto lock = _lock.LockExclusive();
 
@@ -171,7 +180,7 @@ namespace ABI
                 return _audioStreamSink->InternalSetCurrentMediaType(mt);
             }
 
-            HRESULT SetCurrentVideoMediaType(IMFMediaType* mt)
+            IFACEMETHODIMP SetCurrentVideoMediaType(IMFMediaType* mt)
             {
                 auto lock = _lock.LockExclusive();
 
@@ -181,14 +190,6 @@ namespace ABI
                 }
 
                 return _videoStreamSink->InternalSetCurrentMediaType(mt);
-            }
-
-            // IFrameGrabber
-
-            IFACEMETHODIMP GetFrameCount( DWORD *pCount )
-            {
-                *pCount = 1;
-                return S_OK;
             }
 
             // IMediaExtension

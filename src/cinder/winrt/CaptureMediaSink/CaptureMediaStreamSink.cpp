@@ -46,10 +46,10 @@ namespace ABI
             , _id(-1)
             , _width(0)
             , _height(0)
+            , sampleCounter(0)
         {
         }
 
-        // zv   partial implementation
         HRESULT CStreamSink::RuntimeClassInitialize(
             __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt
             // SampleHandler^ sampleHandler
@@ -186,12 +186,28 @@ namespace ABI
             return S_OK;
         }
 
+        HRESULT CStreamSink::GetSampleCounter(DWORD *pSampleCounter)
+        {
+            *pSampleCounter = sampleCounter;
+            return S_OK;
+        }
+
         HRESULT CStreamSink::ProcessSample(__in_opt IMFSample *sample)
         {
             auto lock = _lock.LockExclusive();
             HRESULT hr = S_OK;
             // TraceScopeHr(this, &hr);
 
+            TCC("ProcessSample called"); TCNL;
+
+            if (sample != nullptr) {
+                TCC("got sample"); TCNL;
+                sampleCounter++;
+            }
+
+            // test
+            return S_OK;
+#if 0
             if (sample == nullptr)
             {
                 // Trace("@%p IMFSample @nullptr", this);
@@ -203,8 +219,8 @@ namespace ABI
                 CHK_RETURN(OriginateError(MF_E_SHUTDOWN));
             }
 
-            ComPtr<IMFMediaBuffer> buffer1D;
-            CHK_RETURN(sample->ConvertToContiguousBuffer(&buffer1D));
+            //ComPtr<IMFMediaBuffer> buffer1D;
+            //CHK_RETURN(sample->ConvertToContiguousBuffer(&buffer1D));
 
             long long time = 0;
             (void)sample->GetSampleTime(&time);
@@ -218,6 +234,7 @@ namespace ABI
             ComPtr<IMF2DBuffer2> buffer2D;
             if ((_width != 0) && (_height != 0) && SUCCEEDED(buffer1D.As(&buffer2D)))
             {
+                TCC("got video sample"); TCNL;
                 // TODO
                 // CHK_RETURN(_factory->CreateMediaBuffer2DReference(buffer2D.Get(), _subType.Data1, _width, _height, time, duration, &mediaBuffer));
             }
@@ -245,6 +262,7 @@ namespace ABI
             }
 
             return S_OK;
+#endif
         }
 
         HRESULT CStreamSink::PlaceMarker(__in MFSTREAMSINK_MARKER_TYPE /*markerType*/, __in const PROPVARIANT * /*markerValue*/, __in const PROPVARIANT * contextValue)
@@ -494,7 +512,7 @@ namespace ABI
 
             ComPtr<IMFMediaType> mt;
             CHK_RETURN(MFCreateMediaType(&mt));
-            TCC("MFCreateMediaType passed"); TCNL;
+            // TCC("MFCreateMediaType passed"); TCNL;
             CHK_RETURN(_curMT->CopyAllItems(mt.Get()));
             *mediaType = mt.Detach();
 
@@ -555,13 +573,13 @@ namespace ABI
                 (majorType == _majorType) &&
                 (subType == _subType))
             {
-                TCC("_VerifyMediaType passed"); TCNL;
+                // TCC("_VerifyMediaType passed"); TCNL;
                 return S_OK;
             }
             else
             {
-                TCC("_VerifyMediaType FAILED"); TCNL;
-//                 CHK_RETURN(OriginateError(MF_E_INVALIDMEDIATYPE));
+                // TCC("_VerifyMediaType FAILED"); TCNL;
+                // CHK_RETURN(OriginateError(MF_E_INVALIDMEDIATYPE));
                 return S_OK;
             }
 
@@ -581,7 +599,7 @@ namespace ABI
                 CHK_RETURN(MFGetAttributeSize(mt, MF_MT_FRAME_SIZE, &_width, &_height));
 
                 // debug
-                TCC("_UpdateMediaType passed: "); TC(_width); TC(_height); TCNL;
+                // TCC("_UpdateMediaType passed: "); TC(_width); TC(_height); TCNL;
             }
 
             CHK_RETURN(mt->CopyAllItems(_curMT.Get()));
