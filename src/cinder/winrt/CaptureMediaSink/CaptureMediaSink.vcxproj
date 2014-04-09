@@ -219,6 +219,7 @@
     <ClInclude Include="CaptureMediaSink.h" />
     <ClInclude Include="CaptureMediaStreamSink.h" />
     <ClInclude Include="Helpers.h" />
+    <ClInclude Include="IFrameGrabber.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

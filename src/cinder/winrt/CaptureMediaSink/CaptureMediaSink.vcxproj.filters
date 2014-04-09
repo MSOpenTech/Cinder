@@ -12,6 +12,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="CaptureMediaStreamSink.h" />
+    <ClInclude Include="IFrameGrabber.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
