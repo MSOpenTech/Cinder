@@ -35,9 +35,9 @@ __declspec(dllexport) void __cdecl
 createMediaExtension(
 ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
 ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
-ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps,
-MediaWinRT::SampleHandlerType *audioHandler,
-MediaWinRT::SampleHandlerType *videoHandler
+ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+//MediaWinRT::SampleHandlerType *audioHandler,
+//MediaWinRT::SampleHandlerType *videoHandler
 )
 {
     // temp
@@ -60,7 +60,6 @@ MediaWinRT::SampleHandlerType *videoHandler
     Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
     Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(
         &ms, audioProps, videoProps
-        // , h, h
         );
 
     // we cannot allow the newly created media sink to get destroyed,
