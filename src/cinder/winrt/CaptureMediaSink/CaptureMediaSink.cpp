@@ -24,12 +24,17 @@
     // ActivatableClass(CSink);
 //}
 
+//namespace MediaWinRT {
+//    public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
+//}
 
 __declspec(dllexport) void __cdecl
 createMediaExtension(
 ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
 ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
-ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps,
+ABI::CaptureMediaSink::SampleHandler ^audioHandler,
+ABI::CaptureMediaSink::SampleHandler ^videoHandler
 )
 {
     // temp
@@ -44,7 +49,9 @@ ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
     // a native type cannot derive from a WinRT type 'Windows::Media::IMediaExtension'
     //
     Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
-    Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(&ms, audioProps, videoProps);
+    Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(
+        &ms, audioProps, videoProps, audioHandler, videoHandler
+        );
 
     // we cannot allow the newly created media sink to get destroyed,
     // so copy it; this also does an AddRef internally

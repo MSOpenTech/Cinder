@@ -73,16 +73,21 @@ using namespace std;
 
 using namespace Microsoft::WRL::Details;
 
+namespace ABI {
+    namespace CaptureMediaSink {
+        public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
+    }
+}
 
-// for CaptureMediaSink version
-//
 // createMediaExtension() is exported manually from the media sink DLL
 //  maybe could have used: DllGetActivationFactory or DllGetClassObject instead?
 __declspec(dllexport) void __cdecl
 createMediaExtension(
 ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
 ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
-ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps,
+ABI::CaptureMediaSink::SampleHandler ^audioHandler,
+ABI::CaptureMediaSink::SampleHandler ^videoHandler
 );
 
 
@@ -272,6 +277,18 @@ namespace MediaWinRT
                         TC(audioProps->Bitrate); TCNL;
                         TCNL;
 
+                        // get stream properties in ABI form
+                        auto iaudiopropsABI = reinterpret_cast
+                            <ABI::Windows::Media::MediaProperties::IAudioEncodingProperties *>(audioProps);
+                        auto ivideopropsABI = reinterpret_cast
+                            <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(videoProps);
+
+                        // pass in sample handlers
+                        ABI::CaptureMediaSink::SampleHandler ^audioSampleHandler = nullptr;
+                        ABI::CaptureMediaSink::SampleHandler ^videoSampleHandler = nullptr;
+//                        auto audioSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessAudioSample);
+//                        auto videoSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessVideoSample);
+
                         // create the custom media sink:
                         //
                         // we cannot pull in the definition of the media sink into WinRT,
@@ -282,21 +299,10 @@ namespace MediaWinRT
                         // so we use a standalone factory function in the DLL
                         // there may be a better way to do this using an ActivationFactory in WRL
                         //
-                        // get stream properties in ABI form
-                        auto iaudiopropsABI = reinterpret_cast
-                            <ABI::Windows::Media::MediaProperties::IAudioEncodingProperties *>(audioProps);
-                        auto ivideopropsABI = reinterpret_cast
-                            <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(videoProps);
-
-                        // pass in sample handlers
-                        auto audioSampleHandler = ref new SampleHandler(this, &ProcessAudioSample);
-                        auto videoSampleHandler = ref new SampleHandler(this, &ProcessVideoSample);
-
-
-                        //
                         // create the custom media sink using factory
                         ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
-                        createMediaExtension(&pCustomMediaSink, iaudiopropsABI, ivideopropsABI);
+                        createMediaExtension(&pCustomMediaSink, iaudiopropsABI, ivideopropsABI,
+                            audioSampleHandler, videoSampleHandler );
 
                         // treat custom media sink as an extension
                         IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);

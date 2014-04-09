@@ -40,12 +40,17 @@ namespace Microsoft {
 
 // namespace CaptureMediaStreamSink {
 
+//namespace ABI {
+//    namespace CaptureMediaSink {
+//        public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
+//    }
+//}
+
+
 namespace ABI
 {
     namespace CaptureMediaSink {
 
-
-        
         public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
 
         class CStreamSink :
@@ -209,6 +214,7 @@ namespace ABI
             Microsoft::WRL::ComPtr<IMFMediaEventQueue> _eventQueue;
             // Microsoft::WRL::ComPtr<MediaCore::InteropServices::IMediaBufferNativeFactory> _factory;
             // MediaReaders::SampleHandler^ _sampleHandler;
+            SampleHandler ^_sampleHandler;
 
             GUID _majorType;
             GUID _subType;

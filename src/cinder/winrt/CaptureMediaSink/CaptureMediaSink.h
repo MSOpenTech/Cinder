@@ -75,6 +75,8 @@ namespace ABI
         const unsigned int c_audioStreamSinkId = 0;
         const unsigned int c_videoStreamSinkId = 1;
 
+        // public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
+
         class CSink
             : public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags< Microsoft::WRL::RuntimeClassType::WinRtClassicComMix >,
