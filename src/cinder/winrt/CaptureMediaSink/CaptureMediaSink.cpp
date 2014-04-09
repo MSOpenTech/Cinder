@@ -16,6 +16,8 @@
 // #include "CaptureMediaSink_h.h"
 #include "CaptureMediaSink.h"
 
+// #include "MediaWinRThandlers.h"
+
 #include <windows.media.h>
 
 //namespace ABI
@@ -24,24 +26,31 @@
     // ActivatableClass(CSink);
 //}
 
-//namespace MediaWinRT {
-//    public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
-//}
+namespace MediaWinRT {
+    typedef void(*SampleHandlerType)( /* BufferCore::IMediaBufferReference^ sample */);
+}
+
 
 __declspec(dllexport) void __cdecl
 createMediaExtension(
 ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
 ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
 ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps,
-ABI::CaptureMediaSink::SampleHandler ^audioHandler,
-ABI::CaptureMediaSink::SampleHandler ^videoHandler
+MediaWinRT::SampleHandlerType *audioHandler,
+MediaWinRT::SampleHandlerType *videoHandler
 )
 {
     // temp
     //    __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
     // ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps = nullptr;
 
-//    auto videoSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler( &ProcessVideoSample );
+    //    auto videoSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler( &ProcessVideoSample );
+    // auto videoSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler();
+
+    // causes error:
+    // 6>C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v12.0\AppxPackage\Microsoft.AppXPackage.Targets(1350,9): error APPX1706: The .winmd file 'CaptureMediaSink.winmd' contains type 'ABI.CaptureMediaSink.SampleHandler' outside its root namespace 'CaptureMediaSink'. Make sure that all public types appear under a common root namespace that matches the output file name.
+    //
+    // ABI::CaptureMediaSink::SampleHandler ^h = nullptr;
 
     // use WRL to make and initialize the custom media sink
     // 
@@ -50,7 +59,8 @@ ABI::CaptureMediaSink::SampleHandler ^videoHandler
     //
     Microsoft::WRL::ComPtr<ABI::CaptureMediaSink::CSink> ms;
     Microsoft::WRL::Details::MakeAndInitialize<ABI::CaptureMediaSink::CSink>(
-        &ms, audioProps, videoProps, audioHandler, videoHandler
+        &ms, audioProps, videoProps
+        // , h, h
         );
 
     // we cannot allow the newly created media sink to get destroyed,

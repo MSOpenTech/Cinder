@@ -18,6 +18,12 @@
 
 #include "MediaCaptureWinRT.h"
 
+// separate include file is required for WinRT app packaging (to avoid error APPX1706)
+// temp path
+// #include "../../../src/cinder/winrt/CaptureMediaSink/MediaWinRThandlers.h"
+
+// MediaWinRThandlers.h"
+
 // #include  "app/winrt/CaptureLib.h"
 
 #include <collection.h>
@@ -38,6 +44,7 @@
 
 #include <windows.media.h>
 #include <windows.media.mediaproperties.h>
+
 
 // zv
 #include "../../../include/cinder/app/winrt/cdebug.h"
@@ -73,10 +80,9 @@ using namespace std;
 
 using namespace Microsoft::WRL::Details;
 
-namespace ABI {
-    namespace CaptureMediaSink {
-        public delegate void SampleHandler( /* BufferCore::IMediaBufferReference^ sample */);
-    }
+
+namespace MediaWinRT {
+    typedef void(*SampleHandlerType)( /* BufferCore::IMediaBufferReference^ sample */);
 }
 
 // createMediaExtension() is exported manually from the media sink DLL
@@ -86,8 +92,8 @@ createMediaExtension(
 ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
 ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
 ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps,
-ABI::CaptureMediaSink::SampleHandler ^audioHandler,
-ABI::CaptureMediaSink::SampleHandler ^videoHandler
+MediaWinRT::SampleHandlerType *audioHandler,
+MediaWinRT::SampleHandlerType *videoHandler
 );
 
 
@@ -284,8 +290,8 @@ namespace MediaWinRT
                             <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(videoProps);
 
                         // pass in sample handlers
-                        ABI::CaptureMediaSink::SampleHandler ^audioSampleHandler = nullptr;
-                        ABI::CaptureMediaSink::SampleHandler ^videoSampleHandler = nullptr;
+                        MediaWinRT::SampleHandlerType *audioHandler = nullptr;
+                        MediaWinRT::SampleHandlerType *videoHandler = nullptr;
 //                        auto audioSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessAudioSample);
 //                        auto videoSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessVideoSample);
 
@@ -302,7 +308,7 @@ namespace MediaWinRT
                         // create the custom media sink using factory
                         ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
                         createMediaExtension(&pCustomMediaSink, iaudiopropsABI, ivideopropsABI,
-                            audioSampleHandler, videoSampleHandler );
+                            audioHandler, videoHandler);
 
                         // treat custom media sink as an extension
                         IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
