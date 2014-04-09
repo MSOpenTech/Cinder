@@ -51,8 +51,8 @@ namespace ABI
 
         // zv   partial implementation
         HRESULT CStreamSink::RuntimeClassInitialize(
-            __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt,
-            SampleHandler^ sampleHandler
+            __in IMFMediaSink* sink, __in DWORD id, __in IMFMediaType* mt
+            // SampleHandler^ sampleHandler
             ) {
             HRESULT hr = S_OK;
 
@@ -63,7 +63,7 @@ namespace ABI
 
             _sink = sink;
             _id = id;
-            _sampleHandler = sampleHandler;
+            // _sampleHandler = sampleHandler;
 
             TCC("CStreamSink::RuntimeClassInitialize"); TC(id);  TCNL;
 

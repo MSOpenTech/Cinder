@@ -96,9 +96,9 @@ namespace ABI
 
             HRESULT RuntimeClassInitialize(
                 __in_opt ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
-                __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps,
-                SampleHandler^ audioSampleHandler,
-                SampleHandler^ videoSampleHandler
+                __in_opt ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+                // SampleHandler^ audioSampleHandler,
+                // SampleHandler^ videoSampleHandler
                 )
             {
                 HRESULT hr = S_OK;
@@ -111,8 +111,8 @@ namespace ABI
                 {
                     CHK_RETURN(MFCreateMediaTypeFromProperties(audioProps, &audioMT));
                     CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<CStreamSink>
-                    (&_audioStreamSink, this, c_audioStreamSinkId, audioMT.Get(),
-                        audioSampleHandler
+                    (&_audioStreamSink, this, c_audioStreamSinkId, audioMT.Get()
+                        // audioSampleHandler
                         ));
                 }
 
@@ -121,8 +121,8 @@ namespace ABI
                 {
                     CHK_RETURN(MFCreateMediaTypeFromProperties(videoProps, &videoMT));
                     CHK_RETURN(Microsoft::WRL::Details::MakeAndInitialize<CStreamSink>
-                        (&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get(),
-                        videoSampleHandler
+                        (&_videoStreamSink, this, c_videoStreamSinkId, videoMT.Get()
+                        // videoSampleHandler
                         ));
                 }
 
