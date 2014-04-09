@@ -101,7 +101,7 @@ ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
 
 namespace MediaWinRT
 {
-// version using MFSourceReader
+    // version using MFSourceReader
 #if 0
     // see Using the Source Reader to Process Media Data
     // http://msdn.microsoft.com/en-us/library/windows/desktop/dd389281(v=vs.85).aspx
@@ -148,7 +148,6 @@ namespace MediaWinRT
     {
         try {
 
-
             // see http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.capture.mediacaptureinitializationsettings.aspx
 
             /*  on test system, enumeration results:
@@ -191,7 +190,7 @@ namespace MediaWinRT
                     for (size_t i = 0; i < devInfo->Size; i++)
                     {
                         auto d = devInfo->GetAt(i);
-                        TC(i);  TCSW( d->Name->Data() );    TCNL;
+                        TC(i);  TCSW(d->Name->Data());    TCNL;
                     }
 
                     // auto settings = ref new Windows::Media::Capture::MediaCaptureInitializationSettings();
@@ -293,8 +292,8 @@ namespace MediaWinRT
                         // pass in sample handlers
                         // MediaWinRT::SampleHandlerType *audioHandler = nullptr;
                         // MediaWinRT::SampleHandlerType *videoHandler = nullptr;
-//                        auto audioSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessAudioSample);
-//                        auto videoSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessVideoSample);
+                        //                        auto audioSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessAudioSample);
+                        //                        auto videoSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessVideoSample);
 
                         // create the custom media sink:
                         //
@@ -308,7 +307,7 @@ namespace MediaWinRT
                         //
                         // create the custom media sink using factory
                         ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
-                        createMediaExtension(&pCustomMediaSink, iaudiopropsABI, ivideopropsABI );
+                        createMediaExtension(&pCustomMediaSink, iaudiopropsABI, ivideopropsABI);
 
                         // treat custom media sink as an extension
                         IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
@@ -316,14 +315,29 @@ namespace MediaWinRT
                         // record using the custom media sink
                         create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(encodingProfile, im));
 
-                        // get frame counter
+                        // get IFrameGrabber interface
                         Microsoft::WRL::ComPtr<IFrameGrabber>ifg;
                         ((IUnknown*)im)->QueryInterface(IID_PPV_ARGS(&ifg));
-                        DWORD fc = 0;
-                        TC(fc); TCNL;
-                        ifg->GetFrameCount( &fc );
-                        TC(fc); TCNL;
 
+                        // get frame counter test
+                        // DWORD fc = 0, prevfc = -1;
+                        // TC(fc); TCNL;
+                        // ifg->GetFrameCount( &fc );
+                        // TC(fc); TCNL;
+
+                        // crappy test loop
+                        DWORD fc = 0, prevfc = 0;
+                        HRESULT hr;
+                        hr = ifg->RequestVideoSample();
+                        TC(hr); TC(fc); TCNL;
+                        while (1) {
+                            ifg->GetFrameCount(&fc);
+                            if (fc != prevfc) {
+                                hr = ifg->RequestVideoSample();
+                                TC(hr); TC(fc); TCNL;
+                                prevfc = fc;
+                            }
+                        }
 
 #if 0
                         // set the capture properties to match the custom media sink
@@ -641,7 +655,7 @@ reference:
         });
     }
 
-    void MediaCaptureWinRT::ProcessAudioSample( 
+    void MediaCaptureWinRT::ProcessAudioSample(
         // Microsoft::Windows::BufferCore::IMediaBufferReference^ sample
         )
     {
