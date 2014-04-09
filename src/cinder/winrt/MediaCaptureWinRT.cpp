@@ -45,6 +45,7 @@
 #include <windows.media.h>
 #include <windows.media.mediaproperties.h>
 
+#include "../../../src/cinder/winrt/CaptureMediaSink/IFrameGrabber.h"
 
 // zv
 #include "../../../include/cinder/app/winrt/cdebug.h"
@@ -91,9 +92,9 @@ __declspec(dllexport) void __cdecl
 createMediaExtension(
 ABI::Windows::Media::IMediaExtension** ppCustomMediaSink,
 ABI::Windows::Media::MediaProperties::IAudioEncodingProperties* audioProps,
-ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps,
-MediaWinRT::SampleHandlerType *audioHandler,
-MediaWinRT::SampleHandlerType *videoHandler
+ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
+// MediaWinRT::SampleHandlerType *audioHandler,
+// MediaWinRT::SampleHandlerType *videoHandler
 );
 
 
@@ -290,8 +291,8 @@ namespace MediaWinRT
                             <ABI::Windows::Media::MediaProperties::IVideoEncodingProperties *>(videoProps);
 
                         // pass in sample handlers
-                        MediaWinRT::SampleHandlerType *audioHandler = nullptr;
-                        MediaWinRT::SampleHandlerType *videoHandler = nullptr;
+                        // MediaWinRT::SampleHandlerType *audioHandler = nullptr;
+                        // MediaWinRT::SampleHandlerType *videoHandler = nullptr;
 //                        auto audioSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessAudioSample);
 //                        auto videoSampleHandler = ref new ABI::CaptureMediaSink::SampleHandler(this, &ProcessVideoSample);
 
@@ -307,8 +308,7 @@ namespace MediaWinRT
                         //
                         // create the custom media sink using factory
                         ABI::Windows::Media::IMediaExtension* pCustomMediaSink;
-                        createMediaExtension(&pCustomMediaSink, iaudiopropsABI, ivideopropsABI,
-                            audioHandler, videoHandler);
+                        createMediaExtension(&pCustomMediaSink, iaudiopropsABI, ivideopropsABI );
 
                         // treat custom media sink as an extension
                         IMediaExtension^ im = reinterpret_cast<IMediaExtension^>(pCustomMediaSink);
@@ -316,7 +316,13 @@ namespace MediaWinRT
                         // record using the custom media sink
                         create_task(m_mediaCaptureMgr->StartRecordToCustomSinkAsync(encodingProfile, im));
 
-                        // try to get a frame
+                        // get frame counter
+                        Microsoft::WRL::ComPtr<IFrameGrabber>ifg;
+                        ((IUnknown*)im)->QueryInterface(IID_PPV_ARGS(&ifg));
+                        DWORD fc = 0;
+                        TC(fc); TCNL;
+                        ifg->GetFrameCount( &fc );
+                        TC(fc); TCNL;
 
 
 #if 0
