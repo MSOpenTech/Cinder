@@ -20,11 +20,22 @@
 typedef interface IFrameGrabber IFrameGrabber;
 
 MIDL_INTERFACE("715C10A9-D1E6-4B64-9961-A414CD470E89")
-IFrameGrabber : public IInspectable
+IFrameGrabber : public IUnknown
+// IInspectable
 {
 public:
-    virtual HRESULT STDMETHODCALLTYPE GetFrameCount(
-        DWORD *pCount ) = 0;
+    //virtual HRESULT STDMETHODCALLTYPE GetFrameCount(
+    //    DWORD *pCount ) = 0;
+
+    virtual IFACEMETHODIMP GetFrameCount(DWORD *pCount) = 0;
+
+    virtual IFACEMETHODIMP RequestAudioSample() = 0;
+
+    virtual IFACEMETHODIMP RequestVideoSample() = 0;
+
+    // IFACEMETHODIMP SetCurrentAudioMediaType(IMFMediaType* mt)
+    // IFACEMETHODIMP SetCurrentVideoMediaType(IMFMediaType* mt)
+
 };
 
 extern const __declspec(selectany) IID & IID_IFrameGrabber = __uuidof(IFrameGrabber);
