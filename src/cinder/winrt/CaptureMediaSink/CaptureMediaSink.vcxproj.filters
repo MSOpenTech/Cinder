@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
-    <Text Include="embedded_doc_links.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CaptureMediaSink.cpp" />

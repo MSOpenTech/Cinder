@@ -29,7 +29,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{20c664f2-23b1-43f0-ac8b-cd2ef2a8a36d}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>CaptureMediaSink</ProjectName>
+    <ProjectName>CaptureMediaSink_not_used</ProjectName>
     <RootNamespace>CaptureMediaSink</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
@@ -224,7 +224,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="embedded_doc_links.txt" />
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
