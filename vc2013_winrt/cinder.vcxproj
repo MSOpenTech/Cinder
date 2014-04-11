@@ -1038,8 +1038,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\cinder\winrt\CaptureMediaSink\CaptureMediaSink.vcxproj">
-      <Project>{20c664f2-23b1-43f0-ac8b-cd2ef2a8a36d}</Project>
+    <ProjectReference Include="..\src\cinder\winrt\CaptureFrameGrabber\CaptureFrameGrabber.vcxproj">
+      <Project>{899436e5-bd10-42d3-9adb-685cc8912a53}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
