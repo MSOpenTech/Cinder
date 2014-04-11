@@ -72,15 +72,12 @@ void Controller::Start(unsigned int selectedVideoDeviceIndex)
 
     auto settings = ref new MediaCaptureInitializationSettings();
 
-    // zv
-    // settings->StreamingCaptureMode = StreamingCaptureMode::Video; // Video-only capture
-    settings->StreamingCaptureMode = StreamingCaptureMode::AudioAndVideo;
+    settings->StreamingCaptureMode = StreamingCaptureMode::Video; // Video-only capture
+    // settings->StreamingCaptureMode = StreamingCaptureMode::AudioAndVideo;
 
-    // zv
     // enumeration may be needed to get actual device id, otherwise GetMediaStreamProperties will fail
     // get video device and store into settings
     // 
-    // WHY IS THIS FAILING? returning zero devices - BECAUSE THE CAMERA WAS UNPLUGGED - DOH!
     create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture))
         .then([this, settings](task<DeviceInformationCollection^> findTask)
     {
