@@ -45,7 +45,9 @@
 #include <windows.media.h>
 #include <windows.media.mediaproperties.h>
 
-#include "../../../src/cinder/winrt/CaptureMediaSink/IFrameGrabber.h"
+// #include "../../../src/cinder/winrt/CaptureMediaSink/IFrameGrabber.h"
+// #include "../../../src/cinder/winrt/CaptureFrameGrabber/Controller.h"
+
 
 // zv
 #include "../../../include/cinder/app/winrt/cdebug.h"
@@ -81,7 +83,8 @@ using namespace std;
 
 using namespace Microsoft::WRL::Details;
 
-
+// for version using CaptureMediaSink
+#if 0
 namespace MediaWinRT {
     typedef void(*SampleHandlerType)( /* BufferCore::IMediaBufferReference^ sample */);
 }
@@ -96,11 +99,21 @@ ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
 // MediaWinRT::SampleHandlerType *audioHandler,
 // MediaWinRT::SampleHandlerType *videoHandler
 );
-
+#endif
 
 
 namespace MediaWinRT
 {
+    // version using CaptureFrameGrabber
+#if 1
+    void MediaCaptureWinRT::start()
+    {
+        auto controller = ref new CaptureFrameGrabber::Controller;
+
+        controller->Start(0);
+    }
+#endif
+
     // version using MFSourceReader
 #if 0
     // see Using the Source Reader to Process Media Data
@@ -140,9 +153,8 @@ namespace MediaWinRT
     }
 #endif
 
-
     // version using CaptureMediaSink
-#if 1
+#if 0
 
     void MediaCaptureWinRT::start()
     {
