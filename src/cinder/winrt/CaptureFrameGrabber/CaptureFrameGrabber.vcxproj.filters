@@ -20,7 +20,4 @@
     <ClInclude Include="MediaStreamSink.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="C:\Users\daver_000\Documents\embedded_doc_links.txt" />
-  </ItemGroup>
 </Project>
