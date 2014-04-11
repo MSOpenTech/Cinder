@@ -1,0 +1,378 @@
+This file can be opened into Visual Studio, and then 
+control-click on a link to open the article in the embedded
+browser.  The ctrl-= key combo will zoom up the font if needed
+in the embedded browser.
+
+MS Help Desk telephone: 866-539-4191
+
+(list is unsorted right now)
+
+How to: Create a Task that Completes After a Delay
+http://msdn.microsoft.com/en-us/library/hh873170.aspx
+
+Task Parallelism (Concurrency Runtime)
+http://msdn.microsoft.com/en-us/library/dd492427.aspx
+
+MSDN Library (top)
+http://msdn.microsoft.com/en-us/library/ms123401.aspx
+
+Collections (C++/CX) (top)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh700103.aspx
+
+Windows Runtime C++ Template Library (WRL) (top)
+http://msdn.microsoft.com/en-us/library/hh438466.aspx
+
+WRL Reference (top)
+http://msdn.microsoft.com/en-us/library/jj155853.aspx
+
+The Windows Runtime Library (WRL)
+http://channel9.msdn.com/Events/Windows-Camp/Developing-Windows-8-Metro-style-apps-in-Cpp/The-Windows-Runtime-Library-WRL-
+
+book: Essential COM (mostly online)
+http://books.google.com/books/about/Essential_COM.html?id=kfRWvKSePmAC
+
+VC 2012 Express (download)
+http://www.microsoft.com/en-us/download/details.aspx?id=34673
+
+Modern C++ Overview
+http://msdn.microsoft.com/en-us/library/hh279654.aspx
+
+Media capture using capture device sample (XAML)
+http://code.msdn.microsoft.com/windowsapps/Media-Capture-Sample-adf87622
+
+MediaCapture.StartRecordToCustomSinkAsync:
+http://msdn.microsoft.com/en-us/library/windows/apps/hh700855.aspx
+
+Creating Windows Runtime Components in C++:
+http://msdn.microsoft.com/en-US/library/windows/apps/hh441569.aspx
+
+arrays: http://msdn.microsoft.com/en-us/library/windows/apps/hh700131.aspx
+
+tasks: http://msdn.microsoft.com/en-us/library/dd492427.aspx
+
+create_task:
+http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k("ppltasks%2FConcurrency%3A%3Acreate_task");k("Concurrency%3A%3Acreate_task");k(create_task);k(DevLang-C%2B%2B);k(TargetOS-Windows);k(TargetFrameworkMoniker-MoCOM-CLR)&rd=true
+
+lambdas: http://msdn.microsoft.com/en-us/library/dd293603.aspx
+
+collections: http://msdn.microsoft.com/en-US/library/windows/apps/hh700103.aspx
+
+delegates: http://msdn.microsoft.com/library/windows/apps/hh755798.aspx
+
+boxing: http://msdn.microsoft.com/en-us/library/windows/apps/hh969554.aspx
+
+Alternatives to Windows APIs in Windows Store apps:
+http://msdn.microsoft.com/en-us/library/windows/apps/hh464945.aspx
+
+why no using statements in header files
+see http://stackoverflow.com/questions/4872373/why-is-including-using-namespace-into-a-header-file-a-bad-idea-in-c
+
+Media Foundation (top) 
+http://msdn.microsoft.com/en-us/library/ms694197.aspx
+
+MF interfaces: http://msdn.microsoft.com/en-us/library/ms696268(v=vs.85).aspx
+
+MF Sink Writer
+http://msdn.microsoft.com/en-us/library/ff819461%28v=vs.85%29.aspx
+
+MF Source Reader
+http://msdn.microsoft.com/en-us/library/dd940436%28v=vs.85%29.aspx
+
+MF Samples
+http://msdn.microsoft.com/en-us/library/aa371827%28v=vs.85%29.aspx
+
+MF Media Sinks
+http://msdn.microsoft.com/en-us/library/ms701626%28v=vs.85%29.aspx
+
+Video Media Types
+http://msdn.microsoft.com/en-us/library/aa473818%28v=vs.85%29.aspx
+
+Recommended 8-Bit YUV Formats for Video Rendering
+esp. YUV to RGB888 conversion
+http://msdn.microsoft.com/en-us/library/dd206750%28v=vs.85%29.aspx
+
+The Component Object Model
+http://msdn.microsoft.com/en-us/library/ms694363%28v=vs.85%29.aspx
+
+COM Technical Overview
+http://msdn.microsoft.com/en-us/library/ff637359%28v=vs.85%29.aspx
+
+Win32 and COM for Windows Store apps (multimedia)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh452756.aspx
+
+VideoDeviceController class (WinRT)
+http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.devices.videodevicecontroller.aspx
+
+IMediaDeviceController interface
+http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.devices.imediadevicecontroller.aspx
+
+MediaCapture class
+http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.capture.mediacapture.aspx
+
+book on MF
+http://my.safaribooksonline.com/book/web-design-and-development/9780735665620
+
+using Win32 Simulator
+http://msdn.microsoft.com/library/windows/apps/hh441475.aspx
+
+Windows Phone 8 Code Sharing Pitfalls
+http://blog.markedup.com/2013/07/winrt-windows-phone-8-code-sharing-pitfalls/
+
+Visual C++ and WinRT/Metro - Some fundamentals
+http://www.codeproject.com/Articles/262151/Visual-Cplusplus-and-WinRT-Metro-Some-fundamentals
+
+Ref classes and structs (C++/CX)
+http://msdn.microsoft.com/library/windows/apps/hh699870.aspx
+
+Under the Covers of WinRT Using C++
+http://blogs.microsoft.co.il/sasha/2011/09/17/under-the-covers-of-winrt-using-c/
+
+Direct3D 11 Video APIs
+http://msdn.microsoft.com/en-us/library/windows/desktop/hh447677%28v=vs.85%29.aspx
+
+How to Update IPropertySet in MFT
+http://answers.flyppdevportal.com/categories/metro/nativecode.aspx?ID=39365c13-3468-4130-a8ed-6bad4df231b1
+
+How to pass IMFAttributes/IPropertySet to MediaCapture.AddEffectAsync() or MediaElement.AddVideoEffect()
+see post by Chris Guzak
+http://social.msdn.microsoft.com/Forums/windowsapps/en-US/f140c786-032a-4892-b502-baae0127a5cb/how-to-pass-imfattributesipropertyset-to-mediacaptureaddeffectasync-or?forum=winappswithcsharp
+
+Getting started with the Camera APIs for native code - Nokia Developer Wiki
+http://developer.nokia.com/community/wiki/Getting_started_with_the_Camera_APIs_for_native_code
+
+Quickstart: video and audio (Windows Store apps using C#/VB/C++ and XAML)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh465160.aspx
+
+Quickstart: Accessing files programmatically
+http://msdn.microsoft.com/en-us/library/windows/apps/jj150596.aspx
+
+Top level: App architecture
+http://msdn.microsoft.com/library/windows/apps/br211361
+
+Top level: How to...
+http://msdn.microsoft.com/library/windows/apps/bg124284
+
+DirectX Graphics Development with Visual Studio 2012
+http://blogs.msdn.com/b/vcblog/archive/2012/09/25/directx-graphics-development-with-visual-studio-2012.aspx
+
+Games for Windows and the DirectX SDK
+http://blogs.msdn.com/b/chuckw
+
+Living without D3DX
+http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx
+
+DirectX programming
+http://msdn.microsoft.com/en-us/library/windows/apps/bg182880.aspx
+
+Windows Runtime core application and window objects (Windows Store apps using C++ and DirectX)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh750291.aspx
+
+XAML and Direct3D apps for Windows Phone 8
+http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj207012%28v=vs.105%29.aspx
+
+XAML DirectX 3D shooting game sample
+http://code.msdn.microsoft.com/windowsapps/Metro-style-DirectX-18f98448
+
+Herb Sutter
+http://channel9.msdn.com/Events/BUILD/BUILD2011/TOOL-532T#c634517976543836549
+
+Use the Microsoft Visual Studio 2013 DirectX templates
+http://msdn.microsoft.com/en-us/library/windows/apps/dn481536.aspx
+
+book: Windows 8. 1 Apps with XAML and C# Unleashed
+http://books.google.com/books?id=wTY0AgAAQBAJ&pg=PA195&lpg=PA195&dq=xaml+threading&source=bl&ots=mT3mnV3K93&sig=LjBCVUT9pe29TwJZ_CvW-5dPMcY&hl=en&sa=X&ei=VFeyUuufHMnZoASC9YGgDg&ved=0CE8Q6AEwBQ#v=onepage&q=xaml%20threading&f=false
+
+Walkthrough: Creating a basic Windows Runtime component in C++ and calling it from JavaScript or C#
+http://msdn.microsoft.com/en-us/library/windows/apps/hh755833.aspx
+
+Roadmap for Windows Store apps using C++
+http://msdn.microsoft.com/en-us/library/windows/apps/hh700360.aspx
+
+App packages and deployment (Windows Store apps)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh464929.aspx
+
+Multimedia - Updated in Windows 8.1
+http://msdn.microsoft.com/en-us/library/windows/apps/bg182883.aspx#one
+
+Media Foundation Transforms
+http://msdn.microsoft.com/en-us/library/windows/desktop/ms703138%28v=vs.85%29.aspx
+
+Media Sinks (Desktop)
+http://msdn.microsoft.com/en-us/library/windows/desktop/ms701626%28v=vs.85%29.aspx
+
+API Index
+http://msdn.microsoft.com/en-us/library/windows/desktop/hh920508%28vs.85%29.aspx
+
+How to create a package manifest manually
+http://msdn.microsoft.com/en-us/library/windows/apps/br211476.aspx
+
+How to specify extensions in a package manifest
+http://msdn.microsoft.com/en-us/library/windows/apps/br211479.aspx
+
+Packaging your app by using Visual Studio
+http://msdn.microsoft.com/en-us/library/windows/apps/hh454036.aspx
+
+! Walkthrough: Creating a Windows Store app using WRL and Media Foundation
+http://msdn.microsoft.com/en-us/library/jj872764.aspx
+
+Windows Store Apps (top)
+http://msdn.microsoft.com/en-us/library/hh875012.aspx
+
+Building apps and libraries (C++/CX) (top)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh700129.aspx
+
+Compiler and Linker options (C++/CX)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh700130.aspx
+
+Static libraries (C++/CX)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh771041.aspx
+
+DLLs (C++/CX)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh699881.aspx
+
+GUID link problems
+http://support.microsoft.com/kb/130869/en-us
+
+C#, VB, and C++ project templates for Windows Store apps (Blank XAML template)
+http://msdn.microsoft.com/library/windows/apps/hh768232.aspx
+
+WINMD files Under the Hood
+http://www.codeproject.com/Articles/476957/WINMDplusFilesplusUnderplustheplusHood
+
+Raising Events in Windows Runtime Components
+http://msdn.microsoft.com/en-us/library/dn169426.aspx
+
+COM (top)
+http://msdn.microsoft.com/en-us/library/windows/desktop/ee663262%28v=vs.85%29.aspx
+
+Microsoft Interface Definition Language
+http://msdn.microsoft.com/en-us/library/windows/desktop/aa367091%28v=vs.85%29.aspx
+
+Dynamic-Link Library Search Order
+http://msdn.microsoft.com/en-us/library/windows/desktop/ms682586%28v=vs.85%29.aspx
+
+MDMERGE and metadata files
+http://msdn.microsoft.com/en-us/library/windows/desktop/hh869899%28v=vs.85%29.aspx
+
+MIDLRT and Windows Runtime components
+http://msdn.microsoft.com/en-us/library/windows/desktop/hh869900%28v=vs.85%29.aspx
+
+Defining and Exporting New GUIDs
+http://msdn.microsoft.com/en-us/library/windows/hardware/ff542998%28v=vs.85%29.aspx
+
+App contracts and extensions (Windows Store apps)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh464906.aspx
+
+Extensions (type: CT_ApplicationExtensions)
+http://msdn.microsoft.com/en-us/library/windows/apps/br211401.aspx
+
+App package manifest (top)
+http://msdn.microsoft.com/en-us/library/windows/apps/br211474.aspx
+
+Windows Store app fundamentals (top)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh750302.aspx
+
+Windows Phone MSDN SampleCode by Topic
+http://wp8samples.azurewebsites.net/WP8_Samples.html
+
+How to Update IPropertySet in MFT
+http://social.msdn.microsoft.com/Forums/windowsapps/en-US/39365c13-3468-4130-a8ed-6bad4df231b1/how-to-update-ipropertyset-in-mft?forum=winappswithnativecode
+
+Capturing Webcam Video Frames - Windows 8 Store App
+http://social.msdn.microsoft.com/Forums/windowsapps/en-US/33fd3f51-71b9-4a84-9467-1d41ba217094/capturing-webcam-video-frames-windows-8-store-app?forum=winappswithnativecode
+
+Media Event Generators
+http://msdn.microsoft.com/en-us/library/windows/desktop/ms696196%28v=vs.85%29.aspx
+
+Media Foundation Platform APIs (top)
+http://msdn.microsoft.com/en-us/library/windows/desktop/ms695191%28v=vs.85%29.aspx
+
+Working with MFT Media Buffers and Samples
+http://msdn.microsoft.com/en-us/library/windows/desktop/ff819517%28v=vs.85%29.aspx
+
+search MSDN for custom media sink
+http://social.msdn.microsoft.com/Forums/windowsapps/en-US/home?searchTerm=custom+media+sink
+
+Best way to capture video from a webcam device to a texture
+http://social.msdn.microsoft.com/Forums/windowsapps/en-US/2c4aa9c4-2dca-4558-9b5b-18d40c1b0011/best-way-to-capture-video-from-a-webcam-device-to-a-texture?forum=winappswithnativecode
+
+Video SinkWriter in Metro app
+http://social.msdn.microsoft.com/Forums/windowsapps/en-US/49bffa74-4e84-4fd6-9d67-42e8385611b8/video-sinkwriter-in-metro-app?forum=winappswithnativecode
+
+Tutorial: Using the Sink Writer to Encode Video
+http://msdn.microsoft.com/en-us/library/windows/desktop/ff819477%28v=vs.85%29.aspx
+
+How to get YUV frame out of a Custom MFT
+http://social.msdn.microsoft.com/Forums/windowsapps/en-US/f0df748c-7854-43ab-a0dd-90675cefed3a/how-to-get-yuv-frame-out-of-a-custom-mft?forum=winappswithnativecode
+
+Media Foundation and DirectShow tips, gotchas and code bits
+http://blogs.msdn.com/b/mediasdkstuff/
+
+MFCaptureToFile Sample - Shows how to capture video from a video camera to a file (MF COM)
+http://msdn.microsoft.com/en-us/library/windows/desktop/ee663604%28v=vs.85%29.aspx
+
+How to use Microsoft Media Foundation to extract thumbnail images from a video file
+http://msdn.microsoft.com/en-us/library/windows/desktop/dd757933%28v=vs.10%29.aspx
+
+Using the Source Reader to Process Media Data
+http://msdn.microsoft.com/en-us/library/windows/desktop/dd389281%28v=vs.85%29.aspx
+
+Visual C++ in Visual Studio 2013 (top)
+http://msdn.microsoft.com/en-us/library/60k1461a.aspx
+
+Visual C++ Language Reference (C++/CX) (top)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh699871.aspx
+
+How to create a WinRT WRL C++ Component from scratch that can be consumed by .NET components
+http://blogs.interknowlogy.com/2012/04/11/how-to-create-a-winrt-wrl-c-component-from-scratch-that-can-be-consumed-by-net-components/
+
+C++/CX Part 3 of [n]: Under Construction
+http://blogs.msdn.com/b/vcblog/archive/2012/10/05/cxxcxpart03underconstruction.aspx
+
+C++/CX Part 0 of [n]: An Introduction
+http://blogs.msdn.com/b/vcblog/archive/2012/08/29/cxxcxpart00anintroduction.aspx
+
+__declspec (top)
+http://msdn.microsoft.com/en-us/library/dabb5z75.aspx
+
+Creating a Windows Runtime DLL component with C++ sample
+http://code.msdn.microsoft.com/windowsapps/Creating-a-Windows-Runtime-6c399797
+
+Creating a Windows Runtime in-process component sample (C++/CX)
+http://code.msdn.microsoft.com/windowsapps/Creating-a-Windows-Runtime-460a535f
+
+create_task Function
+http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k("ppltasks%2FConcurrency%3A%3Acreate_task");k("Concurrency%3A%3Acreate_task");k(create_task);k(DevLang-C%2B%2B);k(TargetOS-Windows);k(TargetFrameworkMoniker-MoCOM-CLR)&rd=true
+
+IID_PPV_ARGS macro
+http://msdn.microsoft.com/en-us/library/windows/desktop/ee330727(v=vs.85).aspx
+
+ActivatableClass Macros
+http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k("module%2FActivatableClassWithFactory");k(ActivatableClassWithFactory);k(DevLang-C%2B%2B);k(TargetOS-Windows);k(TargetFrameworkMoniker-MoCOM-CLR)&rd=true
+
+Casting (C++/CX)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh755802.aspx
+
+VideoEncodingProperties.CreateUncompressed | createUncompressed method
+http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperties.videoencodingproperties.createuncompressed.aspx?cs-save-lang=1&cs-lang=cpp#code-snippet-1
+
+MediaEncodingSubtypes class
+http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.mediaproperties.mediaencodingsubtypes.aspx
+
+Quickstart: capturing video using the MediaCapture API
+http://msdn.microsoft.com/en-us/library/windows/apps/hh452791.aspx
+
+Supported audio and video formats (Windows Store apps)
+http://msdn.microsoft.com/en-us/library/windows/apps/hh986969.aspx
+
+MFCreateSourceReaderFromMediaSource function
+http://msdn.microsoft.com/en-us/library/windows/desktop/dd388108(v=vs.85).aspx
+
+IMFSourceReader::ReadSample method
+http://msdn.microsoft.com/en-us/library/dd374665(v=vs.85).aspx
+
+Source Reader (top)
+http://msdn.microsoft.com/en-us/library/dd940436(v=vs.85).aspx
+
+Using the Source Reader to Process Media Data
+http://msdn.microsoft.com/en-us/library/windows/desktop/dd389281(v=vs.85).aspx
