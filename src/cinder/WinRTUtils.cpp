@@ -54,7 +54,11 @@ namespace cinder { 	namespace winrt {
 float ConvertDipsToPixels(float dips)
 {
 	static float dipsPerInch = 96.0f;
-	return floor(dips * DisplayProperties::LogicalDpi / dipsPerInch + 0.5f); // Round to nearest integer.
+    // Win 8.1 update
+    DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
+    auto dpi = currentDisplayInformation->LogicalDpi;
+    // return floor(dips * DisplayProperties::LogicalDpi / dipsPerInch + 0.5f); // Round to nearest integer.
+    return floor(dips * dpi / dipsPerInch + 0.5f); // Round to nearest integer.
 }
 
 void WinRTMessageBox(Platform::String^ message, Platform::String^ buttonText)
@@ -102,16 +106,25 @@ void SwapWindowDimensions(float* width, float* height)
     // The width and height of the swap chain must be based on the window's
     // landscape-oriented width and height. If the window is in a portrait
     // orientation, the dimensions must be reversed.
-    Windows::Graphics::Display::DisplayOrientations orientation = DisplayProperties::CurrentOrientation;
-    swapDimensions =
-        orientation == DisplayOrientations::Portrait ||
-        orientation == DisplayOrientations::PortraitFlipped;
 
-    if (swapDimensions)
-    {
-        float tw = *width;
-        *width = *height;
-        *height = tw;
+    try {
+        // updated for Win 8.1        
+        DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
+        auto orientation = currentDisplayInformation->CurrentOrientation;
+        // Windows::Graphics::Display::DisplayOrientations orientation = DisplayProperties::CurrentOrientation;
+
+        swapDimensions =
+            orientation == DisplayOrientations::Portrait ||
+            orientation == DisplayOrientations::PortraitFlipped;
+
+        if (swapDimensions)
+        {
+            float tw = *width;
+            *width = *height;
+            *height = tw;
+        }
+    }
+    catch (Exception ^e) {
     }
 }
 
@@ -152,12 +165,12 @@ bool ensureUnsnapped()
     return unsnapped;
 }
 
-float getScaleFactor() {
-	return DisplayProperties::LogicalDpi / DEFAULT_DPI;
+float getScaleFactor() {    
+    return DisplayInformation::GetForCurrentView()->LogicalDpi / DEFAULT_DPI;
 }
 
 float getScaledDPIValue(float v) {
-	auto dipFactor = DisplayProperties::LogicalDpi / DEFAULT_DPI;
+    auto dipFactor = DisplayInformation::GetForCurrentView()->LogicalDpi / DEFAULT_DPI;
 	return v * dipFactor;
 }
 
