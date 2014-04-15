@@ -58,24 +58,26 @@ Controller::Controller()
     //     InitializeComponent();
 }
 
-/// <summary>
-/// Invoked when this page is about to be displayed in a Frame.
-/// </summary>
-/// <param name="e">Event data that describes how this page was reached.  The Parameter
-/// property is typically used to configure the page.</param>
-//void MainPage::OnNavigatedTo(NavigationEventArgs^ e)
 
-void Controller::Start(unsigned int selectedVideoDeviceIndex)
+bool Controller::Setup(int deviceID, int w, int h, Platform::Object ^buffer)
+{
+    _buffer = reinterpret_cast<uint8_t *>(buffer);
+    _newFrame = false;
+    return true;
+}
+
+
+void Controller::Start( int selectedVideoDeviceIndex )
 {
     _selectedVideoDeviceIndex = selectedVideoDeviceIndex;
-    // (void)e;	// Unused parameter
 
     auto settings = ref new MediaCaptureInitializationSettings();
 
     settings->StreamingCaptureMode = StreamingCaptureMode::Video; // Video-only capture
     // settings->StreamingCaptureMode = StreamingCaptureMode::AudioAndVideo;
 
-    // enumeration may be needed to get actual device id, otherwise GetMediaStreamProperties will fail
+    // enumeration may be needed to get actual device id, 
+    // otherwise GetMediaStreamProperties will fail
     // get video device and store into settings
     // 
     create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture))
@@ -109,6 +111,8 @@ void Controller::Start(unsigned int selectedVideoDeviceIndex)
             _width = props->Width;
             _height = props->Height;
 
+            TC(_width); TC(_height); TCNL;
+
             return ::Media::CaptureFrameGrabber::CreateAsync(_capture.Get(), props);
 
         }).then([this](::Media::CaptureFrameGrabber^ frameGrabber)
@@ -124,20 +128,22 @@ void Controller::_GrabFrameAsync(::Media::CaptureFrameGrabber^ frameGrabber)
 {
     create_task(frameGrabber->GetFrameAsync()).then([this, frameGrabber](const ComPtr<IMF2DBuffer2>& buffer)
     {
-        auto bitmap = ref new WriteableBitmap(_width, _height);
+        // auto bitmap = ref new WriteableBitmap(_width, _height);
 
-        CHK(buffer->ContiguousCopyTo(GetData(bitmap->PixelBuffer), bitmap->PixelBuffer->Capacity));
-
+        // CHK(buffer->ContiguousCopyTo(GetData(bitmap->PixelBuffer), bitmap->PixelBuffer->Capacity));
+        CHK(buffer->ContiguousCopyTo( _buffer, _width * _height ));
+        
         unsigned long length;
         CHK(buffer->GetContiguousLength(&length));
-        bitmap->PixelBuffer->Length = length;
-
+        // bitmap->PixelBuffer->Length = length;
+        
         // Preview->Source = bitmap;
 
-        // zv
         _frameCounter++;
 
-        TCC("got frame"); TC( _frameCounter ); TCNL;
+        TCC("got frame"); TC(_frameCounter); TC( length );  TCNL;
+
+        _newFrame = true;
 
         _GrabFrameAsync(frameGrabber);
     }, task_continuation_context::use_current());
