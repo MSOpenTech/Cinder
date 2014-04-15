@@ -7,11 +7,26 @@ MS Help Desk telephone: 866-539-4191
 
 (list is unsorted right now)
 
-How to: Create a Task that Completes After a Delay
-http://msdn.microsoft.com/en-us/library/hh873170.aspx
+concurrent_queue Class
+http://msdn.microsoft.com/en-us/library/dd504906.aspx#queue
 
 Task Parallelism (Concurrency Runtime)
 http://msdn.microsoft.com/en-us/library/dd492427.aspx
+
+create_async Function
+http://msdn.microsoft.com/en-us/library/hh750102.aspx
+
+Creating Asynchronous Operations in C++ for Windows Store Apps
+http://msdn.microsoft.com/en-us/library/hh750082.aspx
+
+Universal Windows app samples
+http://code.msdn.microsoft.com/windowsapps/Universal-Windows-app-cb3248c3
+
+Lambda Expressions in C++
+http://msdn.microsoft.com/en-us/library/dd293608.aspx
+
+How to: Create a Task that Completes After a Delay
+http://msdn.microsoft.com/en-us/library/hh873170.aspx
 
 MSDN Library (top)
 http://msdn.microsoft.com/en-us/library/ms123401.aspx
