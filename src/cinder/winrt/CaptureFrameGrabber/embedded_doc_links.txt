@@ -5,7 +5,21 @@ in the embedded browser.
 
 MS Help Desk telephone: 866-539-4191
 
-(list is unsorted right now)
+Top Links
+---------
+
+Visual C++ in Visual Studio 2013
+http://msdn.microsoft.com/en-us/library/60k1461a.aspx
+
+Windows API reference for Windows Runtime apps
+http://msdn.microsoft.com/en-us/library/windows/apps/br211377.aspx
+
+Welcome Back to C++ (Modern C++)
+http://msdn.microsoft.com/en-us/library/hh279654.aspx
+
+
+Unsorted List
+-------------
 
 concurrent_queue Class
 http://msdn.microsoft.com/en-us/library/dd504906.aspx#queue
