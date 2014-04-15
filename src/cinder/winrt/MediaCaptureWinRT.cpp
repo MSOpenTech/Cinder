@@ -105,14 +105,19 @@ ABI::Windows::Media::MediaProperties::IVideoEncodingProperties* videoProps
 namespace MediaWinRT
 {
     // version using CaptureFrameGrabber
-#if 1
+    bool MediaCaptureWinRT::setupDevice(int deviceID, int w, int h, Platform::Object ^buffer)
+    {
+        TC(deviceID); TCNL;
+        m_selectedVideoDeviceIndex = deviceID;
+
+        return m_controller->Setup(m_selectedVideoDeviceIndex, w, h, buffer);
+    }
+
     void MediaCaptureWinRT::start()
     {
-        auto controller = ref new CaptureFrameGrabber::Controller;
 
-        controller->Start(0);
+        m_controller->Start(m_selectedVideoDeviceIndex);
     }
-#endif
 
     // version using MFSourceReader
 #if 0
@@ -621,7 +626,22 @@ reference:
         m_mediaCaptureMgr = ref new Windows::Media::Capture::MediaCapture();
 
         m_settings = ref new Windows::Media::Capture::MediaCaptureInitializationSettings();
+
+        m_controller = ref new CaptureFrameGrabber::Controller;        
     }
+
+    bool MediaCaptureWinRT::isFrameNew()
+    {
+        return m_controller->isFrameNew();
+    }
+
+#if 0
+    uint8_t *MediaCaptureWinRT::getPixels()
+    {
+        // unbox for WinRT ABI to uint8_t *
+        return reinterpret_cast<uint8_t *>(m_controller->getPixels());
+    }
+#endif
 
     void MediaCaptureWinRT::GetVideoCamerasAsync(GetMediaDevicesDelegate^ func)
     {

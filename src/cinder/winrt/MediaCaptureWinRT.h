@@ -51,16 +51,27 @@ namespace MediaWinRT
 
         static void GetVideoCamerasAsync(GetMediaDevicesDelegate^ func);
 
-        // 3. create a target surface / texture TBD
         // create( width, height )
+
+        // deviceID is the int returned from GetVideoCamerasAsync()
+        // caller must insure that pointers are set to allocated buffers matching w & h
+        // returns false if w & h do not match device, or if device cannot be initialized
+
+        bool setupDevice(int deviceID, int w, int h, Platform::Object ^buffer);
 
         void start();
         void stop();
 
         // methods to use while capturing:
-        //
-        // getPixels
-        // isFrameNew
+
+        // TODO:
+        // gets the frontBuffer, while the backBuffer is getting written to
+        // when this function completes, the buffers are swapped
+        // uint8_t *getPixels();
+
+        // returns true if a new frame was obtained since the last time this function
+        // was called
+        bool isFrameNew();
 
         // unsigned pointer to the frame buffer copy
         // used by getPixels()
@@ -73,6 +84,8 @@ namespace MediaWinRT
 
         unsigned int m_selectedVideoDeviceIndex, m_selectedAudioDeviceIndex;
  
+        CaptureFrameGrabber::Controller ^m_controller;
+
         // Media Extension communication via property set
         // must be private
         Windows::Foundation::Collections::PropertySet^ MEcomm;
