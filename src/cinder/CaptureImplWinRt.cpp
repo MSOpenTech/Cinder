@@ -219,11 +219,19 @@ CaptureImplWinRT::CaptureImplWinRT( int32_t width, int32_t height, const Capture
 {
     m_MediaCaptureWinRT = ref new MediaCaptureWinRT;
 
+    int devID = 0;
+    if (device) devID = device->getUniqueId();
+
+    mWidth = width;
+    mHeight = height;
+
     // allocate buffer early
+    mSurfaceCache = std::shared_ptr<SurfaceCache>(new SurfaceCache(mWidth, mHeight, SurfaceChannelOrder::BGR, 4));
     mCurrentFrame = mSurfaceCache->getNewSurface();
 
-    auto buffer = reinterpret_cast<Platform::Object^>(mCurrentFrame.getData());
-    m_MediaCaptureWinRT->setupDevice( device->getUniqueId(), width, height, buffer );
+    // Object ^completionObj = reinterpret_cast<uintptr_t>( &getDevicesAsyncCompletion );
+    Object^ buffer = reinterpret_cast<uintptr_t>(mCurrentFrame.getData());
+    m_MediaCaptureWinRT->setupDevice(devID, mWidth, mHeight, buffer);
 
 // zv from MSW impl
 #if 0
@@ -271,9 +279,9 @@ void CaptureImplWinRT::start()
 void CaptureImplWinRT::stop()
 {
 	if ( ! mIsCapturing ) return;
-    // m_MediaCaptureWinRT->stop();
     // CaptureMgr::instanceVI()->stopDevice( mDeviceID );
-	mIsCapturing = false;
+    m_MediaCaptureWinRT->stop();
+    mIsCapturing = false;
 }
 
 bool CaptureImplWinRT::isCapturing()
