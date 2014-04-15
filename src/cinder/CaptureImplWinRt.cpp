@@ -40,6 +40,8 @@
 // There may be a problem with the boost version requiring a patch to boost.
 
 
+#include "cinder/Surface.h"
+
 #include "cinder/CaptureImplWinRT.h"
 #include "cinder/Utilities.h"
 #include <boost/noncopyable.hpp>
@@ -217,6 +219,12 @@ CaptureImplWinRT::CaptureImplWinRT( int32_t width, int32_t height, const Capture
 {
     m_MediaCaptureWinRT = ref new MediaCaptureWinRT;
 
+    // allocate buffer early
+    mCurrentFrame = mSurfaceCache->getNewSurface();
+
+    auto buffer = reinterpret_cast<Platform::Object^>(mCurrentFrame.getData());
+    m_MediaCaptureWinRT->setupDevice( device->getUniqueId(), width, height, buffer );
+
 // zv from MSW impl
 #if 0
 	mDevice = device;
@@ -243,6 +251,7 @@ CaptureImplWinRT::~CaptureImplWinRT()
 void CaptureImplWinRT::start()
 {
 	if ( mIsCapturing ) return;
+
     m_MediaCaptureWinRT->start();
     mIsCapturing = true;
 
@@ -276,7 +285,7 @@ bool CaptureImplWinRT::checkNewFrame() const
 {
     // zv
     // return CaptureMgr::instanceVI()->isFrameNew( mDeviceID );
-    return false;
+    return m_MediaCaptureWinRT->isFrameNew();
 }
 
 Surface8u CaptureImplWinRT::getSurface() const
@@ -289,6 +298,8 @@ Surface8u CaptureImplWinRT::getSurface() const
 		CaptureMgr::instanceVI()->getPixels( mDeviceID, mCurrentFrame.getData(), false, true );
 	}
 #endif
+
+    // mCurrentFrame = reinterpret_cast<Surface8u *>(m_MediaCaptureWinRT->getPixels());
 
 	return mCurrentFrame;
 }
