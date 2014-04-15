@@ -25,7 +25,22 @@ namespace CaptureFrameGrabber
     public:
         Controller();
 
-        void Controller::Start(unsigned int selectedVideoDeviceIndex);
+        bool Setup(int deviceID, int w, int h, Platform::Object ^buffer );
+
+        void Controller::Start(int deviceID);
+
+        bool isFrameNew() { 
+            bool b = _newFrame;
+            _newFrame = false;
+            return b;
+        }
+
+        // box for WinRT ABI from uint8_t *
+        //Platform::Object ^getPixels() {
+        //    return reinterpret_cast<Platform::Object^>(_buffer); 
+        //}
+
+        // Windows::UI::Xaml::Media::Imaging::WriteableBitmap ^bitmap;
 
     protected:
 //        virtual void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e) override;
@@ -36,6 +51,9 @@ namespace CaptureFrameGrabber
         Platform::Agile<WMC::MediaCapture> _capture;
         unsigned int _width;
         unsigned int _height;
+
+        uint8_t *_buffer;
+        bool _newFrame;
 
         unsigned int _selectedVideoDeviceIndex;
         unsigned int _frameCounter;
