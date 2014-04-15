@@ -85,7 +85,7 @@ void CaptureBasicApp::keyDown( KeyEvent event )
 
 void CaptureBasicApp::update()
 {
-#if 0
+#if 1
 	if( mCapture && mCapture->checkNewFrame() ) {
 		mTexture = dx::Texture::create( mCapture->getSurface() );
 	}
