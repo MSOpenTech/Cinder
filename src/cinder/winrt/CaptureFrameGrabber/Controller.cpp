@@ -76,8 +76,8 @@ void Controller::Start( int selectedVideoDeviceIndex )
     settings->StreamingCaptureMode = StreamingCaptureMode::Video; // Video-only capture
     // settings->StreamingCaptureMode = StreamingCaptureMode::AudioAndVideo;
 
-    // enumeration may be needed to get actual device id, 
-    // otherwise GetMediaStreamProperties will fail
+    // enumeration used to get actual device id, 
+    // otherwise GetMediaStreamProperties may fail:
     // get video device and store into settings
     // 
     create_task(DeviceInformation::FindAllAsync(DeviceClass::VideoCapture))
@@ -128,13 +128,20 @@ void Controller::_GrabFrameAsync(::Media::CaptureFrameGrabber^ frameGrabber)
 {
     create_task(frameGrabber->GetFrameAsync()).then([this, frameGrabber](const ComPtr<IMF2DBuffer2>& buffer)
     {
-        // auto bitmap = ref new WriteableBitmap(_width, _height);
-
-        // CHK(buffer->ContiguousCopyTo(GetData(bitmap->PixelBuffer), bitmap->PixelBuffer->Capacity));
-        CHK(buffer->ContiguousCopyTo( _buffer, _width * _height ));
-        
+        // test
+        int m = _width * _height;
+        TC(m); TCNL;
+        auto bitmap = ref new WriteableBitmap(_width, _height);
+        TC(bitmap->PixelBuffer->Capacity); TCNL;
+        CHK(buffer->ContiguousCopyTo(GetData(bitmap->PixelBuffer), bitmap->PixelBuffer->Capacity));
         unsigned long length;
-        CHK(buffer->GetContiguousLength(&length));
+        CHK(buffer->GetContiguousLength(&length));       
+        TC(length); TCNL;
+
+//      CHK(buffer->ContiguousCopyTo( _buffer, _width * _height * 4 ));
+        
+        // unsigned long length;
+        // CHK(buffer->GetContiguousLength(&length));
         // bitmap->PixelBuffer->Length = length;
         
         // Preview->Source = bitmap;
