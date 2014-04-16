@@ -29,6 +29,7 @@
 #pragma once
 
 #include "cinder/WinRTUtils.h"
+#include "app/winrt/xaml/CinderMain.h"
 #include <math.h>
 #include <atomic>
 #include <sstream>
@@ -55,7 +56,8 @@ float ConvertDipsToPixels(float dips)
 {
 	static float dipsPerInch = 96.0f;
     // Win 8.1 update
-    DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
+    // DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
+    DisplayInformation^ currentDisplayInformation = cinder::app::CinderMain::getInstance()->currentDisplayInformation;
     auto dpi = currentDisplayInformation->LogicalDpi;
     // return floor(dips * DisplayProperties::LogicalDpi / dipsPerInch + 0.5f); // Round to nearest integer.
     return floor(dips * dpi / dipsPerInch + 0.5f); // Round to nearest integer.
@@ -107,24 +109,21 @@ void SwapWindowDimensions(float* width, float* height)
     // landscape-oriented width and height. If the window is in a portrait
     // orientation, the dimensions must be reversed.
 
-    try {
-        // updated for Win 8.1        
-        DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
-        auto orientation = currentDisplayInformation->CurrentOrientation;
-        // Windows::Graphics::Display::DisplayOrientations orientation = DisplayProperties::CurrentOrientation;
+    // updated for Win 8.1        
+    // DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
+    DisplayInformation^ currentDisplayInformation = cinder::app::CinderMain::getInstance()->currentDisplayInformation;
+    auto orientation = currentDisplayInformation->CurrentOrientation;
+    // Windows::Graphics::Display::DisplayOrientations orientation = DisplayProperties::CurrentOrientation;
 
-        swapDimensions =
-            orientation == DisplayOrientations::Portrait ||
-            orientation == DisplayOrientations::PortraitFlipped;
+    swapDimensions =
+        orientation == DisplayOrientations::Portrait ||
+        orientation == DisplayOrientations::PortraitFlipped;
 
-        if (swapDimensions)
-        {
-            float tw = *width;
-            *width = *height;
-            *height = tw;
-        }
-    }
-    catch (Exception ^e) {
+    if (swapDimensions)
+    {
+        float tw = *width;
+        *width = *height;
+        *height = tw;
     }
 }
 
@@ -166,12 +165,17 @@ bool ensureUnsnapped()
 }
 
 float getScaleFactor() {    
-    return DisplayInformation::GetForCurrentView()->LogicalDpi / DEFAULT_DPI;
+    // return DisplayInformation::GetForCurrentView()->LogicalDpi / DEFAULT_DPI;
+    DisplayInformation^ currentDisplayInformation = cinder::app::CinderMain::getInstance()->currentDisplayInformation;
+    return currentDisplayInformation->LogicalDpi / DEFAULT_DPI;
+
 }
 
 float getScaledDPIValue(float v) {
-    auto dipFactor = DisplayInformation::GetForCurrentView()->LogicalDpi / DEFAULT_DPI;
-	return v * dipFactor;
+    // auto dipFactor = DisplayInformation::GetForCurrentView()->LogicalDpi / DEFAULT_DPI;
+    DisplayInformation^ currentDisplayInformation = cinder::app::CinderMain::getInstance()->currentDisplayInformation;
+    auto dipFactor = currentDisplayInformation->LogicalDpi / DEFAULT_DPI;
+    return v * dipFactor;
 }
 
 void deleteFileAsync(const sys::path &path)
@@ -184,14 +188,19 @@ void deleteFileAsync(const sys::path &path)
 
 	create_task(StorageFile::GetFileFromPathAsync (p)).then([] (StorageFile^ file) 
 	{
-		try {
+        // TODO
+        // Win 8.1 Update 2 breaking change
+        file->DeleteAsync();
+#if 0
+        try {
 			file->DeleteAsync();
 		}  
-		catch (Exception^ ex)
+		catch (Exception *ex)
         {
 			OutputDebugString(std::wstring(ex->Message->Data()).c_str());
         }
-	});
+#endif	
+    });
 }
 
 Concurrency::task<StorageFile^> copyFileToTempDirAsync(const sys::path &path)
