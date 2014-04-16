@@ -210,6 +210,10 @@ void CinderPage::OnDpiChanged(DisplayInformation^ sender, Object^ args)
     // TCC( "OnDpiChanged\n" );
 
 	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
+
+    // update for non-UI threads (as of Windows 8.1 Update 2)
+    cinder::app::CinderMain::getInstance()->currentDisplayInformation = DisplayInformation::GetForCurrentView();
+
 	m_deviceResources->SetDpi(sender->LogicalDpi);
 	m_cinder->CreateWindowSizeDependentResources();
 }
@@ -219,7 +223,11 @@ void CinderPage::OnOrientationChanged(DisplayInformation^ sender, Object^ args)
     // TCC( "OnOrientationChanged\n" );
 
 	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
-	m_deviceResources->SetCurrentOrientation(sender->CurrentOrientation);
+
+    // update for non-UI threads (as of Windows 8.1 Update 2)
+    cinder::app::CinderMain::getInstance()->currentDisplayInformation = DisplayInformation::GetForCurrentView();
+
+    m_deviceResources->SetCurrentOrientation(sender->CurrentOrientation);
 	m_cinder->CreateWindowSizeDependentResources();
 }
 
@@ -290,6 +298,10 @@ void CinderPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)
     // TCC( "OnCompositionScaleChanged\n" );
 
 	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
+
+    // update for non-UI threads (as of Windows 8.1 Update 2)
+    cinder::app::CinderMain::getInstance()->currentDisplayInformation = DisplayInformation::GetForCurrentView();
+
 	m_deviceResources->SetCompositionScale(sender->CompositionScaleX, sender->CompositionScaleY);
 	m_cinder->CreateWindowSizeDependentResources();
 }
@@ -300,6 +312,10 @@ void CinderPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventArg
     // TCC( "OnSwapChainPanelSizeChanged\n" );
 
 	critical_section::scoped_lock lock(m_cinder->GetCriticalSection());
+
+    // update for non-UI threads (as of Windows 8.1 Update 2)
+    cinder::app::CinderMain::getInstance()->currentDisplayInformation = DisplayInformation::GetForCurrentView();
+
 	m_deviceResources->SetLogicalSize(e->NewSize);
 	m_cinder->CreateWindowSizeDependentResources();
 }
