@@ -34,6 +34,7 @@
 #include "cinder/Utilities.h"
 #include "cinder/app/WinRTApp.h"
 #include "cinder/WinRTUtils.h"
+#include "cinder/app/winrt/xaml/CinderMain.h"
 
 using std::vector;
 using std::string;
@@ -67,6 +68,9 @@ void AppImplWinRTBasic::run()
 
 void AppImplWinRTBasic::runReady(Windows::UI::Core::CoreWindow^ window) {
 	
+    // initialize DisplayInformation
+    cinder::app::CinderMain::currentDisplayInformation = Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
+
 	float width, height;
 	GetPlatformWindowDimensions(window, &width, &height);
 	mWnd = window;

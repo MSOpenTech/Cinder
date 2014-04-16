@@ -276,7 +276,8 @@ WindowImplWinRT::WindowImplWinRT( const Window::Format &format, AppImplWinRT *ap
 		mWindowOffset = mWindowedPos = ( displaySize - mWindowedSize ) / 2;
 	}
 
-    initialOrientation = DisplayProperties::CurrentOrientation;
+    // initialOrientation = DisplayProperties::CurrentOrientation;
+    initialOrientation = cinder::app::CinderMain::currentDisplayInformation->CurrentOrientation;
 
 	mRenderer->setup( mAppImpl->getApp(), mWnd);
 	// set WindowRef and its impl pointer to this
@@ -298,7 +299,8 @@ WindowImplWinRT::WindowImplWinRT( DX_WINDOW_TYPE hwnd, RendererRef renderer, App
 
 	mDisplay = Display::getMainDisplay();
 
-    initialOrientation = DisplayProperties::CurrentOrientation;
+    // initialOrientation = DisplayProperties::CurrentOrientation;
+    initialOrientation = cinder::app::CinderMain::currentDisplayInformation->CurrentOrientation;
 
 	mRenderer->setup( mAppImpl->getApp(), mWnd);
 
@@ -731,7 +733,8 @@ Vec2f WindowImplWinRT::TransformToOrientation(Vec2f p) const
 
     // WinRT 8.1 DisplayInformation throws exception here in vccorlib; cause unknown
     // therefore: using deprecated method at this time
-    auto m = DisplayProperties::CurrentOrientation;
+    // auto m = DisplayProperties::CurrentOrientation;
+    auto m = cinder::app::CinderMain::currentDisplayInformation->CurrentOrientation;
 
     float w = (float)mWindowWidth, h = (float)mWindowHeight;
 
