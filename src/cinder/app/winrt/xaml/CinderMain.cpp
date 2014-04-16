@@ -103,6 +103,9 @@ namespace cinder {
             // Register to be notified if the Device is lost or recreated
             m_relay = new DX::DeviceRelay( this, m_deviceResources );
 
+            // initialize DisplayInformation
+            currentDisplayInformation = Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
+
             // instantiate the Cinder ::app
 			// mainXAML() is declared by the CINDER_APP_BASIC macro in AppBasic.h
             mainXAML();

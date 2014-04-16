@@ -129,6 +129,10 @@ namespace cinder { namespace app {
         virtual void OnDeviceLost();
         virtual void OnDeviceRestored();
 
+        // since the DisplayInformation is needed by the Rendering thread, but cannot be accessed,
+        // we store it here, and it gets updated from the OnXXX handlers in CinderPage.xaml.h
+        static Windows::Graphics::Display::DisplayInformation^ currentDisplayInformation;
+
         // singleton
         static CinderMain*  getInstance() { return sInstance; }
 
